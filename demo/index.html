@@ -8,32 +8,14 @@
   <title>LoopForge · Agent 编排平台</title>
   <link rel="icon" type="image/png" sizes="32x32" href="/demo/favicon.png">
   <link rel="icon" href="/demo/favicon.ico">
-  <link rel="apple-touch-icon" href="/demo/images/loopforge-logo.png">
-  <link rel="stylesheet" href="/demo/styles.css?v=20260823v1">
-  <link rel="stylesheet" href="/demo/assets.css?v=20260823v1">
-  <link rel="stylesheet" href="/demo/platform.css?v=20261019tags1">
-  <link rel="stylesheet" href="/demo/observability.css?v=20260921r1">
-  <link rel="stylesheet" href="/demo/artifacts.css?v=20260914r3">
-  <link rel="stylesheet" href="/demo/sops.css?v=20260921r3">
-  <link rel="stylesheet" href="/demo/sync.css?v=20260915r3">
-  <link rel="stylesheet" href="/demo/access.css">
-  <link rel="stylesheet" href="/demo/product-v3.css?v=20260917r2">
-  <link rel="stylesheet" href="/demo/product-v4.css?v=20261015rebuild1">
-  <link rel="stylesheet" href="/demo/assistant.css?v=20261013r3">
-  <link rel="stylesheet" href="/demo/collab.css?v=20260930r2">
-  <link rel="stylesheet" href="/demo/deployment-dashboard.css?v=20260920r2">
-  <link rel="stylesheet" href="/demo/metrics-dashboard.css?v=20260921r2">
-  <link rel="stylesheet" href="/demo/knowledge.css?v=20260930r3">
-  <link rel="stylesheet" href="/demo/business-domains.css">
-  <link rel="stylesheet" href="/demo/bots.css">
-  <link rel="stylesheet" href="/demo/collaboration.css?v=20261019tasks3">
-  <link rel="stylesheet" href="/demo/preferences.css">
-  <script defer src="/demo/recordings.js"></script><script defer src="/demo/replay.js"></script><link rel="stylesheet" href="/demo/replay.css"><script defer src="/demo/boot.js"></script>
-  <script defer src="/demo/i18n-en.js"></script>
-  <script defer src="/demo/i18n.js"></script>
+  <link rel="apple-touch-icon" href="/demo/images/loopforge-logo-64.png">
+  <style>#previewLoading{position:fixed;inset:0;z-index:100000;display:grid;place-items:center;background:#fafaf7;color:#16161a;text-align:center;padding:24px;font:15px/1.7 system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}#previewLoading h1{font-size:22px;font-weight:700;line-height:1.5;margin:22px 0 6px;letter-spacing:-.01em}#previewLoading p{color:#55534e;margin:0}#previewLoading a{text-decoration:underline}#previewLoadingHelp{margin-top:14px!important}.preview-spinner{display:inline-block;width:30px;height:30px;border:2.5px solid #e3e1da;border-top-color:#ff5a1f;border-radius:50%;animation:preview-spin .8s linear infinite}@keyframes preview-spin{to{transform:rotate(360deg)}}html[data-lang=en] #previewLoading [lang=zh-CN],html:not([data-lang=en]) #previewLoading [lang=en]{display:none}@media(prefers-reduced-motion:reduce){.preview-spinner{animation:none}}</style>
+  <script>(function(){var l="zh";try{var q=new URLSearchParams(location.search).get("lang");if(q==="en"||q==="zh")localStorage.setItem("loopforge.lang",q);if(localStorage.getItem("loopforge.lang")==="en")l="en"}catch(e){}document.documentElement.dataset.lang=l;if(l==="en")document.write('<script defer src="/demo/i18n-en.613e9cbb8e.js"><\/script>')})();</script>
+  <script defer src="/demo/lf.35b45b1100.js"></script>
 </head>
 <body>
-  <div id="previewLoading" role="status" aria-live="polite"><div><span class="preview-spinner" aria-hidden="true"></span><h1>正在打开 LoopForge 平台</h1><p>加载真实界面与录制数据，无需登录或 API Key。</p><p id="previewLoadingHelp" hidden>加载时间较长，请检查网络后刷新，或<a href="/">返回首页</a>。</p></div></div>
+  <div id="previewLoading" role="status" aria-live="polite"><div><span class="preview-spinner" aria-hidden="true"></span><div lang="zh-CN"><h1>正在打开 LoopForge 平台</h1><p>加载真实界面与录制数据，无需登录或 API Key。</p></div><div lang="en"><h1>Opening the LoopForge platform</h1><p>Loading the real interface and recorded data. No sign-in or API key needed.</p></div><p id="previewLoadingHelp" hidden><span lang="zh-CN">加载时间较长，请检查网络后刷新，或<a href="/">返回首页</a>。</span><span lang="en">This is taking a while. Check your connection and refresh, or <a href="/?lang=en">go back</a>.</span></p></div></div>
+  <link rel="stylesheet" href="/demo/lf.d9007052e0.css">
   <div id="globalProgress" class="global-progress" aria-hidden="true"></div>
   <div class="app-shell">
 
@@ -41,7 +23,7 @@
   <aside class="platform-sidebar">
     <div class="brand" data-view="collaboration" title="LoopForge 产研 AI 协作平台">
       <span class="brand-mark">
-        <img src="/demo/images/loopforge-logo.png" alt="LoopForge Logo" width="30" height="30" class="brand-logo">
+        <img src="/demo/images/loopforge-logo-64.png" alt="LoopForge Logo" width="30" height="30" class="brand-logo">
       </span>
       <span class="brand-text"><b>LoopForge</b><small>产研 AI 协作平台</small></span>
     </div>
@@ -1020,36 +1002,7 @@
     </div>
   </div>
   <div id="revisionModal" class="modal"><div class="modal-card revision-card"><button type="button" class="modal-close" id="revisionClose">×</button><div class="wizard-head"><div><p class="eyebrow">版本历史</p><h2 id="revisionTitle">版本历史</h2><p>对比上一版并回退。回退会生成新版本，不会改已经跑完的记录。</p></div></div><div id="revisionList" class="revision-list"></div><pre id="revisionDiff" class="revision-diff">选择一个历史版本查看差异。</pre><div class="wizard-actions"><button type="button" class="button ghost" id="revisionClose2">关闭</button><button type="button" class="button primary" id="revisionRestore" disabled>回退到此版本</button></div></div></div>
-  <script defer src="/demo/app.js"></script>
-  <script defer src="/demo/app/access.js"></script>
-  <script defer src="/demo/app/dashboards.js"></script>
-  <script defer src="/demo/app/sops.js"></script>
-  <script defer src="/demo/app/issue-model.js"></script>
-  <script defer src="/demo/app/projects.js"></script>
-  <script defer src="/demo/app/business-domains.js"></script>
-  <script defer src="/demo/app/composer.js"></script>
-  <script defer src="/demo/app/issues.js"></script>
-  <script defer src="/demo/app/sync-schedule.js"></script>
-  <script defer src="/demo/app/notification-editor.js"></script>
-  <script defer src="/demo/app/bots.js"></script>
-  <script defer src="/demo/app/flows.js?v=20261015rebuild2"></script>
-  <script defer src="/demo/app/agents.js"></script>
-  <script defer src="/demo/app/mcp.js"></script>
-  <script defer src="/demo/app/assets.js"></script>
-  <script defer src="/demo/app/runners.js"></script>
-  <script defer src="/demo/app/runs.js"></script>
-  <script defer src="/demo/app/workbench.js"></script>
-  <script defer src="/demo/app/approvals.js"></script>
-  <script defer src="/demo/app/observability.js"></script>
-  <script defer src="/demo/app/issue-drawer.js"></script>
-  <script defer src="/demo/app/revisions.js"></script>
-  <script defer src="/demo/app/tour.js"></script>
-  <script defer src="/demo/app/start.js"></script>
-  <script defer src="/demo/knowledge.js?v=20260930r2"></script>
   </div>
   </div>
-  <script defer src="/demo/orchestrate.js?v=20260928r4"></script>
-  <script defer src="/demo/assistant.js?v=20261015loop1"></script>
-  <script defer src="/demo/collaboration.js?v=20261019tasks5"></script>
 </body>
 </html>

@@ -1,40 +1,13 @@
-<!doctype html>
-<html lang="zh-CN">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>LoopForge · 让 Agent 按团队的流程交付</title>
-<meta name="description" content="LoopForge 是 MIT 开源、可自主部署的 Agent 软件交付平台。编排 Agent、脚本和人工审批，让需求经过方案、实现、独立评审、测试与验收。">
-<meta name="referrer" content="no-referrer"><link rel="icon" href="favicon.svg"><link rel="stylesheet" href="site/platform.css?v=3">
-<link rel="prefetch" href="demo/recordings.js"><link rel="prefetch" href="demo/app.js">
-</head>
-<body>
-<header><a class="brand" href="/">Loop<span>Forge</span></a><nav><a href="#workflow">工作流程</a><a href="#platform">平台演示</a><a href="#deploy">部署</a></nav><a href="https://github.com/Tencent/LoopForge" target="_blank" rel="noopener noreferrer">GitHub ↗</a><a class="button primary" href="demo/">预览平台 →</a></header>
-<main>
-<section class="hero focused-hero">
-<p class="eyebrow">开源 · 自主部署 · Agent 软件交付平台</p>
-<h1>让 Agent 按团队的流程，<br><em>把需求推进到交付。</em></h1>
-<p class="intro">把编程 Agent、脚本和人工审批编排成可复用的 SOP。<br>从方案、实现到评审、测试和验收，每个环节都有分工和证据。</p>
-<div class="actions"><a class="button primary" href="demo/">预览平台 →</a><a class="button" href="#deploy">部署到自己的环境</a></div>
-<p class="note">真实平台前端 · 录制数据预览 · 无需登录或 API Key</p>
-<a class="hero-image" href="demo/#/flow/demo-issue-fix-production"><div class="window-title"><i></i><i></i><i></i><span>LoopForge · SOP 流程设计器</span></div><img src="site/platform/designer.png" alt="LoopForge 真实平台中的七节点交付流程设计器" width="1440" height="1000" fetchpriority="high"></a>
-</section>
-<section id="workflow">
-<p class="eyebrow">一条需求，一套可复用的交付方法</p><h2>流程由你定义，关键关口由你把控。</h2>
-<div class="steps"><span>需求定型</span><b>→</b><span>方案设计</span><b>→</b><span>开发实现</span><b>→</b><span>独立评审</span><b>→</b><span>测试验证</span><b>→</b><span class="human">人工验收</span><b>→</b><span>交付汇总</span></div>
-<div class="cards"><article><span>01 / 编排</span><h3>把方法沉淀为 SOP</h3><p>连接 Agent、脚本、人工审批和子流程。内置后端、前端、缺陷修复与产品方案模板，可按项目调整。</p></article><article><span>02 / 分工</span><h3>实现与评审各司其职</h3><p>为不同角色配置独立指令、执行器和工具。支持 CodeBuddy、Codex 和 Claude Code，不替代已有 Coding Agent。</p></article><article><span>03 / 验收</span><h3>看过证据，再放行</h3><p>运行状态、日志和产物集中留存。关键节点由人确认，不满意可打回指定环节返工。</p></article></div>
-</section>
-<section id="platform">
-<div class="section-heading"><div><p class="eyebrow">真实平台 · 真实脚本与审批录屏</p><h2>看看一次交付如何推进。</h2></div><a class="button" href="demo/">进入平台预览 →</a></div>
-<div class="video"><video controls preload="none" poster="site/platform/approval.png" aria-label="LoopForge 真实脚本与人工审批演示"><source src="site/platform/demo.mp4" type="video/mp4"></video></div>
-<p class="note">网页预览使用开源项目真实前端与独立实例录制数据，不执行模型或用户代码。真实 Agent 任务需自部署并配置执行器凭据。</p>
-</section>
-<section id="deploy">
-<p class="eyebrow">MIT 开源 · 运行在你自己的环境</p><h2>为团队部署一套 LoopForge。</h2>
-<div class="deploy-grid"><div><p class="section-intro">准备 Docker（含 Compose）和 Python 3，启动后打开 <code>localhost:8090</code>。首页引导可带你跑通无需模型 Key 的脚本与审批示例。</p><a class="button primary" href="https://github.com/Tencent/LoopForge#quick-start" target="_blank" rel="noopener noreferrer">查看完整部署指南 ↗</a></div><pre><code>git clone https://github.com/Tencent/LoopForge.git
-cd LoopForge
-bash scripts/install.sh</code></pre></div>
-<p class="note">默认面向可信团队，仅监听本机。对公网开放前，请阅读项目中的账号、权限与 Docker 沙箱部署边界。</p>
-</section>
-</main>
-<footer><span>LoopForge · MIT 开源 · 社区介绍页</span><a href="https://github.com/Tencent/LoopForge" target="_blank" rel="noopener noreferrer">GitHub · 源码 / Issue / PR ↗</a><span>项目能力与部署说明以开源仓库为准。</span></footer>
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>LoopForge · 团队共享的云端 AI 研发工作空间</title>
+<meta name="description" content="LoopForge 是 MIT 开源、可自主部署、面向研发团队的云端 AI 研发工作空间：把团队经验沉淀成可执行的 SOP，围绕同一需求共享全过程上下文，看清每次投入与交付。">
+<meta property="og:title" content="LoopForge · 团队共享的云端 AI 研发工作空间"><meta property="og:description" content="个人用 AI 拼手速，团队用 AI 拼流程。让团队的经验成为工作流，让每个需求带着上下文走向交付。">
+<meta property="og:type" content="website"><meta property="og:url" content="https://loopforge.cn/">
+<meta name="referrer" content="no-referrer"><link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preload" href="site/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="site/site.css?v=10">
+<!--demo-prefetch--><link rel="prefetch" href="demo/lf.d9007052e0.css"><link rel="prefetch" href="demo/lf.35b45b1100.js"><!--/demo-prefetch-->
+</head><body>
+<div id="fix"><div id="cv"></div></div><div id="spacer"></div>
+<script src="site/content.js?v=10"></script><script src="site/flow.js?v=10"></script>
 </body></html>

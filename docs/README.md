@@ -54,3 +54,15 @@
 ### 五、常见问题与排障
 
 - [新手常见问题与排障速查](05-faq/01-troubleshooting-and-faq.md) — 遇到黄字提醒、按钮点不动、或者找不到项目和任务时，按下面的分类找到对应现象，照着步骤点即可解决。右侧「本页目录」可以直接跳转到具体问题。
+
+### 六、真实使用场景
+
+- [场景总览](06-scenarios/00-overview.md) — 8 个我们自己在用、也推荐你用的场景，全部在一个演示项目里真实跑过。
+- [S01 · 在云端让 AI 写个小工具](06-scenarios/01-cloud-first-tool.md) — 一句话说需求，AI 在云端工作区里写代码、跑测试。发完就可以关电脑，云端依然在跑。
+- [S02 · 和同事在同一个会话里接力](06-scenarios/02-shared-session-handoff.md) — 需求讨论、实现和 Review 都在同一个会话里，接手的人直接看历史，不用重新讲背景。
+- [S03 · 把好用的做法存成团队资产](06-scenarios/03-save-team-assets.md) — 用一段话让 AI 把"谁来做、按什么查、按什么顺序"存成角色、检查清单和 SOP，团队里谁都能直接复用。
+- [S04 · 用 @ 调用团队资产](06-scenarios/04-mention-assets.md) — 输入 @ 选中团队的角色和检查清单，让它按团队标准办事；结论每一条都有依据。
+- [S05 · 定时任务，7×24 小时自动跑](06-scenarios/05-scheduled-jobs.md) — 一句话设好定时任务，到点自动启动 SOP；关掉页面也照跑，需要人的地方停下来等你。
+- [S06 · 看用量和交付](06-scenarios/06-usage-and-delivery.md) — 一个页面看清：开了多少会话、建了多少需求、跑了多少 SOP、花了多少 Token、交付了什么。
+- [S07 · 在本地 IDE 里用平台](06-scenarios/07-local-ide-mcp.md) — 把本地的 Codex、Cursor、Claude Code、CodeBuddy 通过 MCP 接到 LoopForge，不开网页也能查进度、派任务。
+- [S08 · 对话里理清需求，交给 SOP 跑完](06-scenarios/08-requirement-through-sop.md) — 先和 AI 把需求聊清楚，它自动建好需求单；再从同一个对话发起 SOP，在侧边栏里看着它一步步跑完。

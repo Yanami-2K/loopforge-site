@@ -13,11 +13,6 @@ const ui = {
     kick: '公开路线图',
     h: 'LoopForge 正在做什么，<br>下一步去哪里。', em: '下一步去哪里',
     sub: '我们希望 AI 不只帮一个人写代码，而是成为整个研发团队的交付方式：产品、开发和测试围绕同一条需求协作，每一步谁负责、怎么执行、凭什么验收都清清楚楚，每一次交付都让流程、角色和知识变得更好。',
-    vision: [
-      ['同一条需求，全员协作', '接入团队已有的仓库、工单、编程 Agent 和测试环境，人和 Agent 在同一条需求上接力，交接不再靠复制粘贴。'],
-      ['每次交付，有据可查', '谁负责、怎么执行、用什么证据验收，都留在运行记录里；自托管部署，代码和数据留在自己的环境。'],
-      ['越用越好的流程', '真实失败和人工修正沉淀为回归集，验证有效的改进写回 SOP、角色和知识。'],
-    ],
     source: '状态以 GitHub 上的 PR 与 Issue 为准',
     version: '当前版本', released: '2026-11-17 发布', updated: '状态更新于 2026-11-18', notes: '发布记录',
     all: '全部',
@@ -48,11 +43,6 @@ const ui = {
     kick: 'Public roadmap',
     h: 'What LoopForge is building,<br>and where it goes next.', em: 'where it goes next',
     sub: 'We want AI to be how a whole engineering team delivers, not just how one person writes code: product, engineering and QA work on the same requirement, it is always clear who owns each step, how it runs and what proves it is done, and every delivery leaves the process, roles and knowledge better than before.',
-    vision: [
-      ['One requirement, one team', 'Plug into the repos, trackers, coding agents and test environments you already use; people and agents hand off on the same requirement instead of copy-pasting context.'],
-      ['Every delivery on the record', 'Owner, execution and acceptance evidence stay in the run history, self-hosted so your code and data stay in your environment.'],
-      ['A process that gets better', 'Real failures and human fixes become a regression set, and improvements that prove out are written back into SOPs, roles and knowledge.'],
-    ],
     source: 'Status follows pull requests and issues on GitHub',
     version: 'Current release', released: 'released 2026-11-17', updated: 'status as of 2026-11-18', notes: 'Release notes',
     all: 'All',

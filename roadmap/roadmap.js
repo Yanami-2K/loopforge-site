@@ -84,9 +84,10 @@ function build() {
      </aside>
     </div>
     <p class="sub rv" data-d="220">${u.sub}</p>
-    <div class="rm-sum rv" data-d="380">
+    <ol class="rm-vis">${u.vision.map(([h, p], i) => `<li class="rv" data-d="${320 + i * 80}"><span class="rm-vi">${String(i + 1).padStart(2, '0')}</span><h3>${h}</h3><p>${p}</p></li>`).join('')}</ol>
+    <div class="rm-sum rv" data-d="560">
      <div class="rm-bar">${ORDER.slice().reverse().map(s => `<i class="b-${s}" style="--w:${(count(s) / total * 100).toFixed(2)}%"></i>`).join('')}</div>
-     <div class="rm-leg">${ORDER.slice().reverse().map(s => `<span class="rm-li">${GLYPH[s]}<span>${u.status[s][0]}</span><b data-cnt="${count(s)}">0</b></span>`).join('')}</div>
+     <div class="rm-leg">${ORDER.slice().reverse().map(s => `<span class="rm-li">${GLYPH[s]}<span>${u.status[s][0]}</span><b data-cnt="${count(s)}">0</b></span>`).join('')}<small class="rm-src">${u.source}</small></div>
     </div>
    </section>
 
@@ -261,7 +262,7 @@ function boot(relang) {
   reveal(document.querySelector('.rm-hero'));
   reveal(document.querySelector('.rm-filter').parentNode);
   const sum = document.querySelector('.rm-sum');
-  setTimeout(() => { sum.classList.add('go'); sum.querySelectorAll('[data-cnt]').forEach(e => countTo(e, +e.dataset.cnt, 1100)); }, calm() || relang ? 0 : 480);
+  setTimeout(() => { sum.classList.add('go'); sum.querySelectorAll('[data-cnt]').forEach(e => countTo(e, +e.dataset.cnt, 1100)); }, calm() || relang ? 0 : 660);
 
   if (io) io.disconnect();
   io = new IntersectionObserver(es => es.forEach(e => {

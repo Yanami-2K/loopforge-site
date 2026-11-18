@@ -32,6 +32,7 @@ const AGENTS=[['claude','Claude Code'],['codex','Codex'],['cursor','Cursor'],['c
 const EXECS=[['codebuddy','CodeBuddy'],['codex','Codex'],['claude','Claude Code'],['opencode','OpenCode'],['cursor','Cursor'],['agy','Antigravity'],['kimi','Kimi Code'],['pi','Pi'],['dsh','DeepSeek Harness']];
 const TRY=()=>'demo/'+(L==='en'?'?lang=en':'');
 const DOCS=()=>'docs/'+(L==='en'?'?lang=en':'');
+const ROADMAP=()=>'roadmap/'+(L==='en'?'?lang=en':'');
 /* ---------- line icons (24px grid, 1.7 stroke) ---------- */
 const IC={home:'M3 10.5 12 3.5l9 7M5.5 9v11h13V9M10 20v-5.5h4V20',chart:'M4 20h16M7 16v-5M12 16V6M17 16v-8',list:'M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01',
  check:'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0zM8.5 12.2l2.4 2.4 4.6-5',flow:'M6 3v12M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM18 9a9 9 0 0 1-9 9',
@@ -193,7 +194,7 @@ function build(){const t=T[L];document.documentElement.lang=L==='zh'?'zh-CN':'en
  const GH='https://github.com/Tencent/LoopForge',ids=['why','story','video','deploy'];
  const c=t.hero,w=t.why,arrow=`<span class="ar">${ic('arrow')}</span>`;
  document.getElementById('app').innerHTML=`<header class="nav"><i class="nprog"></i><div class="nbar"><a class="brand" href="#top">${LOGO(1)}<span>LoopForge</span></a><span class="sp"></span>
- <div class="links">${t.nav.map((n,i)=>`<a href="#${ids[i]}" data-nav="${ids[i]}">${n}</a>`).join('')}<a href="${DOCS()}">${Z('使用文档','Docs')}</a></div>
+ <div class="links">${t.nav.map((n,i)=>`<a href="#${ids[i]}" data-nav="${ids[i]}" data-sec>${n}</a>`).join('')}<a href="${DOCS()}">${Z('使用文档','Docs')}</a><a href="${ROADMAP()}">${Z('路线图','Roadmap')}</a></div>
  <div class="lang"><button data-l="zh" class="${L==='zh'?'on':''}" aria-label="${Z('中文','Chinese')}">${Z('中','ZH')}</button><button data-l="en" class="${L==='en'?'on':''}">EN</button></div>
  <a class="ghs" href="${GH}" target="_blank" rel="noopener" aria-label="GitHub"><span class="gsw"><span class="g1">${mark('gh')}</span><span class="g2">${STAR}</span><i class="sk s1">${SPK}</i><i class="sk s2">${SPK}</i></span><span class="gtx">GitHub</span><span class="gct" hidden></span></a><a class="btn-k sm" href="${TRY()}">${t.try}${arrow}</a></div></header>
  <main>

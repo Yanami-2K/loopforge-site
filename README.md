@@ -6,6 +6,8 @@
 
 **产品演示视频:** https://loopforge.cn/demo/ 。`demo/` 是一个独立的视频播放页（`demo/index.html` + `demo.css` + `demo.js`，视频与封面在 `demo/media/`）：80 秒产品演示，自定义播放控件，进度条上标出 10 个章节，右侧章节列表可点击跳转并随播放高亮；默认静音自动播放（遵守 `prefers-reduced-motion`），快捷键 空格/K 播放暂停、←/→ 快退快进 5 秒、M 静音、F 全屏、1–9 跳章节。中英文跟随首页的 `?lang=` / `lf-lang`。页面 CSP 为 `connect-src 'none'`，除静态文件外不发请求。视频按 H.264 1080p、`+faststart` 编码，需由支持 Range 请求的服务器提供才能拖动进度（GitHub Pages 支持；本地可用 `npx http-server`）。
 
+**路线图 / Roadmap:** https://loopforge.cn/roadmap/ 。`roadmap/` 按「计划中 / 开发中 / 已上线」三列展示路线图，可按方向筛选，点开卡片查看详情和关联的 PR / Issue。页面复用首页的 `site/site.css`（导航、字体、按钮与动效），自身样式在 `roadmap/roadmap.css`；中英文条目在 `roadmap/content.js`，状态变化时改对应条目的 `s`（状态）和 `p`（进度）字段即可。
+
 原 `playground/` 是手工模拟，现在跳转到 `demo/` 演示视频。LoopForge 以 [MIT 协议](https://github.com/Tencent/LoopForge/blob/main/LICENSE) 开源。
 
 The official website for [Tencent/LoopForge](https://github.com/Tencent/LoopForge), focused on the self-hosted platform. The original Local story is retained at `local.html`.

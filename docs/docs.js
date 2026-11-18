@@ -251,6 +251,7 @@ function render(scrollTop = true) {
   const nextItem = idx >= 0 && idx + 1 < flat.length ? flat[idx + 1] : null;
   const homeUrl = '../' + (L === 'en' ? '?lang=en' : '');
   const demoUrl = '../demo/' + (L === 'en' ? '?lang=en' : '');
+  const roadmapUrl = '../roadmap/' + (L === 'en' ? '?lang=en' : '');
 
   const app = document.getElementById('app');
   if (!app.querySelector('.d-top')) {
@@ -263,6 +264,7 @@ function render(scrollTop = true) {
           <nav class="d-top-links">
             <a id="dBackHome" href="${homeUrl}"></a>
             <a id="dWatchDemo" href="${demoUrl}"></a>
+            <a id="dRoadmap" href="${roadmapUrl}"></a>
           </nav>
           <span class="d-sp"></span>
           <div class="d-lang">
@@ -338,6 +340,9 @@ function render(scrollTop = true) {
   const demoEl = document.getElementById('dWatchDemo');
   demoEl.textContent = d.ui.watchDemo;
   demoEl.href = demoUrl;
+  const roadmapEl = document.getElementById('dRoadmap');
+  roadmapEl.textContent = d.ui.roadmap;
+  roadmapEl.href = roadmapUrl;
 
   app.querySelectorAll('.d-lang button').forEach(btn => {
     btn.classList.toggle('on', btn.dataset.lang === L);

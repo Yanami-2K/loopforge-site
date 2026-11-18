@@ -157,10 +157,6 @@ const items = [
   { s: 'progress', a: 'platform', p: 'merged', refs: [pr(1015), pr(1043), pr(1033)],
     zh: { title: '统一凭据管理', desc: '按主机配置 Git 凭据，SOP 节点和 MCP 服务器按需申请平台凭据。' },
     en: { title: 'Unified credentials', desc: 'Per-host Git credentials, with SOP nodes and MCP servers requesting platform credentials on demand.' } },
-  { s: 'progress', a: 'platform', p: 'review', refs: [pr(1071), pr(1068)],
-    zh: { title: '自托管构建与 Local 下线', desc: '源码构建可选用国内镜像源；LoopForge Local 标记为旧版，转向 MCP 接入。' },
-    en: { title: 'Self-host builds, Local retired', desc: 'Optional npm and Go mirrors for source builds; LoopForge Local marked legacy in favor of MCP.' } },
-
   /* ---------- shipped: new in v0.4.0 (v0.3.8...v0.4.0) ---------- */
   { s: 'done', a: 'delivery', refs: [pr(947), doc('Docs', 'docs/conversation-workspaces.md')],
     zh: { title: '对话工作区跑在沙箱里', desc: '每个对话工作区在独立沙箱中打开，Agent 自己管理 Git 分支和提交。' },

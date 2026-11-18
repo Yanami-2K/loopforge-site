@@ -72,7 +72,7 @@ function build() {
 
   document.getElementById('app').innerHTML = `
   <header class="nav"><i class="nprog"></i><div class="nbar"><a class="brand" href="${withLang('../')}">${LOGO(1)}<span>LoopForge</span></a><span class="sp"></span>
-   <div class="links">${u.nav.map((n, i) => `<a href="${withLang('../')}#${ids[i]}" data-sec>${n}</a>`).join('')}<a href="${withLang('../docs/')}">${u.docs}</a><a class="on" href="${withLang('./')}" aria-current="page">${u.roadmap}</a></div>
+   <div class="links">${u.nav.map((n, i) => `<a href="${withLang('../')}#${ids[i]}" data-sec>${n}</a>`).join('')}<a href="${withLang('../docs/')}">${u.docs}</a></div>
    <div class="lang"><button data-l="zh" class="${L === 'zh' ? 'on' : ''}" aria-label="${Z('中文', 'Chinese')}">${Z('中', 'ZH')}</button><button data-l="en" class="${L === 'en' ? 'on' : ''}">EN</button></div>
    <a class="ghs" href="${GH}" target="_blank" rel="noopener" aria-label="GitHub"><span class="gsw"><span class="g1">${GHM}</span><span class="g2">${STAR}</span><i class="sk s1">${SPK}</i><i class="sk s2">${SPK}</i></span><span class="gtx">GitHub</span><span class="gct" hidden></span></a><a class="btn-k sm" href="${withLang('../demo/')}">${u.try}${arrow}</a></div></header>
   <main>

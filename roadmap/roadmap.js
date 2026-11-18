@@ -25,6 +25,9 @@ const IC = {
   cloud: 'M7 18a4.5 4.5 0 0 1-.5-9 6 6 0 0 1 11.6 1.5A3.8 3.8 0 0 1 17.5 18z',
   layers: 'M12 3 3 8l9 5 9-5-9-5zM3 13l9 5 9-5',
   plus: 'M12 5v14M5 12h14',
+  hand: 'M7 11V6.5a1.5 1.5 0 0 1 3 0V11M10 10V4.5a1.5 1.5 0 0 1 3 0V10M13 10.5V6a1.5 1.5 0 0 1 3 0v5M16 9.5a1.5 1.5 0 0 1 3 0V14a7 7 0 0 1-7 7h-.5a6 6 0 0 1-4.9-2.5L4 15.5a1.6 1.6 0 0 1 2.4-2L7 14',
+  down: 'M12 5v14M6 13l6 6 6-6',
+  book: 'M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 19V5M8 7h7',
 };
 const ic = (k, c = '') => `<svg class="ic ${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${IC[k]}"/></svg>`;
 const AREA_IC = { delivery: 'flow', assets: 'loop', access: 'plug', platform: 'cloud' };
@@ -47,7 +50,8 @@ function cardHTML(it, i) {
   const refs = it.refs || [];
   const num = refs.filter(r => r.label.includes('#'));
   const badge = num.length ? `<span class="rm-ref">${esc(num[0].label.replace('PR ', ''))}${num.length > 1 ? `<i>+${num.length - 1}</i>` : ''}</span>` : '';
-  const pill = it.p && it.s !== 'done' ? `<span class="rm-pill ${it.p}"><i></i>${u.progress[it.p]}</span>` : '';
+  const pill = it.p && it.s !== 'done' ? `<span class="rm-pill ${it.p}"><i></i>${u.progress[it.p]}</span>`
+    : it.help ? `<span class="rm-pill help">${ic('hand')}${u.help}</span>` : '';
   const people = it.people ? `<span class="rm-people">${it.people.map(p => `<b title="${esc(p)}">${esc(p[0].toUpperCase())}</b>`).join('')}</span>` : '';
   return `<button type="button" class="rm-card" data-id="${i}" data-a="${it.a}">
     <span class="rm-ct"><span class="rm-tag">${ic(AREA_IC[it.a])}${a[L]}</span>${badge}</span>
@@ -81,6 +85,7 @@ function build() {
       <span class="rm-vm"><i class="led"></i>${u.released}</span>
       <span class="rm-vm">${u.updated}</span>
       <a class="btn-t" href="${GH}/releases" target="_blank" rel="noopener">${u.notes}${arrow}</a>
+      <a class="btn-t" href="#contribute">${u.join}<span class="ar">${ic('down')}</span></a>
      </aside>
     </div>
     <p class="sub rv" data-d="220">${u.sub}</p>
@@ -103,6 +108,20 @@ function build() {
        <div class="rm-list">${D.items.map((it, i) => it.s === s ? cardHTML(it, i) : '').join('')}<div class="rm-empty" hidden>${u.empty}</div></div>
       </section>`).join('')}
     </div>
+   </section>
+
+   <section class="rm-con" id="contribute">
+    <div class="rm-conh">
+     <div><span class="kick rv" data-d="0">${ic('hand')}${u.contrib.kick}</span>${head(u.contrib.h, u.contrib.em, 'h2')}</div>
+     <div><p class="sub rv" data-d="160">${u.contrib.sub}</p>
+      <a class="btn-t rv" data-d="240" href="${GH}/blob/main/${u.contrib.guideUrl}" target="_blank" rel="noopener">${ic('book')}${u.contrib.guide}${arrow}</a></div>
+    </div>
+    <ol class="rm-steps">${u.contrib.steps.map(([h, p], i) => `<li class="rv" data-d="${i * 90}"><b>${i + 1}</b><div><h3>${h}</h3><p>${p}</p></div></li>`).join('')}</ol>
+    <div class="rm-cg">${D.contrib.map((c, i) => `<article class="rm-cc rv" data-d="${i * 60}" data-lv="${c.lv}">
+      <span class="rm-ct"><span class="rm-lv ${c.lv}">${u.contrib.level[c.lv]}</span><span class="rm-stack">${c.stack.join(' · ')}</span></span>
+      <h3>${esc(c[L].title)}</h3><p>${esc(c[L].desc)}</p>
+      <span class="rm-cl">${c.refs.map(r => `<a class="rm-link" href="${r.url}" target="_blank" rel="noopener">${esc(r.label)}${ic('out')}</a>`).join('')}</span>
+     </article>`).join('')}</div>
    </section>
 
    <section class="fin rm-cta"><span class="fl rv pop" data-d="0">${LOGO()}</span>${head(u.cta.h, u.cta.em, 'h2')}
@@ -195,6 +214,7 @@ function openDlg(it) {
     it.p && it.s !== 'done' ? [u.state, `<span class="rm-pill ${it.p}"><i></i>${u.progress[it.p]}</span>`] : null,
     it.people ? [u.owner, `<span class="rm-owners">${it.people.map(p => `<a href="https://github.com/${encodeURIComponent(p)}" target="_blank" rel="noopener"><b>${esc(p[0].toUpperCase())}</b>${esc(p)}</a>`).join('')}</span>`] : null,
     refs ? [u.links, refs] : null,
+    it.help ? [u.help, `<a class="rm-link help" href="#contribute" data-go-contrib>${ic('hand')}${u.join}</a>`] : null,
   ].filter(Boolean);
   panel.dataset.s = it.s;
   panel.innerHTML = `
@@ -234,7 +254,7 @@ function bind() {
     c.style.setProperty('--mx', e.clientX - r.left + 'px'); c.style.setProperty('--my', e.clientY - r.top + 'px');
   }, { passive: true });
   const dlg = document.getElementById('rmDlg');
-  dlg.addEventListener('click', e => { if (e.target.classList.contains('rm-scrim') || e.target.closest('.rm-x')) closeDlg(); });
+  dlg.addEventListener('click', e => { if (e.target.classList.contains('rm-scrim') || e.target.closest('.rm-x') || e.target.closest('[data-go-contrib]')) closeDlg(); });
 }
 
 function stars() {
@@ -275,7 +295,7 @@ function boot(relang) {
       updateCounts();
     } else reveal(e.target);
   }), { rootMargin: '0px 0px -12% 0px' });
-  document.querySelectorAll('.rm-col, .rm-cta').forEach(el => io.observe(el));
+  document.querySelectorAll('.rm-col, .rm-conh, .rm-steps, .rm-cg, .rm-cta').forEach(el => io.observe(el));
   if (calm()) { document.querySelectorAll('.rm-col').forEach(c => c.classList.add('on')); updateCounts(); }
   onScroll(); stars();
   if (relang) scrollTo(0, keep);

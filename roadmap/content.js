@@ -32,7 +32,7 @@ const ui = {
     help: '欢迎贡献', join: '参与贡献',
     contrib: {
       kick: '参与贡献', h: '这些方向，<br>欢迎一起来做。', em: '欢迎一起来做',
-      sub: '下面每个方向都有对应的 Issue，目前没有人认领。挑一个感兴趣的，在 Issue 里留言认领，和维护者对齐方案后再提 PR。',
+      sub: '我们现在最需要的是把已有能力做稳：修复已有 Issue 里的 Bug、适配更多代码托管平台和 Agent CLI、补全文档。请从下方列出的 Issue 里挑一个，先留言认领再动手。路线图之外的新功能、大范围重构，以及改动接口或数据结构的改动，请先开 Issue 讨论，没有经过讨论的这类 PR 我们可能不会合入。一个 PR 只做一件事，并关联对应的 Issue。',
       steps: [['挑一个 Issue', '在 Issue 下留言说明你打算怎么做，避免和别人重复。'], ['先对齐方案', '涉及接口、数据结构或架构的改动，先在 Issue 里确认思路。'], ['提交 PR', '按贡献指南跑通测试，PR 描述里关联 Issue 编号。']],
       guide: '阅读贡献指南', guideUrl: 'CONTRIBUTING.zh-CN.md',
       level: { easy: '入门', mid: '进阶', core: '核心' },
@@ -67,7 +67,7 @@ const ui = {
     help: 'Help wanted', join: 'Contribute',
     contrib: {
       kick: 'Contribute', h: 'Pick one up.<br>We would love the help.', em: 'We would love the help',
-      sub: 'Each area below has open issues that nobody has claimed yet. Comment on the issue to claim it, agree on the approach with maintainers, then open a pull request.',
+      sub: 'Right now we most need help making what already exists solid: fixing bugs reported in issues, supporting more code hosts and agent CLIs, and filling gaps in the docs. Pick one of the issues listed below and comment to claim it before you start. For new features outside the roadmap, large refactors, or changes to APIs or data structures, open an issue to discuss first; we may not merge such pull requests without that discussion. Keep each pull request to one change and link the issue it addresses.',
       steps: [['Pick an issue', 'Comment with how you plan to tackle it so nobody duplicates the work.'], ['Agree on the approach', 'For API, schema or architecture changes, settle the design in the issue first.'], ['Open a PR', 'Follow the contributing guide, make the tests pass and reference the issue.']],
       guide: 'Read the contributing guide', guideUrl: 'CONTRIBUTING.md',
       level: { easy: 'Good first', mid: 'Intermediate', core: 'Core' },

@@ -22,7 +22,7 @@ const ui = {
     version: '当前版本', released: '2026-11-17 发布', updated: '状态更新于 2026-11-18', notes: '发布记录',
     all: '全部',
     status: {
-      planned: ['计划中', '已确定方向，尚未开始'],
+      planned: ['计划中', '评估中，尚未排期'],
       progress: ['开发中', '下一个版本要做的事情'],
       done: ['已上线', 'v0.4.0 新增的功能'],
     },
@@ -57,7 +57,7 @@ const ui = {
     version: 'Current release', released: 'released 2026-11-17', updated: 'status as of 2026-11-18', notes: 'Release notes',
     all: 'All',
     status: {
-      planned: ['Planned', 'Committed, not started yet'],
+      planned: ['Planned', 'Under evaluation, not yet scheduled'],
       progress: ['In progress', 'Planned for the next release'],
       done: ['Shipped', 'New in v0.4.0'],
     },

@@ -62,13 +62,12 @@ function build() {
   document.title = u.title;
   const md = document.querySelector('meta[name=description]'); if (md) md.content = u.desc;
   const arrow = `<span class="ar">${ic('arrow')}</span>`;
-  const ids = ['why', 'story', 'video', 'deploy'];
 
   document.getElementById('app').innerHTML = `
   <header class="nav"><i class="nprog"></i><div class="nbar"><a class="brand" href="${withLang('../')}">${LOGO(1)}<span>LoopForge</span></a><span class="sp"></span>
-   <div class="links">${u.nav.map((n, i) => `<a href="${withLang('../')}#${ids[i]}" data-sec>${n}</a>`).join('')}<a href="${withLang('../docs/')}">${u.docs}</a></div>
+   ${LF_NAV.links({ L, root: '../', page: 'roadmap' })}
    <div class="lang"><button data-l="zh" class="${L === 'zh' ? 'on' : ''}" aria-label="${Z('中文', 'Chinese')}">${Z('中', 'ZH')}</button><button data-l="en" class="${L === 'en' ? 'on' : ''}">EN</button></div>
-   <a class="ghs" href="${GH}" target="_blank" rel="noopener" aria-label="GitHub"><span class="gsw"><span class="g1">${GHM}</span><span class="g2">${STAR}</span><i class="sk s1">${SPK}</i><i class="sk s2">${SPK}</i></span><span class="gtx">GitHub</span><span class="gct" hidden></span></a><a class="btn-k sm" href="${withLang('../demo/')}">${u.try}${arrow}</a></div></header>
+   <a class="ghs" href="${GH}" target="_blank" rel="noopener" aria-label="GitHub"><span class="gsw"><span class="g1">${GHM}</span><span class="g2">${STAR}</span><i class="sk s1">${SPK}</i><i class="sk s2">${SPK}</i></span><span class="gtx">GitHub</span><span class="gct" hidden></span></a><a class="btn-k sm" href="${withLang('../demo/')}">${u.try}${arrow}</a>${LF_NAV.menu(L)}</div></header>
   <main>
    <section class="rm-hero">
     <div class="rm-hx">
@@ -103,6 +102,7 @@ function build() {
   <div class="rm-dlg" id="rmDlg" hidden><div class="rm-scrim"></div><div class="rm-panel" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="rmDlgT"></div></div>`;
 
   bind();
+  LF_NAV.bind();
 }
 
 /* ---------- motion ---------- */

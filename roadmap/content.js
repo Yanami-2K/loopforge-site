@@ -9,8 +9,7 @@ const ui = {
   zh: {
     title: 'LoopForge · 路线图',
     desc: 'LoopForge 公开路线图：已经上线了什么、正在开发什么、接下来计划做什么。',
-    nav: ['核心价值', '工作方式', '演示视频', '快速部署'],
-    docs: '使用文档', roadmap: '路线图', try: '观看演示',
+    try: '观看演示',
     kick: '公开路线图',
     h: 'LoopForge 正在做什么，<br>下一步去哪里。', em: '下一步去哪里',
     sub: '我们希望 AI 不只帮一个人写代码，而是成为整个研发团队的交付方式：产品、开发和测试围绕同一条需求协作，每一步谁负责、怎么执行、凭什么验收都清清楚楚，每一次交付都让流程、角色和知识变得更好。',
@@ -29,8 +28,7 @@ const ui = {
   en: {
     title: 'LoopForge · Roadmap',
     desc: 'The public LoopForge roadmap: what has shipped, what is in progress and what is planned next.',
-    nav: ['Why LoopForge', 'How it works', 'Video', 'Deploy'],
-    docs: 'Docs', roadmap: 'Roadmap', try: 'Watch demo',
+    try: 'Watch demo',
     kick: 'Public roadmap',
     h: 'What LoopForge is building,<br>and where it goes next.', em: 'where it goes next',
     sub: 'We want AI to be how a whole engineering team delivers, not just how one person writes code: product, engineering and QA work on the same requirement, it is always clear who owns each step, how it runs and what proves it is done, and every delivery leaves the process, roles and knowledge better than before.',

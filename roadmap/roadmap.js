@@ -63,7 +63,6 @@ function build() {
   const md = document.querySelector('meta[name=description]'); if (md) md.content = u.desc;
   const arrow = `<span class="ar">${ic('arrow')}</span>`;
   const ids = ['why', 'story', 'video', 'deploy'];
-  const count = s => D.items.filter(it => it.s === s).length, total = D.items.length;
 
   document.getElementById('app').innerHTML = `
   <header class="nav"><i class="nprog"></i><div class="nbar"><a class="brand" href="${withLang('../')}">${LOGO(1)}<span>LoopForge</span></a><span class="sp"></span>
@@ -84,10 +83,6 @@ function build() {
      </aside>
     </div>
     <p class="sub rv" data-d="220">${u.sub}</p>
-    <div class="rm-sum rv" data-d="320">
-     <div class="rm-bar">${ORDER.slice().reverse().map(s => `<i class="b-${s}" style="--w:${(count(s) / total * 100).toFixed(2)}%"></i>`).join('')}</div>
-     <div class="rm-leg">${ORDER.slice().reverse().map(s => `<span class="rm-li">${GLYPH[s]}<span>${u.status[s][0]}</span><b data-cnt="${count(s)}">0</b></span>`).join('')}<small class="rm-src">${u.source}</small></div>
-    </div>
    </section>
 
    <section class="rm-main">
@@ -212,8 +207,6 @@ function boot(relang) {
   const keep = scrollY;
   build();
   reveal(document.querySelector('.rm-hero'));
-  const sum = document.querySelector('.rm-sum');
-  setTimeout(() => { sum.classList.add('go'); sum.querySelectorAll('[data-cnt]').forEach(e => countTo(e, +e.dataset.cnt, 1100)); }, calm() || relang ? 0 : 660);
 
   if (io) io.disconnect();
   io = new IntersectionObserver(es => es.forEach(e => {

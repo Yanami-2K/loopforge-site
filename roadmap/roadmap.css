@@ -17,20 +17,6 @@ html.rm-lock{overflow:hidden}
 .rm-vm{display:flex;align-items:center;gap:8px;font:400 13px/1.5 var(--sans);color:var(--mute)}
 .rm-ver .btn-t{height:38px;margin-top:4px;align-self:flex-start;font-size:13.5px;padding:0;background-position:0 calc(100% - 8px);background-size:100% 1px}
 
-/* summary bar */
-.rm-sum{margin-top:56px}
-.rm-src{margin-left:auto;align-self:center;font:400 12.5px var(--sans);color:var(--faint)}
-.rm-bar{display:flex;gap:3px;height:6px;border-radius:999px;overflow:hidden;background:var(--deep)}
-.rm-bar i{display:block;height:100%;flex:0 0 0;transition:flex-basis 1.1s var(--e-out)}
-.rm-sum.go .rm-bar i{flex-basis:var(--w)}
-.rm-bar .b-done{background:var(--st-done);transition-delay:.05s}
-.rm-bar .b-progress{background:linear-gradient(90deg,#526CE8,#8A4ED9);background-size:200% 100%;animation:rmflow 3s linear infinite;transition-delay:.2s}
-.rm-bar .b-planned{background:repeating-linear-gradient(-45deg,rgba(20,20,30,.16) 0 4px,rgba(20,20,30,.07) 4px 8px);transition-delay:.35s}
-@keyframes rmflow{to{background-position:-200% 0}}
-.rm-leg{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:16px}
-.rm-li{display:inline-flex;align-items:center;gap:8px;font:400 14px var(--sans);color:var(--mute)}
-.rm-li b{font:500 14px var(--mono);color:var(--ink);font-variant-numeric:tabular-nums;min-width:1.4em}
-
 /* ---------- status glyphs ---------- */
 .gl{width:16px;height:16px;flex:none;overflow:visible}
 .gl-planned circle{fill:none;stroke:var(--st-planned);stroke-width:1.8;stroke-dasharray:3.2 2.6;transform-origin:50% 50%;animation:rmspin 14s linear infinite}
@@ -161,12 +147,11 @@ html.rm-lock{overflow:hidden}
  .rm-ver{flex-direction:row;flex-wrap:wrap;align-items:center;gap:6px 14px;padding:14px 16px}
  .rm-vn{font-size:32px;margin:0}.rm-vk{width:100%}
  .rm-main{padding:64px 18px 0}
- .rm-src{margin-left:0;width:100%}
  .rm-board,.rm-col[data-s=done] .rm-list{grid-template-columns:1fr}
  .rm-board{gap:44px}
  .rm-panel{padding:20px 20px 22px}.rm-panel h2{font-size:24px}
  .rm-cta{margin-top:100px}
 }
-body.still .gl *,body.still .rm-bar i,body.still .rm-pill i{animation:none!important}
+body.still .gl *,body.still .rm-pill i{animation:none!important}
 body.still .rm-card{animation:none!important}
-@media (prefers-reduced-motion:reduce){.gl *,.rm-bar i,.rm-pill i,.rm-card{animation:none!important}}
+@media (prefers-reduced-motion:reduce){.gl *,.rm-pill i,.rm-card{animation:none!important}}

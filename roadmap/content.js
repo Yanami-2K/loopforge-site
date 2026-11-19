@@ -14,7 +14,6 @@ const ui = {
     kick: '公开路线图',
     h: 'LoopForge 正在做什么，<br>下一步去哪里。', em: '下一步去哪里',
     sub: '我们希望 AI 不只帮一个人写代码，而是成为整个研发团队的交付方式：产品、开发和测试围绕同一条需求协作，每一步谁负责、怎么执行、凭什么验收都清清楚楚，每一次交付都让流程、角色和知识变得更好。',
-    source: '状态以 GitHub 上的 PR 与 Issue 为准',
     version: '当前版本', released: '2026-11-17 发布', updated: '状态更新于 2026-11-18', notes: '发布记录',
     status: {
       planned: ['计划中', '评估中，尚未排期'],
@@ -35,7 +34,6 @@ const ui = {
     kick: 'Public roadmap',
     h: 'What LoopForge is building,<br>and where it goes next.', em: 'where it goes next',
     sub: 'We want AI to be how a whole engineering team delivers, not just how one person writes code: product, engineering and QA work on the same requirement, it is always clear who owns each step, how it runs and what proves it is done, and every delivery leaves the process, roles and knowledge better than before.',
-    source: 'Status follows pull requests and issues on GitHub',
     version: 'Current release', released: 'released 2026-11-17', updated: 'status as of 2026-11-18', notes: 'Release notes',
     status: {
       planned: ['Planned', 'Under evaluation, not yet scheduled'],

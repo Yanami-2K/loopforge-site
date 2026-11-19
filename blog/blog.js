@@ -6,6 +6,7 @@ if (L !== 'en') L = 'zh';
 const STILL = qs.has('still'), calm = () => STILL || matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (STILL) body.classList.add('still');
 const ROOT = body.dataset.root || '../', BLOG = ROOT + 'blog/', POST = body.dataset.slug || '';
+if (POST) L = 'zh';
 const GH = 'https://github.com/Tencent/LoopForge', FEED = 'https://loopforge.cn/blog/feed.xml';
 const Z = (a, b) => (L === 'zh' ? a : b);
 const q = () => (L === 'en' ? '?lang=en' : '');
@@ -59,7 +60,7 @@ function navHTML() {
   const u = U[L];
   return `<header class="nav"><i class="nprog"></i><div class="nbar"><a class="brand" href="${ROOT}${q()}">${LOGO(1)}<span>LoopForge</span></a><span class="sp"></span>
    ${LF_NAV.links({ L, root: ROOT, page: 'blog' })}
-   <div class="lang"><button data-l="zh" class="${L === 'zh' ? 'on' : ''}" aria-label="${Z('中文', 'Chinese')}">${Z('中', 'ZH')}</button><button data-l="en" class="${L === 'en' ? 'on' : ''}">EN</button></div>
+   ${POST ? '' : `<div class="lang"><button data-l="zh" class="${L === 'zh' ? 'on' : ''}" aria-label="${Z('中文', 'Chinese')}">${Z('中', 'ZH')}</button><button data-l="en" class="${L === 'en' ? 'on' : ''}">EN</button></div>`}
    <a class="ghs" href="${GH}" target="_blank" rel="noopener" aria-label="GitHub"><span class="gsw"><span class="g1">${GHM}</span><span class="g2">${STAR}</span><i class="sk s1">${SPK}</i><i class="sk s2">${SPK}</i></span><span class="gtx">GitHub</span><span class="gct" hidden></span></a><a class="btn-k sm" href="${ROOT}demo/${q()}">${u.try}${arrow()}</a>${LF_NAV.menu(L)}</div></header>`;
 }
 const footHTML = () => `<footer class="ft"><a class="brand" href="${ROOT}${q()}">${LOGO(1)}<span>LoopForge</span></a><span>${U[L].foot} · <a href="${GH}" target="_blank" rel="noopener">github.com/Tencent/LoopForge</a> · <a href="${FEED}">RSS</a></span></footer>`;

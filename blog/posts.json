@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "zero-to-one-first-sop",
+    "title": "从 0 到 1：部署平台，跑通第一条团队 SOP",
+    "title_en": "From zero to one: deploy LoopForge and run your first team SOP",
+    "summary": "从安装、账号和凭证，到创建项目、配置四个角色、编排失败打回路径，再用一条真实需求完成首次运行与人工验收。",
+    "summary_en": "Install, accounts and credentials, then a project, four roles and a send-back path on failure, finished with a first real run and human sign-off.",
+    "date": "2026-11-19",
+    "author": "LoopForge 团队",
+    "tag": "tutorial",
+    "minutes": 13,
+    "cover": "zero-to-one-first-sop/img/cover-2.35.png"
+  },
+  {
+    "slug": "loopforge-builds-loopforge",
+    "title": "用 LoopForge 迭代 LoopForge：手把手搭一套 24 小时运转的 AI 研发工作台",
+    "title_en": "Building LoopForge with LoopForge: a 24-hour AI engineering workbench, step by step",
+    "summary": "AI 写代码很快，但盯流程、审 PR、解冲突依然耗人。本文以 LoopForge 维护自身仓库的线上环境为样板，分 10 步配齐沙箱、交付 SOP 与 5 个后台定时任务，附全套可照抄的 Prompt。",
+    "summary_en": "AI writes code fast, but watching pipelines, reviewing PRs and resolving conflicts still wears people out. Using LoopForge's own repo as the example, ten steps set up sandboxes, a delivery SOP and five scheduled jobs, with every prompt included.",
+    "date": "2026-11-15",
+    "author": "LoopForge 团队",
+    "tag": "practice",
+    "minutes": 18,
+    "cover": "loopforge-builds-loopforge/img/cover-2.35.png"
+  }
+]

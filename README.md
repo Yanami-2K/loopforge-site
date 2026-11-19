@@ -6,9 +6,15 @@
 
 **产品演示视频:** https://loopforge.cn/demo/ 。`demo/` 是一个独立的视频播放页（`demo/index.html` + `demo.css` + `demo.js`，视频与封面在 `demo/media/`）：80 秒产品演示，自定义播放控件，进度条上标出 10 个章节，右侧章节列表可点击跳转并随播放高亮；默认静音自动播放（遵守 `prefers-reduced-motion`），快捷键 空格/K 播放暂停、←/→ 快退快进 5 秒、M 静音、F 全屏、1–9 跳章节。中英文跟随首页的 `?lang=` / `lf-lang`。页面 CSP 为 `connect-src 'none'`，除静态文件外不发请求。视频按 H.264 1080p、`+faststart` 编码，需由支持 Range 请求的服务器提供才能拖动进度（GitHub Pages 支持；本地可用 `npx http-server`）。
 
+**博客:** https://loopforge.cn/blog/ ，RSS 订阅地址 https://loopforge.cn/blog/feed.xml 。文章元数据在 `blog/posts.json`，列表页由 `blog/blog.js` 渲染；每篇文章是 `blog/<slug>/index.html` 里的静态页面，图片放在同目录的 `img/`，封面为 2.35:1。新增文章：复制一篇现有文章的目录，替换 `<article>` 正文和头部信息，在 `posts.json` 里加一条，再运行 `python3 blog/build_feed.py` 重新生成 `feed.xml`。
+
+顶部导航在 `site/nav.js`，首页、路线图和博客共用：首页的四个分区收进「产品」下拉菜单，后面是使用文档、路线图和博客；窄屏下收成菜单按钮。
+
 原 `playground/` 是手工模拟，现在跳转到 `demo/` 演示视频。LoopForge 以 [MIT 协议](https://github.com/Tencent/LoopForge/blob/main/LICENSE) 开源。
 
 The official website for [Tencent/LoopForge](https://github.com/Tencent/LoopForge), focused on the self-hosted platform. The original Local story is retained at `local.html`.
+
+The blog lives at `blog/` with an RSS feed at `blog/feed.xml`. Post metadata is in `blog/posts.json` (`title_en` / `summary_en` are shown when the page is in English; article bodies are Chinese); each post is a static page at `blog/<slug>/index.html` with its images in `img/`. After adding a post, run `python3 blog/build_feed.py` to regenerate the feed. The top nav (`site/nav.js`) is shared by the home, roadmap and blog pages.
 
 `demo/` is a standalone player for the 80-second product video, with custom controls, chapter markers on the timeline and a clickable chapter list that follows playback. It autoplays muted (respecting `prefers-reduced-motion`) and loads nothing but its static files (CSP `connect-src 'none'`). `playground/` redirects to it. LoopForge is [MIT licensed](https://github.com/Tencent/LoopForge/blob/main/LICENSE).
 

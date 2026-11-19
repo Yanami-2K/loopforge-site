@@ -263,6 +263,8 @@ function render(scrollTop = true) {
           <nav class="d-top-links">
             <a id="dBackHome" href="${homeUrl}"></a>
             <a id="dWatchDemo" href="${demoUrl}"></a>
+            <a id="dRoadmap" href="../roadmap/"></a>
+            <a id="dBlog" href="../blog/"></a>
           </nav>
           <span class="d-sp"></span>
           <div class="d-lang">
@@ -338,6 +340,13 @@ function render(scrollTop = true) {
   const demoEl = document.getElementById('dWatchDemo');
   demoEl.textContent = d.ui.watchDemo;
   demoEl.href = demoUrl;
+  const q = L === 'en' ? '?lang=en' : '';
+  const roadmapEl = document.getElementById('dRoadmap');
+  roadmapEl.textContent = d.ui.roadmap;
+  roadmapEl.href = '../roadmap/' + q;
+  const blogEl = document.getElementById('dBlog');
+  blogEl.textContent = d.ui.blog;
+  blogEl.href = '../blog/' + q;
 
   app.querySelectorAll('.d-lang button').forEach(btn => {
     btn.classList.toggle('on', btn.dataset.lang === L);

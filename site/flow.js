@@ -193,9 +193,9 @@ function build(){const t=T[L];document.documentElement.lang=L==='zh'?'zh-CN':'en
  const GH='https://github.com/Tencent/LoopForge',ids=['why','story','video','deploy'];
  const c=t.hero,w=t.why,arrow=`<span class="ar">${ic('arrow')}</span>`;
  document.getElementById('app').innerHTML=`<header class="nav"><i class="nprog"></i><div class="nbar"><a class="brand" href="#top">${LOGO(1)}<span>LoopForge</span></a><span class="sp"></span>
- <div class="links">${t.nav.map((n,i)=>`<a href="#${ids[i]}" data-nav="${ids[i]}">${n}</a>`).join('')}<a href="${DOCS()}">${Z('使用文档','Docs')}</a></div>
+ ${LF_NAV.links({L,page:'home'})}
  <div class="lang"><button data-l="zh" class="${L==='zh'?'on':''}" aria-label="${Z('中文','Chinese')}">${Z('中','ZH')}</button><button data-l="en" class="${L==='en'?'on':''}">EN</button></div>
- <a class="ghs" href="${GH}" target="_blank" rel="noopener" aria-label="GitHub"><span class="gsw"><span class="g1">${mark('gh')}</span><span class="g2">${STAR}</span><i class="sk s1">${SPK}</i><i class="sk s2">${SPK}</i></span><span class="gtx">GitHub</span><span class="gct" hidden></span></a><a class="btn-k sm" href="${TRY()}">${t.try}${arrow}</a></div></header>
+ <a class="ghs" href="${GH}" target="_blank" rel="noopener" aria-label="GitHub"><span class="gsw"><span class="g1">${mark('gh')}</span><span class="g2">${STAR}</span><i class="sk s1">${SPK}</i><i class="sk s2">${SPK}</i></span><span class="gtx">GitHub</span><span class="gct" hidden></span></a><a class="btn-k sm" href="${TRY()}">${t.try}${arrow}</a>${LF_NAV.menu(L)}</div></header>
  <main>
  <section class="hero u" id="top" data-u="hero"><div class="hx"><div class="hxl"><span class="kick rv" data-at=".02"><i class="led"></i>${Z('MIT 开源 · 可自主部署','MIT licensed · self-hosted')}</span>${head({h:c.h,em:c.em},'h1')}</div>
   <div class="hxr"><p class="sub rv" data-at=".16">${c.sub}</p><div class="cta rv" data-at=".22"><a class="btn-k" href="${TRY()}">${t.try}${arrow}</a><a class="btn-t" href="#deploy">${c.deploy}${arrow}</a></div>
@@ -286,9 +286,10 @@ function fit(){document.querySelectorAll('.fit').forEach(f=>{const z=f.firstElem
 function onScroll(){const y=innerHeight*.45;let on=null;
  document.querySelectorAll('main>section[id]').forEach(s=>{if(s.getBoundingClientRect().top<y)on=s.id});
  document.querySelectorAll('[data-nav]').forEach(a=>a.classList.toggle('on',a.dataset.nav===on));
+ LF_NAV.sync();
  document.querySelector('.nav').classList.toggle('sc',scrollY>8);
  const pg=document.querySelector('.nprog'),mx=document.documentElement.scrollHeight-innerHeight;if(pg)pg.style.transform=`scaleX(${mx>0?(scrollY/mx).toFixed(4):0})`}
-function boot(){const keep=scrollY,prev=U.map(m=>m.done);build();if(prev.length===U.length)U.forEach((m,i)=>{m.done=prev[i];if(m.done)m.p=1});
+function boot(){const keep=scrollY,prev=U.map(m=>m.done);build();LF_NAV.bind();if(prev.length===U.length)U.forEach((m,i)=>{m.done=prev[i];if(m.done)m.p=1});
  U.forEach(m=>run(m,m.p));fit();watch();onScroll();stars();scrollTo(0,keep)}
 window.LF={get units(){return U},play,reset,fit};
 addEventListener('scroll',onScroll,{passive:true});

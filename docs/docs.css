@@ -161,6 +161,14 @@ button,input{font:inherit;color:inherit}
   background:rgba(253,253,252,.65);
 }
 
+/* 页面滚动条：去掉箭头按钮，轨道透明，胶囊形滑块 */
+@supports not selector(::-webkit-scrollbar){html{scrollbar-width:thin;scrollbar-color:rgba(20,20,30,.24) transparent}}
+::-webkit-scrollbar{width:12px;height:12px}
+::-webkit-scrollbar-track,::-webkit-scrollbar-corner{background:transparent}
+::-webkit-scrollbar-button{display:none;width:0;height:0}
+::-webkit-scrollbar-thumb{border:3px solid transparent;border-radius:999px;background:rgba(20,20,30,.2) padding-box}
+::-webkit-scrollbar-thumb:hover{background-color:rgba(20,20,30,.38)}
+
 /* 幽灵滚动条（Ghost Scrollbar）：静止时完全透明隐藏，悬停或聚焦时浮现 4px 细胶囊滑块 */
 @supports selector(::-webkit-scrollbar){
   .d-side,.d-toc{
@@ -696,4 +704,10 @@ details.d-sub.has-on>summary{
   .d-page-card.next{
     grid-column:1;
   }
+}
+@media (max-width:480px){
+  .d-topbar{gap:10px}
+  .d-badge{display:none}
+  .d-gh{padding:0;width:34px;justify-content:center}
+  .d-gh span{display:none}
 }

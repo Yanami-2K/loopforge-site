@@ -2,6 +2,7 @@ window.LF_RM = (function () {
 const GH = 'https://github.com/Tencent/LoopForge';
 const pr = n => ({ label: 'PR #' + n, url: GH + '/pull/' + n });
 const is = n => ({ label: '#' + n, url: GH + '/issues/' + n });
+const dis = n => ({ label: 'Discussion #' + n, url: GH + '/discussions/' + n });
 const doc = (label, path) => ({ label, url: GH + '/blob/v0.4.0/' + path });
 
 const ui = {
@@ -15,14 +16,11 @@ const ui = {
     sub: '我们希望 AI 不只帮一个人写代码，而是成为整个研发团队的交付方式：产品、开发和测试围绕同一条需求协作，每一步谁负责、怎么执行、凭什么验收都清清楚楚，每一次交付都让流程、角色和知识变得更好。',
     source: '状态以 GitHub 上的 PR 与 Issue 为准',
     version: '当前版本', released: '2026-11-17 发布', updated: '状态更新于 2026-11-18', notes: '发布记录',
-    all: '全部',
     status: {
       planned: ['计划中', '评估中，尚未排期'],
-      progress: ['开发中', '下一个版本要做的事情'],
+      progress: ['进行中', '下一个版本要做的事情'],
       done: ['已上线', 'v0.4.0 新增的功能'],
     },
-    progress: { merged: '已合入 · 待发版', review: 'PR 审核中', claimed: '已认领', shipped: 'v0.4.0' },
-    empty: '这个方向暂时没有条目',
     detail: '包含内容', area: '方向', state: '进度', owner: '负责人', links: '关联', close: '关闭',
     help: '欢迎贡献', join: '参与贡献',
     guideUrl: 'CONTRIBUTING.zh-CN.md',
@@ -39,14 +37,11 @@ const ui = {
     sub: 'We want AI to be how a whole engineering team delivers, not just how one person writes code: product, engineering and QA work on the same requirement, it is always clear who owns each step, how it runs and what proves it is done, and every delivery leaves the process, roles and knowledge better than before.',
     source: 'Status follows pull requests and issues on GitHub',
     version: 'Current release', released: 'released 2026-11-17', updated: 'status as of 2026-11-18', notes: 'Release notes',
-    all: 'All',
     status: {
       planned: ['Planned', 'Under evaluation, not yet scheduled'],
       progress: ['In progress', 'Planned for the next release'],
       done: ['Shipped', 'New in v0.4.0'],
     },
-    progress: { merged: 'Merged · next release', review: 'PR in review', claimed: 'Claimed', shipped: 'v0.4.0' },
-    empty: 'Nothing in this area yet',
     detail: 'What it covers', area: 'Area', state: 'Status', owner: 'Owner', links: 'Links', close: 'Close',
     help: 'Help wanted', join: 'Contribute',
     guideUrl: 'CONTRIBUTING.md',
@@ -114,25 +109,25 @@ const items = [
     en: { title: 'SSO and reliable events', desc: 'OIDC single sign-on with unified project permissions and audit; run events that can be traced, retried and replayed.' } },
 
   /* ---------- in progress ---------- */
-  { s: 'progress', a: 'assets', p: 'claimed', people: ['Robert0622', 'newexploreor'], refs: [is(171)],
+  { s: 'progress', a: 'assets', people: ['Robert0622', 'newexploreor'], refs: [is(171), dis(1105)],
     zh: { title: 'RSI Loop', desc: '把真实失败和人工修正沉淀为回归集，对流程改动做对照验证后再发布。' },
     en: { title: 'RSI loop', desc: 'Turn real failures and human fixes into a regression set, and verify process changes before rolling them out.' } },
-  { s: 'progress', a: 'delivery', p: 'review', refs: [pr(1070)],
+  { s: 'progress', a: 'delivery', refs: [pr(1070)],
     zh: { title: '审批绑定交付物', desc: '审批与具体产物绑定，验证节点作为流程的通过关口。' },
     en: { title: 'Approvals bound to artifacts', desc: 'Approvals are tied to concrete artifacts, and verification nodes gate the flow.' } },
-  { s: 'progress', a: 'delivery', p: 'merged', refs: [pr(1046), pr(1042), pr(1026)],
+  { s: 'progress', a: 'delivery', refs: [pr(1046), pr(1042), pr(1026)],
     zh: { title: '个人对话工作区', desc: '每个人拥有独立的对话工作区，支持发送偏好和按模型配置推理强度。' },
     en: { title: 'Personal chat workspaces', desc: 'A private chat workspace for everyone, with send preferences and per-model reasoning effort.' } },
-  { s: 'progress', a: 'access', p: 'review', refs: [pr(1035), pr(1066)],
+  { s: 'progress', a: 'access', refs: [pr(1035), pr(1066)],
     zh: { title: 'CNB 与 Forgejo', desc: '支持 CNB 和 Forgejo 的仓库接入与 PR 交付。' },
     en: { title: 'CNB and Forgejo', desc: 'Repository access and pull request delivery on CNB and Forgejo.' } },
-  { s: 'progress', a: 'access', p: 'claimed', people: ['crispinhu27'], refs: [is(128)],
+  { s: 'progress', a: 'access', people: ['crispinhu27'], refs: [is(128)],
     zh: { title: 'GitLab 与 Gogs', desc: '支持 GitLab，以及通过 Git SSH 接入 Gogs 等仓库。' },
     en: { title: 'GitLab and Gogs', desc: 'GitLab support, plus Gogs and other hosts over Git SSH.' } },
-  { s: 'progress', a: 'access', p: 'merged', refs: [is(1041), pr(1016), pr(1021)],
+  { s: 'progress', a: 'access', refs: [is(1041), pr(1016), pr(1021)],
     zh: { title: 'CLI 订阅登录', desc: '直接使用 Claude Code、Antigravity 等已有订阅登录，自动协调凭据刷新。' },
     en: { title: 'Sign in with CLI subscriptions', desc: 'Use existing Claude Code and Antigravity subscriptions, with coordinated credential refresh.' } },
-  { s: 'progress', a: 'platform', p: 'merged', refs: [pr(1015), pr(1043), pr(1033)],
+  { s: 'progress', a: 'platform', refs: [pr(1015), pr(1043), pr(1033)],
     zh: { title: '统一凭据管理', desc: '按主机配置 Git 凭据，SOP 节点和 MCP 服务器按需申请平台凭据。' },
     en: { title: 'Unified credentials', desc: 'Per-host Git credentials, with SOP nodes and MCP servers requesting platform credentials on demand.' } },
   /* ---------- shipped: new in v0.4.0 (v0.3.8...v0.4.0) ---------- */

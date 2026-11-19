@@ -23,7 +23,6 @@ const IC = {
   loop: 'M17 2l3 3-3 3M4 11V9a4 4 0 0 1 4-4h12M7 22l-3-3 3-3M20 13v2a4 4 0 0 1-4 4H4',
   plug: 'M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4',
   cloud: 'M7 18a4.5 4.5 0 0 1-.5-9 6 6 0 0 1 11.6 1.5A3.8 3.8 0 0 1 17.5 18z',
-  layers: 'M12 3 3 8l9 5 9-5-9-5zM3 13l9 5 9-5',
   plus: 'M12 5v14M5 12h14',
   hand: 'M7 11V6.5a1.5 1.5 0 0 1 3 0V11M10 10V4.5a1.5 1.5 0 0 1 3 0V10M13 10.5V6a1.5 1.5 0 0 1 3 0v5M16 9.5a1.5 1.5 0 0 1 3 0V14a7 7 0 0 1-7 7h-.5a6 6 0 0 1-4.9-2.5L4 15.5a1.6 1.6 0 0 1 2.4-2L7 14',
 };
@@ -40,18 +39,16 @@ const GLYPH = {
 const head = (h, em, tag, cls = '') => `<${tag} class="h ${cls}">${h.split('<br>').map((x, i) =>
   `<span class="hl"><span class="rv up" data-d="${80 + i * 90}">${em && x.includes(em) ? x.replace(em, `<em>${em}</em>`) : x}</span></span>`).join(L === 'en' ? ' ' : '')}</${tag}>`;
 
-const state = { area: 'all' };
-let cards = [];
 
 function cardHTML(it, i) {
   const t = it[L], u = D.ui[L], a = D.areas[it.a];
   const refs = it.refs || [];
   const num = refs.filter(r => r.label.includes('#'));
   const badge = num.length ? `<span class="rm-ref">${esc(num[0].label.replace('PR ', ''))}${num.length > 1 ? `<i>+${num.length - 1}</i>` : ''}</span>` : '';
-  const pill = it.p && it.s !== 'done' ? `<span class="rm-pill ${it.p}"><i></i>${u.progress[it.p]}</span>`
+  const pill = it.s === 'progress' ? `<span class="rm-pill doing"><i></i>${u.status.progress[0]}</span>`
     : it.help ? `<span class="rm-pill help">${ic('hand')}${u.help}</span>` : '';
   const people = it.people ? `<span class="rm-people">${it.people.map(p => `<b title="${esc(p)}">${esc(p[0].toUpperCase())}</b>`).join('')}</span>` : '';
-  return `<button type="button" class="rm-card" data-id="${i}" data-a="${it.a}">
+  return `<button type="button" class="rm-card" data-id="${i}">
     <span class="rm-ct"><span class="rm-tag">${ic(AREA_IC[it.a])}${a[L]}</span>${badge}</span>
     <h3>${esc(t.title)}</h3>
     <p>${esc(t.desc)}</p>
@@ -94,15 +91,10 @@ function build() {
    </section>
 
    <section class="rm-main">
-    <div class="rm-filter rv" data-d="460" role="tablist">
-     <i class="rm-ind"></i>
-     ${[['all', u.all, 'layers'], ...Object.keys(D.areas).map(k => [k, D.areas[k][L], AREA_IC[k]])].map(([k, n, icn]) =>
-       `<button type="button" role="tab" data-area="${k}" class="${state.area === k ? 'act' : ''}" aria-selected="${state.area === k}">${ic(icn)}${n}</button>`).join('')}
-    </div>
     <div class="rm-board">
      ${ORDER.map(s => `<section class="rm-col" data-s="${s}">
        <header class="rm-ch">${GLYPH[s]}<h2>${u.status[s][0]}</h2><b class="rm-n">0</b><small>${u.status[s][1]}</small></header>
-       <div class="rm-list">${D.items.map((it, i) => it.s === s ? cardHTML(it, i) : '').join('')}<div class="rm-empty" hidden>${u.empty}</div></div>
+       <div class="rm-list">${D.items.map((it, i) => it.s === s ? cardHTML(it, i) : '').join('')}</div>
       </section>`).join('')}
     </div>
    </section>
@@ -115,7 +107,6 @@ function build() {
   <footer class="ft"><a class="brand" href="${withLang('../')}">${LOGO(1)}<span>LoopForge</span></a><span>${u.foot} · <a href="${GH}" target="_blank" rel="noopener">github.com/Tencent/LoopForge</a></span></footer>
   <div class="rm-dlg" id="rmDlg" hidden><div class="rm-scrim"></div><div class="rm-panel" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="rmDlgT"></div></div>`;
 
-  cards = [...document.querySelectorAll('.rm-card')];
   bind();
 }
 
@@ -142,48 +133,10 @@ function enter(list, base = 0) {
   });
 }
 
-function placeInd() {
-  const b = document.querySelector('.rm-filter button.act'), ind = document.querySelector('.rm-ind');
-  if (!b || !ind) return;
-  ind.style.width = b.offsetWidth + 'px';
-  ind.style.transform = `translateX(${b.offsetLeft}px)`;
-}
-
 function updateCounts() {
   document.querySelectorAll('.rm-col').forEach(col => {
-    const shown = [...col.querySelectorAll('.rm-card')].filter(c => !c.hidden).length;
-    countTo(col.querySelector('.rm-n'), shown, 500);
-    col.querySelector('.rm-empty').hidden = shown > 0;
+    countTo(col.querySelector('.rm-n'), col.querySelectorAll('.rm-card').length, 500);
   });
-}
-
-let busy = 0;
-function setArea(area) {
-  if (area === state.area) return;
-  state.area = area;
-  document.querySelectorAll('.rm-filter button').forEach(b => { const on = b.dataset.area === area; b.classList.toggle('act', on); b.setAttribute('aria-selected', on); });
-  placeInd();
-  const match = c => area === 'all' || c.dataset.a === area;
-  const leaving = cards.filter(c => !c.hidden && !match(c));
-  const entering = cards.filter(c => c.hidden && match(c));
-  const staying = cards.filter(c => !c.hidden && match(c));
-  if (calm()) { leaving.forEach(c => (c.hidden = true)); entering.forEach(c => (c.hidden = false)); updateCounts(); return; }
-
-  const token = ++busy;
-  leaving.forEach(c => c.classList.add('out'));
-  setTimeout(() => {
-    if (token !== busy) return;
-    const before = new Map(staying.map(c => [c, c.getBoundingClientRect()]));
-    leaving.forEach(c => { c.hidden = true; c.classList.remove('out'); });
-    entering.forEach(c => (c.hidden = false));
-    staying.forEach(c => {
-      const a = before.get(c), b = c.getBoundingClientRect(), dy = a.top - b.top, dx = a.left - b.left;
-      if (!dx && !dy) return;
-      c.animate([{ transform: `translate(${dx}px,${dy}px)` }, { transform: 'none' }], { duration: 560, easing: 'cubic-bezier(.16,1,.3,1)' });
-    });
-    document.querySelectorAll('.rm-col').forEach(col => enter([...col.querySelectorAll('.rm-card')].filter(c => entering.includes(c)), 60));
-    updateCounts();
-  }, leaving.length ? 200 : 0);
 }
 
 /* ---------- detail dialog ---------- */
@@ -194,7 +147,7 @@ function openDlg(it) {
   const refs = (it.refs || []).map(r => `<a class="rm-link" href="${r.url}" target="_blank" rel="noopener">${esc(r.label)}${ic('out')}</a>`).join('');
   const rows = [
     [u.area, `<span class="rm-tag">${ic(AREA_IC[it.a])}${a[L]}</span>`],
-    it.p && it.s !== 'done' ? [u.state, `<span class="rm-pill ${it.p}"><i></i>${u.progress[it.p]}</span>`] : null,
+    it.s === 'progress' ? [u.state, `<span class="rm-pill doing"><i></i>${u.status.progress[0]}</span>`] : null,
     it.people ? [u.owner, `<span class="rm-owners">${it.people.map(p => `<a href="https://github.com/${encodeURIComponent(p)}" target="_blank" rel="noopener"><b>${esc(p[0].toUpperCase())}</b>${esc(p)}</a>`).join('')}</span>`] : null,
     refs ? [u.links, refs] : null,
     it.help ? [u.help, `<a class="rm-link help" href="${D.GH}/blob/main/${u.guideUrl}" target="_blank" rel="noopener">${ic('hand')}${u.join}</a>`] : null,
@@ -229,7 +182,6 @@ function bind() {
     const url = new URL(location); url.searchParams.set('lang', L); history.replaceState(null, '', url);
     boot(true);
   }));
-  app.querySelector('.rm-filter').addEventListener('click', e => { const b = e.target.closest('button'); if (b) setArea(b.dataset.area); });
   app.querySelector('.rm-board').addEventListener('click', e => { const c = e.target.closest('.rm-card'); if (c) openDlg(D.items[+c.dataset.id]); });
   app.querySelector('.rm-board').addEventListener('pointermove', e => {
     const c = e.target.closest('.rm-card'); if (!c) return;
@@ -259,11 +211,7 @@ let io;
 function boot(relang) {
   const keep = scrollY;
   build();
-  const match = c => state.area === 'all' || c.dataset.a === state.area;
-  cards.forEach(c => (c.hidden = !match(c)));
-  placeInd();
   reveal(document.querySelector('.rm-hero'));
-  reveal(document.querySelector('.rm-filter').parentNode);
   const sum = document.querySelector('.rm-sum');
   setTimeout(() => { sum.classList.add('go'); sum.querySelectorAll('[data-cnt]').forEach(e => countTo(e, +e.dataset.cnt, 1100)); }, calm() || relang ? 0 : 660);
 
@@ -274,7 +222,7 @@ function boot(relang) {
     if (e.target.classList.contains('rm-col')) {
       const col = e.target, idx = ORDER.indexOf(col.dataset.s);
       col.classList.add('on');
-      enter([...col.querySelectorAll('.rm-card')].filter(c => !c.hidden), relang ? 0 : 120 + idx * 110);
+      enter([...col.querySelectorAll('.rm-card')], relang ? 0 : 120 + idx * 110);
       updateCounts();
     } else reveal(e.target);
   }), { rootMargin: '0px 0px -12% 0px' });
@@ -285,8 +233,6 @@ function boot(relang) {
 }
 
 addEventListener('scroll', onScroll, { passive: true });
-addEventListener('resize', placeInd);
 addEventListener('keydown', e => { if (e.key === 'Escape') closeDlg(); });
-document.fonts && document.fonts.ready.then(placeInd);
 boot();
 })();

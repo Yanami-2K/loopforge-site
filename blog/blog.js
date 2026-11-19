@@ -1,14 +1,11 @@
 (function () {
 'use strict';
 const qs = new URLSearchParams(location.search), body = document.body;
-let L = qs.get('lang') || localStorage.getItem('lf-lang') || ((navigator.language || '').startsWith('zh') ? 'zh' : 'en');
-if (L !== 'en') L = 'zh';
+const L = 'zh';
 const STILL = qs.has('still'), calm = () => STILL || matchMedia('(prefers-reduced-motion: reduce)').matches;
 if (STILL) body.classList.add('still');
 const ROOT = body.dataset.root || '../', BLOG = ROOT + 'blog/', POST = body.dataset.slug || '';
 const GH = 'https://github.com/Tencent/LoopForge', FEED = 'https://loopforge.cn/blog/feed.xml';
-const Z = (a, b) => (L === 'zh' ? a : b);
-const q = () => (L === 'en' ? '?lang=en' : '');
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 const U = {
@@ -18,18 +15,9 @@ const U = {
     rss: 'RSS 订阅', rssSub: '在阅读器里订阅，新文章发布时第一时间收到。', copy: '复制地址', copyCode: '复制', copied: '已复制', open: '打开订阅源',
     read: '阅读全文', all: '全部文章', min: n => `${n} 分钟阅读`, count: n => `共 ${n} 篇`,
     tags: { tutorial: '上手教程', practice: '团队实践', community: '社区案例' },
-    toc: '本文目录', prev: '上一篇', next: '下一篇', back: '返回博客', top: '回到顶部', zhOnly: '',
+    toc: '本文目录', prev: '上一篇', next: '下一篇', back: '返回博客', top: '回到顶部',
     endH: '想在自己的团队试试？', endSub: '一条命令自托管部署，跟着使用文档跑通第一条 SOP。', docs: '阅读使用文档', star: '在 GitHub 上关注',
     foot: 'LoopForge 由腾讯开源，遵循 MIT 协议', close: '关闭' },
-  en: { title: 'LoopForge · Blog', desc: 'The LoopForge blog: tutorials, team practices and community stories.', try: 'Watch demo', kick: 'Blog',
-    h: 'Field notes on<br>running LoopForge.', em: 'running LoopForge',
-    sub: 'Hands-on tutorials, lessons from rolling it out to teams, and how we use LoopForge to build LoopForge. Stories from community developers are coming next.',
-    rss: 'RSS feed', rssSub: 'Subscribe in your reader to get new posts as they land.', copy: 'Copy URL', copyCode: 'Copy', copied: 'Copied', open: 'Open feed',
-    read: 'Read the post', all: 'All posts', min: n => `${n} min read`, count: n => `${n} posts`,
-    tags: { tutorial: 'Tutorial', practice: 'In practice', community: 'Community' },
-    toc: 'On this page', prev: 'Previous', next: 'Next', back: 'Back to blog', top: 'Back to top', zhOnly: 'Written in Chinese',
-    endH: 'Want to try it with your team?', endSub: 'Self-host it with one command, then follow the docs to run your first SOP.', docs: 'Read the docs', star: 'Follow on GitHub',
-    foot: 'LoopForge is open-sourced by Tencent under the MIT License', close: 'Close' },
 };
 
 /* ---------- marks and icons, same artwork as the home page ---------- */
@@ -50,29 +38,22 @@ const IC = {
 const ic = (k, c = '') => `<svg class="ic ${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${IC[k]}"/></svg>`;
 const arrow = () => `<span class="ar">${ic('arrow')}</span>`;
 const head = (h, em, tag, cls = '') => `<${tag} class="h ${cls}">${h.split('<br>').map((x, i) =>
-  `<span class="hl"><span class="rv up" data-d="${80 + i * 90}">${em && x.includes(em) ? x.replace(em, `<em>${em}</em>`) : x}</span></span>`).join(L === 'en' ? ' ' : '')}</${tag}>`;
-const fmtDate = d => { const [y, m, dd] = d.split('-').map(Number); return L === 'zh' ? `${y} 年 ${m} 月 ${dd} 日` : new Date(Date.UTC(y, m - 1, dd)).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' }); };
+  `<span class="hl"><span class="rv up" data-d="${80 + i * 90}">${em && x.includes(em) ? x.replace(em, `<em>${em}</em>`) : x}</span></span>`).join('')}</${tag}>`;
+const fmtDate = d => { const [y, m, dd] = d.split('-').map(Number); return `${y} 年 ${m} 月 ${dd} 日`; };
 
 /* ---------- shared chrome ---------- */
 function navHTML() {
   const u = U[L];
-  return `<header class="nav"><i class="nprog"></i><div class="nbar"><a class="brand" href="${ROOT}${q()}">${LOGO(1)}<span>LoopForge</span></a><span class="sp"></span>
+  return `<header class="nav"><i class="nprog"></i><div class="nbar"><a class="brand" href="${ROOT}">${LOGO(1)}<span>LoopForge</span></a><span class="sp"></span>
    ${LF_NAV.links({ L, root: ROOT, page: 'blog' })}
-   <div class="lang"><button data-l="zh" class="${L === 'zh' ? 'on' : ''}" aria-label="${Z('中文', 'Chinese')}">${Z('中', 'ZH')}</button><button data-l="en" class="${L === 'en' ? 'on' : ''}">EN</button></div>
-   <a class="ghs" href="${GH}" target="_blank" rel="noopener" aria-label="GitHub"><span class="gsw"><span class="g1">${GHM}</span><span class="g2">${STAR}</span><i class="sk s1">${SPK}</i><i class="sk s2">${SPK}</i></span><span class="gtx">GitHub</span><span class="gct" hidden></span></a><a class="btn-k sm" href="${ROOT}demo/${q()}">${u.try}${arrow()}</a>${LF_NAV.menu(L)}</div></header>`;
+   <a class="ghs" href="${GH}" target="_blank" rel="noopener" aria-label="GitHub"><span class="gsw"><span class="g1">${GHM}</span><span class="g2">${STAR}</span><i class="sk s1">${SPK}</i><i class="sk s2">${SPK}</i></span><span class="gtx">GitHub</span><span class="gct" hidden></span></a><a class="btn-k sm" href="${ROOT}demo/">${u.try}${arrow()}</a>${LF_NAV.menu(L)}</div></header>`;
 }
-const footHTML = () => `<footer class="ft"><a class="brand" href="${ROOT}${q()}">${LOGO(1)}<span>LoopForge</span></a><span>${U[L].foot} · <a href="${GH}" target="_blank" rel="noopener">github.com/Tencent/LoopForge</a> · <a href="${FEED}">RSS</a></span></footer>`;
+const footHTML = () => `<footer class="ft"><a class="brand" href="${ROOT}">${LOGO(1)}<span>LoopForge</span></a><span>${U[L].foot} · <a href="${GH}" target="_blank" rel="noopener">github.com/Tencent/LoopForge</a> · <a href="${FEED}">RSS</a></span></footer>`;
 
 function chrome() {
   const nav = document.getElementById('nav'), foot = document.getElementById('foot');
   nav.innerHTML = navHTML(); foot.innerHTML = footHTML();
   LF_NAV.bind(nav.querySelector('.nav'));
-  nav.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => {
-    if (b.dataset.l === L) return;
-    L = b.dataset.l; localStorage.setItem('lf-lang', L);
-    const url = new URL(location); url.searchParams.set('lang', L); history.replaceState(null, '', url);
-    boot(true);
-  }));
 }
 
 function stars() {
@@ -101,7 +82,7 @@ const meta = p => `<span class="bc-meta"><span class="bc-tag" data-tag="${p.tag}
 
 function renderList() {
   const u = U[L], app = document.getElementById('blog');
-  document.title = u.title; document.documentElement.lang = L === 'zh' ? 'zh-CN' : 'en';
+  document.title = u.title; document.documentElement.lang = 'zh-CN';
   const md = document.querySelector('meta[name=description]'); if (md) md.content = u.desc;
   app.innerHTML = `
   <section class="bl-hero">
@@ -117,7 +98,7 @@ function renderList() {
   </section>
   <section class="bl-main">
    <div class="bl-bar rv" data-d="380"><span>${u.all}</span><b>${u.count(posts.length)}</b></div>
-   <ul class="bl-list">${posts.map((p, i) => `<li><a class="bl-row rv" data-d="${440 + i * 80}" href="${BLOG}${p.slug}/${q()}">
+   <ul class="bl-list">${posts.map((p, i) => `<li><a class="bl-row rv" data-d="${440 + i * 80}" href="${BLOG}${p.slug}/">
      ${cover(p)}
      <span class="bl-tx">${meta(p)}<h2><span>${esc(p.title)}</span></h2><p>${esc(p.summary)}</p><span class="bl-go">${u.read}${arrow()}</span></span>
     </a></li>`).join('')}</ul>
@@ -129,14 +110,13 @@ function renderList() {
 
 /* ---------- post page ---------- */
 let tocLinks = [], heads = [];
-function setupPost(relang) {
+function setupPost() {
   const u = U[L], art = document.querySelector('.bp-body');
   document.querySelectorAll('[data-t]').forEach(e => { e.textContent = u[e.dataset.t]; });
   document.querySelectorAll('[data-tag-label]').forEach(e => { e.textContent = u.tags[e.dataset.tagLabel]; });
   document.querySelectorAll('[data-min]').forEach(e => { e.textContent = u.min(+e.dataset.min); });
   document.querySelectorAll('time[datetime]').forEach(e => { e.textContent = fmtDate(e.getAttribute('datetime')); });
-  document.querySelectorAll('[data-href]').forEach(e => { e.href = ROOT + e.dataset.href + q(); });
-  const zo = document.querySelector('.bp-zh'); if (zo) zo.hidden = L === 'zh';
+  document.querySelectorAll('[data-href]').forEach(e => { e.href = ROOT + e.dataset.href; });
 
   /* table of contents from the article's h2s */
   heads = [...art.querySelectorAll('h2')].filter(h => !h.closest('.finish'));
@@ -147,10 +127,9 @@ function setupPost(relang) {
 
   loadPosts().then(() => {
     const i = posts.findIndex(p => p.slug === POST), prev = posts[i + 1], next = posts[i - 1];
-    const card = (p, k) => p ? `<a class="bp-pn ${k}" href="${BLOG}${p.slug}/${q()}"><small>${k === 'prev' ? ic('back') : ''}${u[k]}${k === 'next' ? ic('arrow') : ''}</small><b>${esc(p.title)}</b></a>` : '<span></span>';
+    const card = (p, k) => p ? `<a class="bp-pn ${k}" href="${BLOG}${p.slug}/"><small>${k === 'prev' ? ic('back') : ''}${u[k]}${k === 'next' ? ic('arrow') : ''}</small><b>${esc(p.title)}</b></a>` : '<span></span>';
     document.querySelector('.bp-nav').innerHTML = card(prev, 'prev') + card(next, 'next');
   });
-  if (relang) { art.querySelectorAll('.bp-cp span,.copy-btn span').forEach(e => { e.textContent = u.copyCode; }); return; }
 
   /* copy buttons on every code block */
   art.querySelectorAll('pre').forEach(pre => {
@@ -191,12 +170,11 @@ function onScroll() {
   spy();
 }
 
-function boot(relang) {
-  const keep = scrollY;
+function boot() {
   chrome();
-  if (document.getElementById('blog')) loadPosts().then(() => { renderList(); if (relang) scrollTo(0, keep); });
+  if (document.getElementById('blog')) loadPosts().then(() => { renderList(); });
   else {
-    setupPost(relang);
+    setupPost();
     reveal(document.querySelector('.bp'));
   }
   onScroll(); stars();

@@ -9,7 +9,7 @@
 <link rel="alternate" type="application/rss+xml" title="LoopForge 博客" href="https://loopforge.cn/blog/feed.xml">
 <link rel="preload" href="../../site/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="../../site/site.css?v=34">
-<link rel="stylesheet" href="../blog.css?v=1">
+<link rel="stylesheet" href="../blog.css?v=2">
 </head><body class="bp-page" data-root="../../" data-slug="zero-to-one-first-sop">
 <div id="nav"></div>
 <main class="bp">
@@ -19,7 +19,7 @@
   <h1 class="rv" data-d="120">从 0 到 1：部署平台，跑通第一条团队 SOP</h1>
   <p class="bp-sum rv" data-d="200">从安装、账号和凭证，到创建项目、配置四个角色、编排失败打回路径，再用一条真实需求完成首次运行与人工验收。</p>
   <div class="bp-chips rv" data-d="230"><span>适合：首次体验与团队试用</span><span>示例：Node.js 审计日志服务</span><span>完成后：得到一条可重复运行的交付流程</span></div>
-  <div class="bp-by rv" data-d="260"><span class="bl-av"><svg viewBox="12 12 88 88" fill="none" aria-hidden="true"><defs><linearGradient id="bpav" x1="19" y1="20" x2="93" y2="93" gradientUnits="userSpaceOnUse"><stop stop-color="#008DCC"/><stop offset=".48" stop-color="#526CE8"/><stop offset="1" stop-color="#8A4ED9"/></linearGradient></defs><path d="M53 72C53 59 63 52.5 73 52.5S93 59 93 72 83 91.5 73 91.5 53 85 53 72V40C53 27 44.5 20.5 36 20.5S19 27 19 40" stroke="url(#bpav)" stroke-width="7.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>LoopForge 团队<span class="bp-zh" hidden data-t="zhOnly"></span></div>
+  <div class="bp-by rv" data-d="260"><span class="bl-av"><svg viewBox="12 12 88 88" fill="none" aria-hidden="true"><defs><linearGradient id="bpav" x1="19" y1="20" x2="93" y2="93" gradientUnits="userSpaceOnUse"><stop stop-color="#008DCC"/><stop offset=".48" stop-color="#526CE8"/><stop offset="1" stop-color="#8A4ED9"/></linearGradient></defs><path d="M53 72C53 59 63 52.5 73 52.5S93 59 93 72 83 91.5 73 91.5 53 85 53 72V40C53 27 44.5 20.5 36 20.5S19 27 19 40" stroke="url(#bpav)" stroke-width="7.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>LoopForge 团队</div>
  </header>
  <figure class="bp-cover rv" data-d="320"><span class="bc-cv"><img src="../zero-to-one-first-sop/img/cover-2.35.png" alt=""></span></figure>
  <div class="bp-grid">
@@ -220,13 +220,13 @@ cd LoopForge
 
   <details open>
     <summary>需求分析师 Prompt</summary>
-    <div class="details-body"><div class="code-block"><div class="code-label"><span>Prompt</span><button class="copy-btn" type="button">复制</button></div><pre><code>你是需求分析师。根据本次需求和代码仓库，明确需求范围、非目标、边界条件、数据权限和可验证的验收标准。
+    <div class="details-body"><div class="code-block prompt"><div class="code-label"><span>Prompt</span><button class="copy-btn" type="button">复制</button></div><pre><code>你是需求分析师。根据本次需求和代码仓库，明确需求范围、非目标、边界条件、数据权限和可验证的验收标准。
 
 信息不足时明确列出假设，不要修改业务代码。最终将分析结果写入 requirement.md。</code></pre></div></div>
   </details>
   <details>
     <summary>后端研发工程师 Prompt</summary>
-    <div class="details-body"><div class="code-block"><div class="code-label"><span>Prompt</span><button class="copy-btn" type="button">复制</button></div><pre><code>你是后端研发工程师。先阅读 {{input}}、{{artifacts}}、{{feedback}} 和当前仓库源码，再按照冻结的验收标准完成最小且完整的代码变更。
+    <div class="details-body"><div class="code-block prompt"><div class="code-label"><span>Prompt</span><button class="copy-btn" type="button">复制</button></div><pre><code>你是后端研发工程师。先阅读 {{input}}、{{artifacts}}、{{feedback}} 和当前仓库源码，再按照冻结的验收标准完成最小且完整的代码变更。
 
 必须复用现有权限判断，不能让查询接口和导出接口出现不同的权限边界。实现后补充或更新自动化测试，并执行 npm test。不要删除已有安全测试，也不要用说明文字代替真实命令结果。
 
@@ -234,13 +234,13 @@ cd LoopForge
   </details>
   <details>
     <summary>代码评审员 Prompt</summary>
-    <div class="details-body"><div class="code-block"><div class="code-label"><span>Prompt</span><button class="copy-btn" type="button">复制</button></div><pre><code>你是独立代码评审员。根据需求验收标准和仓库改动检查正确性、权限边界、异常处理、兼容性与测试覆盖。不要修改业务代码，也不要因为实现角色声称测试通过就直接放行。
+    <div class="details-body"><div class="code-block prompt"><div class="code-label"><span>Prompt</span><button class="copy-btn" type="button">复制</button></div><pre><code>你是独立代码评审员。根据需求验收标准和仓库改动检查正确性、权限边界、异常处理、兼容性与测试覆盖。不要修改业务代码，也不要因为实现角色声称测试通过就直接放行。
 
 存在阻断问题时，写清对应文件、问题影响和修复建议，并判定不通过。将评审结论写入 review-report.md。</code></pre></div></div>
   </details>
   <details>
     <summary>测试工程师 Prompt</summary>
-    <div class="details-body"><div class="code-block"><div class="code-label"><span>Prompt</span><button class="copy-btn" type="button">复制</button></div><pre><code>你是独立测试工程师。根据验收标准和代码改动设计并执行测试，覆盖正常路径、边界条件和越权访问。保留真实命令、返回结果与失败证据，不要只复述开发报告。
+    <div class="details-body"><div class="code-block prompt"><div class="code-label"><span>Prompt</span><button class="copy-btn" type="button">复制</button></div><pre><code>你是独立测试工程师。根据验收标准和代码改动设计并执行测试，覆盖正常路径、边界条件和越权访问。保留真实命令、返回结果与失败证据，不要只复述开发报告。
 
 将测试范围、测试命令、结果、失败证据和最终结论写入 test-report.md。</code></pre></div></div>
   </details>
@@ -302,7 +302,7 @@ cd LoopForge
   <div class="code-block"><div class="code-label"><span>Shell</span><button class="copy-btn" type="button">复制</button></div><pre><code>set -e
 npm test</code></pre></div>
   <p>其他项目应替换为自己的命令，例如 <code>go test ./...</code> 或 <code>pytest</code>。选中「负责人验收」，在「需要确认什么」中填写：</p>
-  <div class="code-block"><div class="code-label"><span>验收说明</span><button class="copy-btn" type="button">复制</button></div><pre><code>检查需求验收标准、代码改动、评审报告和测试结果，确认本次交付是否可以通过。</code></pre></div>
+  <div class="code-block prompt"><div class="code-label"><span>验收说明</span><button class="copy-btn" type="button">复制</button></div><pre><code>检查需求验收标准、代码改动、评审报告和测试结果，确认本次交付是否可以通过。</code></pre></div>
 
   <h3>配置失败打回</h3>
   <p>分别选中「代码评审员」「测试工程师」和「运行测试」，把失败后的处理方式设置为打回「后端研发工程师」。建议首次体验最多返工 <code>3</code> 轮，并选择只修失败项。也可以为「负责人验收」设置同一打回目标。</p>
@@ -319,7 +319,7 @@ npm test</code></pre></div>
   <div class="section-kicker">07 · REQUIREMENT</div>
   <h2>发起第一条真实需求</h2>
   <p>进入左侧「需求列表」，点击「新建需求」，填写一条范围适中的真实需求。例如：</p>
-  <div class="code-block"><div class="code-label"><span>需求描述</span><button class="copy-btn" type="button">复制</button></div><pre><code>为审计日志增加按操作人筛选的能力，并支持将筛选结果导出为 CSV。
+  <div class="code-block prompt"><div class="code-label"><span>需求描述</span><button class="copy-btn" type="button">复制</button></div><pre><code>为审计日志增加按操作人筛选的能力，并支持将筛选结果导出为 CSV。
 
 普通成员只能查询和导出自己项目内的数据。</code></pre></div>
 
@@ -397,5 +397,5 @@ npm test</code></pre></div>
  </section>
 </main>
 <div id="foot"></div>
-<script src="../../site/nav.js?v=1"></script><script src="../blog.js?v=1"></script>
+<script src="../../site/nav.js?v=1"></script><script src="../blog.js?v=2"></script>
 </body></html>

@@ -25,13 +25,7 @@ const ui = {
     empty: '这个方向暂时没有条目',
     detail: '包含内容', area: '方向', state: '进度', owner: '负责人', links: '关联', close: '关闭',
     help: '欢迎贡献', join: '参与贡献',
-    contrib: {
-      kick: '参与贡献', h: '这些方向，<br>欢迎一起来做。', em: '欢迎一起来做',
-      sub: '我们现在最需要的是把已有能力做稳：修复已有 Issue 里的 Bug、适配更多代码托管平台和 Agent CLI、补全文档。请从下方列出的 Issue 里挑一个，先留言认领再动手。路线图之外的新功能、大范围重构，以及改动接口或数据结构的改动，请先开 Issue 讨论，没有经过讨论的这类 PR 我们可能不会合入。一个 PR 只做一件事，并关联对应的 Issue。',
-      steps: [['挑一个 Issue', '在 Issue 下留言说明你打算怎么做，避免和别人重复。'], ['先对齐方案', '涉及接口、数据结构或架构的改动，先在 Issue 里确认思路。'], ['提交 PR', '按贡献指南跑通测试，PR 描述里关联 Issue 编号。']],
-      guide: '阅读贡献指南', guideUrl: 'CONTRIBUTING.zh-CN.md',
-      level: { easy: '入门', mid: '进阶', core: '核心' },
-    },
+    guideUrl: 'CONTRIBUTING.zh-CN.md',
     cta: { h: '想要的能力，<br>还不在路线图上？', em: '还不在路线图上', sub: '在 GitHub 提交功能建议，或者参与一个已立项的 Issue。路线图会随讨论和 PR 进展持续更新。', ask: '提交功能建议', issues: '查看全部 Issue' },
     foot: 'LoopForge 由腾讯开源，遵循 MIT 协议',
   },
@@ -55,13 +49,7 @@ const ui = {
     empty: 'Nothing in this area yet',
     detail: 'What it covers', area: 'Area', state: 'Status', owner: 'Owner', links: 'Links', close: 'Close',
     help: 'Help wanted', join: 'Contribute',
-    contrib: {
-      kick: 'Contribute', h: 'Pick one up.<br>We would love the help.', em: 'We would love the help',
-      sub: 'Right now we most need help making what already exists solid: fixing bugs reported in issues, supporting more code hosts and agent CLIs, and filling gaps in the docs. Pick one of the issues listed below and comment to claim it before you start. For new features outside the roadmap, large refactors, or changes to APIs or data structures, open an issue to discuss first; we may not merge such pull requests without that discussion. Keep each pull request to one change and link the issue it addresses.',
-      steps: [['Pick an issue', 'Comment with how you plan to tackle it so nobody duplicates the work.'], ['Agree on the approach', 'For API, schema or architecture changes, settle the design in the issue first.'], ['Open a PR', 'Follow the contributing guide, make the tests pass and reference the issue.']],
-      guide: 'Read the contributing guide', guideUrl: 'CONTRIBUTING.md',
-      level: { easy: 'Good first', mid: 'Intermediate', core: 'Core' },
-    },
+    guideUrl: 'CONTRIBUTING.md',
     cta: { h: 'Missing something<br>you need?', em: 'you need', sub: 'Open a feature request on GitHub or join an issue that is already on the board. The roadmap is updated as discussions and pull requests move.', ask: 'Request a feature', issues: 'Browse issues' },
     foot: 'LoopForge is open-sourced by Tencent under the MIT License',
   },
@@ -186,33 +174,6 @@ const items = [
     en: { title: 'Security hardening and cleanup', desc: 'Agent CLI config writes are confined to home, clone URLs no longer carry credentials, plus a large round of code cleanup.' } },
 ];
 
-/* open, unassigned issues on Tencent/LoopForge as of 2026-11-18 */
-const contrib = [
-  { lv: 'easy', stack: ['Web'], refs: [is(1075), is(987), is(895), is(221)],
-    zh: { title: '前端体验打磨', desc: '修正样式细节、把服务端的真实错误原因展示给用户、补上复制 trace id 等小功能。' },
-    en: { title: 'Frontend polish', desc: 'Fix layout details, surface the real server-side error to users, and add small touches like copying a trace id.' } },
-  { lv: 'easy', stack: ['Docs'], refs: [is(1022), is(900), is(988), is(1029)],
-    zh: { title: '文档与本地化', desc: '补全 API 索引、云主机上运行执行机的指南和 CLI 安装文档，也欢迎新增语言。' },
-    en: { title: 'Docs and localization', desc: 'Complete the API index, write guides for runners on cloud VMs and CLI installation, or add a new language.' } },
-  { lv: 'mid', stack: ['Go'], refs: [is(1039), is(1038), is(884)],
-    zh: { title: '更多代码托管平台', desc: '支持内网自建 GitLab、Gitea、阿里云云效等非 GitHub 托管，修正非 GitHub 令牌的校验。' },
-    en: { title: 'More code hosts', desc: 'Support self-hosted GitLab, Gitea, Alibaba Cloud Codeup and other non-GitHub hosts, and fix token checks for them.' } },
-  { lv: 'mid', stack: ['Go'], refs: [is(954), is(372), is(421), is(957)],
-    zh: { title: '接入新的 Agent CLI', desc: '把 Hermes、Qoder 等接入为执行器，支持通过 OpenAI、Anthropic 协议接入第三方模型，修好 OpenCode。' },
-    en: { title: 'New agent CLIs', desc: 'Add Hermes, Qoder and others as executors, support third-party models over OpenAI / Anthropic protocols, and fix OpenCode.' } },
-  { lv: 'mid', stack: ['Go', 'Web'], refs: [is(460), is(659), is(1076)],
-    zh: { title: '定时任务与用量统计', desc: '定时任务的成果归因和统计查询、可选思考强度，以及统计页的项目归属与成本计算。' },
-    en: { title: 'Scheduled jobs and usage stats', desc: 'Outcome attribution and stats for scheduled jobs, reasoning effort selection, and project attribution and cost on the usage page.' } },
-  { lv: 'mid', stack: ['Go'], refs: [is(884)],
-    zh: { title: 'IM 通知渠道', desc: '新增飞书等通知渠道，把运行进度和人工待办推送到团队常用的 IM。' },
-    en: { title: 'IM notification channels', desc: 'Add Lark (Feishu) and other channels so run progress and pending approvals reach the chat tools teams use.' } },
-  { lv: 'core', stack: ['Go', 'Docker'], refs: [is(951), is(950), is(949)],
-    zh: { title: '执行池与沙箱资源', desc: '让并发上限和排队状态一致，跨任务复用依赖，沙箱磁盘容量检查与预警。' },
-    en: { title: 'Runner pool and sandbox resources', desc: 'Make concurrency limits match queue state, reuse dependencies across runs, and add sandbox disk checks and alerts.' } },
-  { lv: 'core', stack: ['Go'], refs: [is(215), is(1074), is(898)],
-    zh: { title: '扩展契约与可靠事件', desc: '可版本化的 SSO / 外部适配器契约、平台版本兼容标识，以及运行事件的可靠投递与重放。' },
-    en: { title: 'Extension contracts and reliable events', desc: 'Versioned SSO and adapter contracts, a platform version and compatibility marker, and durable delivery and replay of run events.' } },
-];
 
-return { ui, areas, items, contrib, GH };
+return { ui, areas, items, GH };
 })();

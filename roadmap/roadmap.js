@@ -78,7 +78,6 @@ function build() {
       <span class="rm-vm"><i class="led"></i>${u.released}</span>
       <span class="rm-vm">${u.updated}</span>
       <a class="btn-t" href="${GH}/releases" target="_blank" rel="noopener">${u.notes}${arrow}</a>
-      <a class="btn-t" href="${GH}/blob/main/${u.guideUrl}" target="_blank" rel="noopener">${u.join}${arrow}</a>
      </aside>
     </div>
     <p class="sub rv" data-d="220">${u.sub}</p>

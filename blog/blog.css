@@ -192,6 +192,7 @@ html.bp-lock{overflow:hidden}
 
 /* lightbox */
 .bp-lb{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:32px;background:rgba(16,16,22,.82);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .25s var(--e-out);cursor:zoom-out}
+.bp-chips[hidden],.bp-zh[hidden]{display:none}
 .bp-lb[hidden]{display:none}.bp-lb.open{opacity:1}
 .bp-lb img{max-width:min(1600px,96vw);max-height:90vh;object-fit:contain;border-radius:10px;box-shadow:0 30px 80px rgba(0,0,0,.45);transform:scale(.96);transition:transform .4s var(--e-out);cursor:default}
 .bp-lb.open img{transform:none}

@@ -98,7 +98,7 @@ body.still .brand *{animation:none!important}
 .lang{display:flex;border:1px solid var(--rule);border-radius:999px;padding:2px;margin-right:6px}.lang button{all:unset;cursor:pointer;font:500 12px var(--mono);color:var(--faint);padding:3px 9px;border-radius:999px}.lang button.on{background:var(--raised);color:var(--ink);box-shadow:var(--lift1)}
 .ghs{display:inline-flex;align-items:center;gap:8px;height:34px;padding:0 13px;border-radius:999px;border:1px solid var(--rule);background:var(--raised);font:500 13.5px var(--sans);color:var(--ink);box-shadow:var(--lift1)}
 /* hero */
-.hero{position:relative;padding:150px 48px 0;max-width:1340px;margin:0 auto}
+.hero{position:relative;padding:150px 48px 0;max-width:1340px;margin:0 auto;overflow-x:clip}
 .hero:before{content:"";position:absolute;left:50%;top:-10%;width:1300px;height:900px;margin-left:-650px;background:radial-gradient(closest-side,rgba(82,108,232,.13),transparent 70%),radial-gradient(closest-side at 70% 40%,rgba(138,78,217,.09),transparent 70%);z-index:-1;pointer-events:none}
 .hx{display:grid;grid-template-columns:1fr;gap:40px}
 .hxl .kick{margin-bottom:28px}
@@ -370,6 +370,7 @@ code.typing:after{content:"";display:inline-block;width:7px;height:15px;backgrou
  .nav.mo .nd-t{display:none}.nav.mo .nd-p{position:static;width:auto;margin:0 0 8px;padding:0;visibility:visible;opacity:1;transform:none}
  .nav.mo .nd-in{padding:0;background:none;box-shadow:none}.nav.mo .nd-in:before{display:none}.nav.mo .nd-in a{padding:12px 4px}
  .wrap{padding-left:18px;padding-right:18px}
+ .hx{grid-template-columns:minmax(0,1fr)}.ags{flex-wrap:wrap;gap:12px 16px}.ags small{flex-basis:100%;margin:0}.ags .sep{display:none}
  .hero{padding:110px 18px 0}.hero h1.h{font-size:38px}:lang(en) .hero h1.h{font-size:44px}.hxl .kick{margin-bottom:18px}.hxr .sub{font-size:16px}
  .h .hl{display:inline!important;overflow:visible!important}.h .rv.up{display:inline;opacity:0;transform:none;transition:opacity .6s var(--e-out)}.h .rv.up.on{opacity:1}
  .h,.fin .h,:lang(en) .fin .h{font-size:32px}.stt .h,:lang(en) .stt .h{font-size:26px}

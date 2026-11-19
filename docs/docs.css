@@ -705,3 +705,9 @@ details.d-sub.has-on>summary{
     grid-column:1;
   }
 }
+@media (max-width:480px){
+  .d-topbar{gap:10px}
+  .d-badge{display:none}
+  .d-gh{padding:0;width:34px;justify-content:center}
+  .d-gh span{display:none}
+}

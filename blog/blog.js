@@ -16,9 +16,8 @@ const U = {
     h: '来自一线的<br>LoopForge 实践笔记。', em: 'LoopForge 实践笔记',
     sub: '上手教程、团队落地经验，以及我们用 LoopForge 迭代 LoopForge 的真实记录。之后也会收录来自社区开发者的案例。',
     rss: 'RSS 订阅', rssSub: '在阅读器里订阅，新文章发布时第一时间收到。', copy: '复制地址', copyCode: '复制', copied: '已复制', open: '打开订阅源',
-    latest: '最新', read: '阅读全文', all: '全部文章', min: n => `${n} 分钟阅读`, count: n => `共 ${n} 篇`,
+    read: '阅读全文', all: '全部文章', min: n => `${n} 分钟阅读`, count: n => `共 ${n} 篇`,
     tags: { tutorial: '上手教程', practice: '团队实践', community: '社区案例' },
-    share: '分享你的 LoopForge 实践', shareSub: '用 LoopForge 落地了自己团队的流程？在 GitHub Discussions 发帖分享，我们会挑选优秀案例收录到这里。', shareGo: '去投稿',
     toc: '本文目录', prev: '上一篇', next: '下一篇', back: '返回博客', top: '回到顶部', zhOnly: '',
     endH: '想在自己的团队试试？', endSub: '一条命令自托管部署，跟着使用文档跑通第一条 SOP。', docs: '阅读使用文档', star: '在 GitHub 上关注',
     foot: 'LoopForge 由腾讯开源，遵循 MIT 协议', close: '关闭' },
@@ -26,9 +25,8 @@ const U = {
     h: 'Field notes on<br>running LoopForge.', em: 'running LoopForge',
     sub: 'Hands-on tutorials, lessons from rolling it out to teams, and how we use LoopForge to build LoopForge. Stories from community developers are coming next.',
     rss: 'RSS feed', rssSub: 'Subscribe in your reader to get new posts as they land.', copy: 'Copy URL', copyCode: 'Copy', copied: 'Copied', open: 'Open feed',
-    latest: 'Latest', read: 'Read the post', all: 'All posts', min: n => `${n} min read`, count: n => `${n} posts`,
+    read: 'Read the post', all: 'All posts', min: n => `${n} min read`, count: n => `${n} posts`,
     tags: { tutorial: 'Tutorial', practice: 'In practice', community: 'Community' },
-    share: 'Share how you use LoopForge', shareSub: 'Rolled LoopForge out to your team? Post it in GitHub Discussions and we will feature the best stories here.', shareGo: 'Submit a story',
     toc: 'On this page', prev: 'Previous', next: 'Next', back: 'Back to blog', top: 'Back to top', zhOnly: 'Written in Chinese',
     endH: 'Want to try it with your team?', endSub: 'Self-host it with one command, then follow the docs to run your first SOP.', docs: 'Read the docs', star: 'Follow on GitHub',
     foot: 'LoopForge is open-sourced by Tencent under the MIT License', close: 'Close' },
@@ -46,7 +44,7 @@ const IC = {
   pen: 'M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16zM13.5 6.5l4 4',
   rss: 'M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14M6 18.5a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z',
   copy: 'M9 9h10v10H9zM5 15V5h10', check: 'm5 12 4.5 4.5L19 7', out: 'M7 17 17 7M8 7h9v9',
-  clock: 'M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z', chat: 'M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z',
+  clock: 'M12 7v5l3 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z',
   book: 'M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM4 19V5M8 7h7',
 };
 const ic = (k, c = '') => `<svg class="ic ${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${IC[k]}"/></svg>`;
@@ -105,7 +103,6 @@ function renderList() {
   const u = U[L], app = document.getElementById('blog');
   document.title = u.title; document.documentElement.lang = L === 'zh' ? 'zh-CN' : 'en';
   const md = document.querySelector('meta[name=description]'); if (md) md.content = u.desc;
-  const [first, ...rest] = posts;
   app.innerHTML = `
   <section class="bl-hero">
    <div class="bl-hx">
@@ -120,23 +117,13 @@ function renderList() {
   </section>
   <section class="bl-main">
    <div class="bl-bar rv" data-d="380"><span>${u.all}</span><b>${u.count(posts.length)}</b></div>
-   ${first ? `<a class="bl-feat rv" data-d="440" href="${BLOG}${first.slug}/${q()}">
-     ${cover(first)}
-     <span class="bl-ft"><span class="bl-new">${u.latest}</span>${meta(first)}<h2>${esc(first.title)}</h2><p>${esc(first.summary)}</p>
-      <span class="bl-by"><span class="bl-av">${LOGO()}</span>${esc(first.author)}<span class="sp"></span><span class="bl-go">${u.read}${arrow()}</span></span></span>
-    </a>` : ''}
-   <div class="bl-grid${rest.length < 2 ? ' few' : ''}">
-    ${rest.map((p, i) => `<a class="bl-card rv" data-d="${520 + i * 70}" href="${BLOG}${p.slug}/${q()}">${cover(p)}<span class="bc-in">${meta(p)}<h3>${esc(p.title)}</h3><p>${esc(p.summary)}</p><span class="bl-go">${u.read}${arrow()}</span></span></a>`).join('')}
-    <a class="bl-card bl-share rv" data-d="${520 + rest.length * 70}" href="${GH}/discussions/new?category=show-and-tell" target="_blank" rel="noopener">
-     <span class="bs-i">${ic('chat')}</span><span class="bc-tag" data-tag="community">${u.tags.community}</span><h3>${u.share}</h3><p>${u.shareSub}</p><span class="bl-go">${u.shareGo}${arrow()}</span>
-    </a>
-   </div>
+   <ul class="bl-list">${posts.map((p, i) => `<li><a class="bl-row rv" data-d="${440 + i * 80}" href="${BLOG}${p.slug}/${q()}">
+     ${cover(p)}
+     <span class="bl-tx">${meta(p)}<h2><span>${esc(p.title)}</span></h2><p>${esc(p.summary)}</p><span class="bl-go">${u.read}${arrow()}</span></span>
+    </a></li>`).join('')}</ul>
   </section>`;
   const cp = app.querySelector('[data-copy]');
   cp.addEventListener('click', () => copyText(cp, FEED, u.copy));
-  app.querySelectorAll('.bl-feat,.bl-card').forEach(c => c.addEventListener('pointermove', e => {
-    const r = c.getBoundingClientRect(); c.style.setProperty('--mx', e.clientX - r.left + 'px'); c.style.setProperty('--my', e.clientY - r.top + 'px');
-  }, { passive: true }));
   reveal(app);
 }
 

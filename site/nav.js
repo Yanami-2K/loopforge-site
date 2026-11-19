@@ -9,8 +9,9 @@ const P = {
   video: 'M4 5h16v14H4zM10 9l5 3-5 3z',
   deploy: 'M4 17l6-6-6-6M12 19h8',
   menu: 'M4 7h16M4 12h16M4 17h16',
+  x: 'M6 6l12 12M18 6 6 18',
 };
-const ic = k => `<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${P[k]}"/></svg>`;
+const ic = (k, c = 'ic') => `<svg class="${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${P[k]}"/></svg>`;
 const T = {
   zh: { product: '产品', docs: '使用文档', roadmap: '路线图', blog: '博客', demo: '观看演示', menu: '菜单',
     items: [['why', '核心价值', '个人快了，团队交付为什么还慢'], ['story', '工作方式', '从个人编码工具到团队级云端研发'], ['video', '演示视频', '80 秒看完整条交付流程'], ['deploy', '快速部署', '一条命令在自己的机器上跑起来']] },
@@ -29,7 +30,7 @@ function links({ L, root = '', page = '' }) {
       `<a href="${sec(id)}" data-nav="${id}"><span class="nd-i">${ic(id)}</span><span class="nd-x"><b>${n}</b><small>${d}</small></span></a>`).join('')}</div></div></div>
    ${top('docs', 'docs/')}${top('roadmap', 'roadmap/')}${top('blog', 'blog/')}<a class="nm-only" href="${root}demo/${q}">${t.demo}</a></div>`;
 }
-const menu = L => `<button type="button" class="nmb" aria-label="${(T[L] || T.zh).menu}" aria-expanded="false">${ic('menu')}</button>`;
+const menu = L => `<button type="button" class="nmb" aria-label="${(T[L] || T.zh).menu}" aria-expanded="false">${ic('menu', 'ic m')}${ic('x', 'ic x')}</button>`;
 
 function bind(nav = document.querySelector('.nav')) {
   if (!nav) return;
@@ -41,15 +42,22 @@ function bind(nav = document.querySelector('.nav')) {
     dd.addEventListener('mouseenter', () => hover.matches && set(true));
     dd.addEventListener('mouseleave', () => { if (hover.matches) shut = setTimeout(() => set(false), 160); });
     btn.addEventListener('click', () => set(!dd.classList.contains('open')));
-    dd.addEventListener('click', e => { if (e.target.closest('a')) { set(false); nav.classList.remove('mo'); if (mb) mb.setAttribute('aria-expanded', false); } });
   }
-  if (mb) mb.addEventListener('click', () => { const on = !nav.classList.contains('mo'); nav.classList.toggle('mo', on); mb.setAttribute('aria-expanded', on); if (on) set(true); });
-  closeAll = () => { set(false); nav.classList.remove('mo'); if (mb) mb.setAttribute('aria-expanded', false); };
+  const ls = nav.querySelector('.links');
+  if (ls) ls.addEventListener('click', e => { if (e.target.closest('a')) { set(false); mo(false); } });
+  const mo = on => {
+    nav.classList.toggle('mo', on); document.documentElement.classList.toggle('nmo', on);
+    if (mb) mb.setAttribute('aria-expanded', on);
+  };
+  if (mb) mb.addEventListener('click', () => { const on = !nav.classList.contains('mo'); mo(on); if (on) set(true); });
+  matchMedia('(min-width:761px)').addEventListener('change', e => { if (e.matches) mo(false); });
+  closeAll = () => { set(false); mo(false); };
   outside = e => { if (dd && !dd.contains(e.target) && !nav.classList.contains('mo')) set(false); };
   if (!wired) {
     wired = true;
     document.addEventListener('click', e => outside(e));
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
+    addEventListener('pageshow', e => { if (e.persisted) closeAll(); });
   }
 }
 let wired = false, closeAll = () => {}, outside = () => {};

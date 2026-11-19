@@ -24,7 +24,6 @@ const IC = {
   plug: 'M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4',
   cloud: 'M7 18a4.5 4.5 0 0 1-.5-9 6 6 0 0 1 11.6 1.5A3.8 3.8 0 0 1 17.5 18z',
   plus: 'M12 5v14M5 12h14',
-  hand: 'M7 11V6.5a1.5 1.5 0 0 1 3 0V11M10 10V4.5a1.5 1.5 0 0 1 3 0V10M13 10.5V6a1.5 1.5 0 0 1 3 0v5M16 9.5a1.5 1.5 0 0 1 3 0V14a7 7 0 0 1-7 7h-.5a6 6 0 0 1-4.9-2.5L4 15.5a1.6 1.6 0 0 1 2.4-2L7 14',
 };
 const ic = (k, c = '') => `<svg class="ic ${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${IC[k]}"/></svg>`;
 const AREA_IC = { delivery: 'flow', assets: 'loop', access: 'plug', platform: 'cloud' };
@@ -45,8 +44,7 @@ function cardHTML(it, i) {
   const refs = it.refs || [];
   const num = refs.filter(r => r.label.includes('#'));
   const badge = num.length ? `<span class="rm-ref">${esc(num[0].label.replace('PR ', ''))}${num.length > 1 ? `<i>+${num.length - 1}</i>` : ''}</span>` : '';
-  const pill = it.s === 'progress' ? `<span class="rm-pill doing"><i></i>${u.status.progress[0]}</span>`
-    : it.help ? `<span class="rm-pill help">${ic('hand')}${u.help}</span>` : '';
+  const pill = it.s === 'progress' ? `<span class="rm-pill doing"><i></i>${u.status.progress[0]}</span>` : '';
   const people = it.people ? `<span class="rm-people">${it.people.map(p => `<b title="${esc(p)}">${esc(p[0].toUpperCase())}</b>`).join('')}</span>` : '';
   return `<button type="button" class="rm-card" data-id="${i}">
     <span class="rm-ct"><span class="rm-tag">${ic(AREA_IC[it.a])}${a[L]}</span>${badge}</span>
@@ -144,7 +142,6 @@ function openDlg(it) {
     it.s === 'progress' ? [u.state, `<span class="rm-pill doing"><i></i>${u.status.progress[0]}</span>`] : null,
     it.people ? [u.owner, `<span class="rm-owners">${it.people.map(p => `<a href="https://github.com/${encodeURIComponent(p)}" target="_blank" rel="noopener"><b>${esc(p[0].toUpperCase())}</b>${esc(p)}</a>`).join('')}</span>`] : null,
     refs ? [u.links, refs] : null,
-    it.help ? [u.help, `<a class="rm-link help" href="${D.GH}/blob/main/${u.guideUrl}" target="_blank" rel="noopener">${ic('hand')}${u.join}</a>`] : null,
   ].filter(Boolean);
   panel.dataset.s = it.s;
   panel.innerHTML = `

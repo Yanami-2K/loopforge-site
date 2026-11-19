@@ -122,12 +122,6 @@ html.rm-lock{overflow:hidden}
 .rm-owners a:hover{color:var(--acc)}
 .rm-owners b{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;font:600 10px/1 var(--sans);color:#fff;background:var(--grad)}
 
-.rm-pill.help{color:#B26A00;background:rgba(255,200,61,.18)}
-.rm-pill.help .ic{width:12px;height:12px;transform-origin:70% 90%}
-.rm-card:hover .rm-pill.help .ic{animation:rmwave .9s var(--e-out)}
-@keyframes rmwave{30%{transform:rotate(-14deg)}60%{transform:rotate(10deg)}}
-.rm-link.help{color:#B26A00;background:rgba(255,200,61,.18);font-family:var(--sans)}
-.rm-link.help:hover{color:#8A5200;background:rgba(255,200,61,.3)}
 
 /* ---------- CTA ---------- */
 .rm-cta{margin-top:150px}

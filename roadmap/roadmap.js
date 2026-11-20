@@ -72,10 +72,10 @@ function build() {
      <div><span class="kick rv" data-d="0">${ic('map')}${u.kick}</span>${head(u.h, u.em, 'h1')}</div>
      <aside class="rm-ver rv" data-d="300">
       <span class="rm-vk">${u.version}</span>
-      <b class="rm-vn">v0.4.0</b>
+      <b class="rm-vn">v0.4.1-rc.1</b>
       <span class="rm-vm"><i class="led"></i>${u.released}</span>
       <span class="rm-vm">${u.updated}</span>
-      <a class="btn-t" href="${GH}/releases" target="_blank" rel="noopener">${u.notes}${arrow}</a>
+      <a class="btn-t" href="${GH}/releases/tag/v0.4.1-rc.1" target="_blank" rel="noopener">${u.notes}${arrow}</a>
      </aside>
     </div>
     <p class="sub rv" data-d="220">${u.sub}</p>

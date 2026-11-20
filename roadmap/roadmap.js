@@ -25,7 +25,7 @@ const IC = {
   loop: 'M17 2l3 3-3 3M4 11V9a4 4 0 0 1 4-4h12M7 22l-3-3 3-3M20 13v2a4 4 0 0 1-4 4H4',
   plug: 'M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4',
   cloud: 'M7 18a4.5 4.5 0 0 1-.5-9 6 6 0 0 1 11.6 1.5A3.8 3.8 0 0 1 17.5 18z',
-  plus: 'M12 5v14M5 12h14', down: 'm6 9 6 6 6-6',
+  plus: 'M12 5v14M5 12h14', down: 'm6 9 6 6 6-6', clock: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2',
 };
 const ic = (k, c = '') => `<svg class="ic ${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${IC[k]}"/></svg>`;
 const AREA_IC = { delivery: 'flow', assets: 'loop', access: 'plug', platform: 'cloud' };
@@ -61,7 +61,7 @@ function build() {
   document.documentElement.lang = L === 'zh' ? 'zh-CN' : 'en';
   document.title = u.title;
   const md = document.querySelector('meta[name=description]'); if (md) md.content = u.desc;
-  const arrow = `<span class="ar">${ic('arrow')}</span>`;
+  const arrow = `<span class="ar">${ic('arrow')}</span>`, past = R !== D.releases[0];
 
   document.getElementById('app').innerHTML = `
   <header class="nav"><i class="nprog"></i><div class="nbar"><a class="brand" href="${withLang('../')}">${LOGO(1)}<span>LoopForge</span></a><span class="sp"></span>
@@ -73,9 +73,8 @@ function build() {
     <div class="rm-hx">
      <div><span class="kick rv" data-d="0">${ic('map')}${u.kick}</span>${head(u.h, u.em, 'h1')}</div>
      <aside class="rm-ver rv" data-d="300">
-      <span class="rm-vk">${R === D.releases[0] ? u.version : u.past}</span>
       <div class="rm-vs">
-       <button type="button" class="rm-vb" aria-haspopup="listbox" aria-expanded="false" aria-label="${u.pick}: ${esc(R.v)}"><b class="rm-vn">${esc(R.v)}</b>${ic('down', 'rm-vc')}</button>
+       <button type="button" class="rm-vb" aria-haspopup="listbox" aria-expanded="false" aria-label="${u.pick}: ${esc(R.v)}"><span class="rm-vk">${past ? `${u.past}<i class="rm-hb">${u.hist}</i>` : u.version}${ic('down', 'rm-vc')}</span><b class="rm-vn">${esc(R.v)}</b></button>
        <ul class="rm-vl" role="listbox" aria-label="${u.pick}" hidden>${D.releases.map((r, i) => `<li role="option" tabindex="-1" data-v="${esc(r.v)}" aria-selected="${r === R}"><b>${esc(r.v)}</b><span>${r.date}</span>${i === 0 ? `<i>${u.latest}</i>` : r.pre ? `<i>${u.pre}</i>` : ''}</li>`).join('')}</ul>
       </div>
       <span class="rm-vm"><i class="led"></i>${u.released(R.date, R.pre)}</span>
@@ -87,6 +86,7 @@ function build() {
    </section>
 
    <section class="rm-main">
+    ${past ? `<p class="rm-hist" role="note">${ic('clock')}<span>${u.histNote(R.v, R.updated)}</span><a href="${latestHref()}" data-v="${esc(D.releases[0].v)}">${u.toLatest(D.releases[0].v)}${arrow}</a></p>` : ''}
     <div class="rm-board">
      ${ORDER.map(s => `<section class="rm-col" data-s="${s}">
        <header class="rm-ch">${GLYPH[s]}<h2>${u.status[s][0]}</h2><b class="rm-n">0</b><small>${subtitle(s)}</small></header>
@@ -192,6 +192,10 @@ function pickVer(v) {
   boot(true);
   document.querySelector('.rm-vb').focus({ preventScroll: true });
 }
+function latestHref() {
+  const url = new URL(location); url.searchParams.delete('v');
+  return url.pathname + url.search;
+}
 document.addEventListener('pointerdown', e => { if (!e.target.closest('.rm-vs')) closeVer(); });
 
 /* ---------- wiring ---------- */
@@ -209,6 +213,8 @@ function bind() {
   vb.addEventListener('click', () => (vl.hidden ? openVer() : closeVer()));
   vb.addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); openVer(); } });
   vl.addEventListener('click', e => { const o = e.target.closest('[role=option]'); if (o) pickVer(o.dataset.v); });
+  const back = app.querySelector('.rm-hist a');
+  if (back) back.addEventListener('click', e => { e.preventDefault(); pickVer(back.dataset.v); });
   vl.addEventListener('keydown', e => {
     const all = opts(), i = all.indexOf(document.activeElement);
     if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); all[(i + (e.key === 'ArrowDown' ? 1 : all.length - 1)) % all.length].focus(); }

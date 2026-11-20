@@ -13,7 +13,8 @@ const ui = {
     kick: '公开路线图',
     h: 'LoopForge 正在做什么，<br>下一步去哪里。', em: '下一步去哪里',
     sub: '我们希望 AI 不只帮一个人写代码，而是成为整个研发团队的交付方式：产品、开发和测试围绕同一条需求协作，每一步谁负责、怎么执行、凭什么验收都清清楚楚，每一次交付都让流程、角色和知识变得更好。',
-    version: '当前版本', past: '历史版本', pick: '切换版本', latest: '最新', pre: '预发布',
+    version: '当前版本', past: '历史版本', hist: '历史数据', pick: '切换版本', latest: '最新', pre: '预发布',
+    histNote: (v, d) => `这是 ${v} 发布时的历史数据，状态截至 ${d}，不代表当前进展。`, toLatest: v => '查看最新版本 ' + v,
     released: (d, pre) => d + (pre ? ' 预发布' : ' 发布'), updated: d => '状态更新于 ' + d, notes: '发布记录',
     status: {
       planned: ['计划中', '评估中，尚未排期'],
@@ -31,7 +32,8 @@ const ui = {
     kick: 'Public roadmap',
     h: 'What LoopForge is building,<br>and where it goes next.', em: 'where it goes next',
     sub: 'We want AI to be how a whole engineering team delivers, not just how one person writes code: product, engineering and QA work on the same requirement, it is always clear who owns each step, how it runs and what proves it is done, and every delivery leaves the process, roles and knowledge better than before.',
-    version: 'Current release', past: 'Past release', pick: 'Switch release', latest: 'Latest', pre: 'Pre-release',
+    version: 'Current release', past: 'Past release', hist: 'Historical', pick: 'Switch release', latest: 'Latest', pre: 'Pre-release',
+    histNote: (v, d) => `Historical data: the board as of ${v}, with status as of ${d}. It does not reflect current progress.`, toLatest: v => 'See the latest, ' + v,
     released: (d, pre) => (pre ? 'pre-release ' : 'released ') + d, updated: d => 'status as of ' + d, notes: 'Release notes',
     status: {
       planned: ['Planned', 'Under evaluation, not yet scheduled'],

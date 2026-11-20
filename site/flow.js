@@ -189,7 +189,7 @@ function setCount(e,k){const o=e.dataset.cnt;if(k>=1){if(e.textContent!==o)e.tex
 /* ---------- build ---------- */
 let U=[];
 function build(){const t=T[L];document.documentElement.lang=L==='zh'?'zh-CN':'en';
- const MD=document.querySelector('meta[name=description]');window.LF_ZH_META=window.LF_ZH_META||[document.title,MD?MD.content:''];document.title=Z(LF_ZH_META[0],'LoopForge · Open-source, self-improving cloud platform for AI development');if(MD)MD.content=Z(LF_ZH_META[1],'LoopForge is an open-source, self-hosted cloud platform for AI development: 24/7 cloud workspaces, a shared conversation with one Main Bot, SOPs with hard gates, scheduled and issue automation, and a review after every run that improves the process.');
+ const MD=document.querySelector('meta[name=description]');window.LF_ZH_META=window.LF_ZH_META||[document.title,MD?MD.content:''];document.title=Z(LF_ZH_META[0],'LoopForge · Open-source, self-evolving cloud AI delivery platform');if(MD)MD.content=Z(LF_ZH_META[1],'LoopForge is an open-source, self-hosted, self-evolving cloud AI delivery platform: 24/7 cloud workspaces, a shared conversation with one Main Bot, SOPs with hard gates, scheduled and issue automation, and a review after every run that improves the process.');
  const GH='https://github.com/Tencent/LoopForge',ids=['why','story','video','deploy'];
  const c=t.hero,w=t.why,arrow=`<span class="ar">${ic('arrow')}</span>`;
  document.getElementById('app').innerHTML=`<header class="nav"><i class="nprog"></i><div class="nbar"><a class="brand" href="#top">${LOGO(1)}<span>LoopForge</span></a><span class="sp"></span>

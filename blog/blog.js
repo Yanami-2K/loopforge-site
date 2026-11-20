@@ -95,7 +95,7 @@ function copyText(btn, text, label) {
 }
 
 let posts = [];
-const loadPosts = () => (posts.length ? Promise.resolve(posts) : fetch(BLOG + 'posts.json?v=2').then(r => r.json()).then(p => (posts = p.sort((a, b) => b.date.localeCompare(a.date)))));
+const loadPosts = () => (posts.length ? Promise.resolve(posts) : fetch(BLOG + 'posts.json?v=3').then(r => r.json()).then(p => (posts = p.sort((a, b) => b.date.localeCompare(a.date)))));
 
 /* ---------- list page ---------- */
 const cover = p => `<span class="bc-cv"><img src="${BLOG}${p.cover}" alt="" loading="lazy"></span>`;

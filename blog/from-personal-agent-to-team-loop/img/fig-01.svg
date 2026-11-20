@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 800" font-family="'Source Han Sans SC','Noto Sans SC','PingFang SC','Microsoft YaHei',sans-serif">
+  <defs>
+    <marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#9CA3AF"/></marker>
+    <marker id="ap" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#7B61FF"/></marker>
+    <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#EF4444"/></marker>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#7B61FF" stop-opacity=".16"/><stop offset="1" stop-color="#7B61FF" stop-opacity="0"/></radialGradient>
+    <g id="person"><circle cx="0" cy="-22" r="14" fill="none" stroke-width="3"/><path d="M-24 22 Q-24 -2 0 -2 Q24 -2 24 22" fill="none" stroke-width="3" stroke-linecap="round"/></g>
+    <g id="bot"><rect x="-13" y="-10" width="26" height="20" rx="6" fill="#fff" stroke-width="2.2"/><circle cx="-5" cy="0" r="2.4"/><circle cx="5" cy="0" r="2.4"/><line x1="0" y1="-10" x2="0" y2="-16" stroke-width="2.2"/><circle cx="0" cy="-18" r="2.4"/></g>
+  </defs>
+  <rect width="1600" height="800" fill="#FAFAFC"/>
+  <line x1="800" y1="70" x2="800" y2="690" stroke="#E5E7EB" stroke-width="2"/>
+
+  <!-- LEFT -->
+  <text x="400" y="88" text-anchor="middle" font-size="36" font-weight="700" fill="#6B7280">各自为战</text>
+  <text x="400" y="124" text-anchor="middle" font-size="18" fill="#9CA3AF">每个人都很能干，交接全靠人</text>
+  <g fill="#F3F4F6" stroke="#E5E7EB" stroke-width="2">
+    <rect x="70" y="200" width="130" height="150" rx="18"/><rect x="250" y="440" width="130" height="150" rx="18"/>
+    <rect x="420" y="200" width="130" height="150" rx="18"/><rect x="600" y="440" width="130" height="150" rx="18"/>
+  </g>
+  <g stroke="#9CA3AF" fill="#9CA3AF">
+    <use href="#person" x="135" y="270"/><use href="#person" x="315" y="510"/><use href="#person" x="485" y="270"/><use href="#person" x="665" y="510"/>
+    <use href="#bot" x="182" y="222"/><use href="#bot" x="362" y="462"/><use href="#bot" x="532" y="222"/><use href="#bot" x="712" y="462"/>
+  </g>
+  <g font-size="20" font-weight="600" fill="#6B7280" text-anchor="middle">
+    <text x="135" y="330">产品</text><text x="315" y="570">设计</text><text x="485" y="330">开发</text><text x="665" y="570">测试</text>
+  </g>
+  <g stroke="#9CA3AF" stroke-width="2.5" stroke-dasharray="8 7" fill="none">
+    <path d="M190 355 Q230 420 262 445" marker-end="url(#ag)"/>
+    <path d="M250 470 Q170 430 150 360" marker-end="url(#ag)"/>
+    <path d="M375 440 Q410 380 430 355" marker-end="url(#ag)"/>
+    <path d="M545 355 Q585 410 615 445" marker-end="url(#ag)"/>
+    <path d="M605 470 Q470 400 205 290" marker-end="url(#ag)"/>
+    <path d="M600 560 Q490 620 385 560" marker-end="url(#ag)"/>
+  </g>
+  <g font-size="17" fill="#6B7280" font-weight="600">
+    <rect x="160" y="388" width="98" height="30" rx="15" fill="#fff" stroke="#E5E7EB"/><text x="209" y="409" text-anchor="middle">重复解释</text>
+    <rect x="352" y="370" width="112" height="30" rx="15" fill="#fff" stroke="#E5E7EB"/><text x="408" y="391" text-anchor="middle">上下文丢失</text>
+    <rect x="530" y="388" width="98" height="30" rx="15" fill="#fff" stroke="#E5E7EB"/><text x="579" y="409" text-anchor="middle">人工转述</text>
+    <rect x="440" y="614" width="98" height="30" rx="15" fill="#fff" stroke="#E5E7EB"/><text x="489" y="635" text-anchor="middle">标准不一</text>
+  </g>
+
+  <!-- RIGHT -->
+  <text x="1200" y="88" text-anchor="middle" font-size="36" font-weight="700" fill="#4C3BCF">团队 Loop</text>
+  <text x="1200" y="124" text-anchor="middle" font-size="18" fill="#7B61FF">共享现场，按 SOP 推进，不通过就打回</text>
+  <circle cx="1200" cy="410" r="250" fill="url(#glow)"/>
+  <circle cx="1200" cy="410" r="190" fill="none" stroke="#7B61FF" stroke-width="3" opacity=".35"/>
+  <!-- loop arrows clockwise between roles -->
+  <g fill="none" stroke-width="4" stroke-linecap="round">
+    <path d="M1265 232 A190 190 0 0 1 1372 340" stroke="#7B61FF" marker-end="url(#ap)"/>
+    <path d="M1372 485 A190 190 0 0 1 1265 588" stroke="#7B61FF" marker-end="url(#ap)"/>
+    <path d="M1135 588 A190 190 0 0 1 1028 485" stroke="#EF4444" marker-end="url(#ar)" stroke-dasharray="2 0"/>
+    <path d="M1028 340 A190 190 0 0 1 1135 232" stroke="#7B61FF" marker-end="url(#ap)"/>
+  </g>
+  <g>
+    <rect x="890" y="470" width="150" height="34" rx="17" fill="#FEF2F2" stroke="#FCA5A5"/>
+    <text x="965" y="493" text-anchor="middle" font-size="15" font-weight="600" fill="#DC2626">不通过 · 带着问题打回</text>
+  </g>
+  <!-- center -->
+  <circle cx="1200" cy="410" r="112" fill="#fff" stroke="#7B61FF" stroke-width="4"/>
+  <text x="1200" y="402" text-anchor="middle" font-size="32" font-weight="800" fill="#4C3BCF">LoopForge</text>
+  <text x="1200" y="436" text-anchor="middle" font-size="16" fill="#7B61FF">云端 7×24 小时</text>
+  <g font-size="15" font-weight="600" fill="#4C3BCF" text-anchor="middle">
+    <rect x="1136" y="338" width="128" height="28" rx="14" fill="#EEEBFF"/><text x="1200" y="358">共享任务现场</text>
+    <rect x="1158" y="460" width="84" height="30" rx="15" fill="#EEEBFF"/><text x="1200" y="481">SOP</text>
+    <rect x="1140" y="494" width="120" height="30" rx="15" fill="#EEEBFF" opacity="0"/>
+  </g>
+  <rect x="1270" y="384" width="0" height="0"/>
+  <!-- roles -->
+  <g>
+    <g transform="translate(1200 190)"><circle r="52" fill="#fff" stroke="#7B61FF" stroke-width="3"/><g stroke="#7B61FF" fill="#7B61FF"><use href="#person" y="4" transform="scale(.8)"/></g></g>
+    <g transform="translate(1420 410)"><circle r="52" fill="#fff" stroke="#7B61FF" stroke-width="3"/><g stroke="#7B61FF" fill="#7B61FF"><use href="#person" y="4" transform="scale(.8)"/></g></g>
+    <g transform="translate(1200 630)"><circle r="52" fill="#fff" stroke="#7B61FF" stroke-width="3"/><g stroke="#7B61FF" fill="#7B61FF"><use href="#person" y="4" transform="scale(.8)"/></g></g>
+    <g transform="translate(980 410)"><circle r="52" fill="#fff" stroke="#7B61FF" stroke-width="3"/><g stroke="#7B61FF" fill="#7B61FF"><use href="#person" y="4" transform="scale(.8)"/></g></g>
+  </g>
+  <g font-size="20" font-weight="700" fill="#4C3BCF" text-anchor="middle">
+    <text x="1200" y="124" opacity="0"></text>
+    <text x="1290" y="180" text-anchor="start">产品</text>
+    <text x="1488" y="417" text-anchor="start">设计</text>
+    <text x="1290" y="652" text-anchor="start">开发</text>
+    <text x="912" y="417" text-anchor="end">测试 / 评审</text>
+  </g>
+  <g font-size="14" fill="#526CE8" text-anchor="middle" font-weight="600">
+    <text x="1350" y="262">验收标准</text><text x="1355" y="572">技术方案</text><text x="1060" y="262">评审结论</text>
+  </g>
+
+  <!-- caption -->
+  <text x="800" y="752" text-anchor="middle" font-size="22" fill="#374151">单个 Agent 提升的是个人效率，团队 Loop 解决的是跨角色交付。</text>
+</svg>

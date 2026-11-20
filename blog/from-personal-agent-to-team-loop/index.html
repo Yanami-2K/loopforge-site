@@ -1,0 +1,174 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>从个人 Agent 到团队 Loop：LoopForge 如何让团队工作流在云端持续运行 · LoopForge 博客</title>
+<meta name="description" content="把个人经验沉淀为团队角色和可复用 SOP，让共享上下文、过程留痕、持续改进与云端运行形成完整交付闭环。">
+<meta property="og:title" content="从个人 Agent 到团队 Loop：LoopForge 如何让团队工作流在云端持续运行"><meta property="og:description" content="把个人经验沉淀为团队角色和可复用 SOP，让共享上下文、过程留痕、持续改进与云端运行形成完整交付闭环。">
+<meta property="og:type" content="article"><meta property="og:url" content="https://loopforge.cn/blog/from-personal-agent-to-team-loop/">
+<meta property="og:image" content="https://loopforge.cn/blog/from-personal-agent-to-team-loop/img/cover-2.35.png"><meta property="article:published_time" content="2026-11-20">
+<link rel="canonical" href="https://loopforge.cn/blog/from-personal-agent-to-team-loop/">
+<meta name="referrer" content="no-referrer"><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="alternate" type="application/rss+xml" title="LoopForge 博客" href="https://loopforge.cn/blog/feed.xml">
+<link rel="preload" href="../../site/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../site/site.css?v=38">
+<link rel="stylesheet" href="../blog.css?v=6">
+<link rel="stylesheet" href="original.css?v=1">
+</head><body class="bp-page" data-root="../../" data-slug="from-personal-agent-to-team-loop">
+<div id="nav"></div>
+<main class="bp">
+ <header class="bp-head">
+  <a class="bp-back rv" data-d="0" data-href="blog/" href="../"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span data-t="back">返回博客</span></a>
+  <div class="bc-meta rv" data-d="60"><span class="bc-tag" data-tag="practice" data-tag-label="practice">团队实践</span><time datetime="2026-11-20">2026 年 11 月 20 日</time><span class="bc-dot"></span><span data-min="9">9 分钟阅读</span></div>
+  <h1 class="rv" data-d="120">从个人 Agent 到团队 Loop：LoopForge 如何让团队工作流在云端持续运行</h1>
+  <p class="bp-sum rv" data-d="200">把个人经验沉淀为团队角色和可复用 SOP，让共享上下文、过程留痕、持续改进与云端运行形成完整交付闭环。</p>
+  <div class="bp-by rv" data-d="260"><span class="bl-av"><svg viewBox="12 12 88 88" fill="none" aria-hidden="true"><defs><linearGradient id="bpav" x1="19" y1="20" x2="93" y2="93" gradientUnits="userSpaceOnUse"><stop stop-color="#008DCC"/><stop offset=".48" stop-color="#526CE8"/><stop offset="1" stop-color="#8A4ED9"/></linearGradient></defs><path d="M53 72C53 59 63 52.5 73 52.5S93 59 93 72 83 91.5 73 91.5 53 85 53 72V40C53 27 44.5 20.5 36 20.5S19 27 19 40" stroke="url(#bpav)" stroke-width="7.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>LoopForge 团队<span class="bp-zh" hidden data-t="zhOnly"></span></div>
+ </header>
+ <figure class="bp-cover rv" data-d="320"><span class="bc-cv"><img src="../from-personal-agent-to-team-loop/img/cover-2.35.png" alt="从个人 Agent 到团队 Loop：LoopForge 如何让团队工作流在云端持续运行"></span></figure>
+ <div class="bp-grid">
+  <article class="bp-body">
+<div class="article-team-loop">
+<div class="content">
+<p id="intro">一个团队里，产品能把模糊的想法理成清晰的需求，研发写得一手好代码，测试总能找出别人漏掉的缺陷。这一两年，大家还把各自的经验调教进了自己的 Agent：提示词、MCP、Skills 越攒越多，Agent 也越用越顺手。</p>
+<p>按理说团队应该快了不少。可很多团队发现：<strong>个人确实变快了，整体交付却没快多少。</strong></p>
+<p>时间去了哪里？代码写得是快了，可从“写完”到“能交”，还是得一遍遍对需求、盯评审、催修改。一个需求好不容易走完，下一个同类需求进来，这些环节又得从头来一遍。</p>
+<figure>
+  <img src="img/fig-01.svg" alt="个人 Agent 与团队 Loop 对比图" loading="lazy">
+  <figcaption>个人 Agent 与团队 Loop</figcaption>
+</figure>
+<p>如果团队已经知道一类任务该怎么做，为什么不把这套做法沉淀下来，让系统以后每次都照着做？</p>
+<p><strong>LoopForge 就是为此而做的</strong>。它是腾讯开源的团队交付工作台：把个人经验配置成团队角色，再把角色之间的协作方式编排成 SOP，让一套有效的交付方法可以被反复执行。</p>
+<p>下面以一个由产品、研发、测试和负责人组成的业务团队为例，看看如何把日常交付流程搭成一个云端 Loop。</p>
+
+<h2 id="s1"><span class="n">PART 01</span>从“个人 Agent”到“团队的角色”</h2>
+<p>在 LoopForge 里，每个人都可以把自己的经验变成团队里的不同角色：产品可以有需求分析师和验收专员，开发可以分出前端、后端研发工程师，测试和负责人各配一个测试工程师、代码评审员。</p>
+<p>每个角色都是一套完整的工作定义，由四部分组成：</p>
+<ul>
+<li><strong>身份</strong>：它叫什么、负责什么，用哪个执行器（CodeBuddy、Codex 或 Claude Code）和模型来干活；</li>
+<li><strong>任务</strong>：它的提示词，写清做事的顺序、要读哪些上游内容、哪些事不能碰；</li>
+<li><strong>产物与门禁</strong>：做完必须交出哪些文件，交出去之前要通过哪些检查；</li>
+<li><strong>技能与工具</strong>：要遵守的团队规范，以及能调用的 Skills 和 MCP 工具。</li>
+</ul>
+<p>以后端研发工程师为例，可以按如下方式配置：</p>
+<figure class="figrow">
+  <img src="img/fig-02.png" alt="角色身份配置" loading="lazy"><img src="img/fig-03.png" alt="角色任务配置" loading="lazy">
+  <figcaption>角色的身份与任务</figcaption>
+</figure>
+<figure class="figrow">
+  <img src="img/fig-04.png" alt="角色产物与门禁配置" loading="lazy"><img src="img/fig-05.png" alt="角色技能与工具配置" loading="lazy">
+  <figcaption>角色的产物、门禁与工具</figcaption>
+</figure>
+<p>配好的角色可以随时调整，每改一次都会留一个版本，改坏了也能随时恢复。</p>
+
+<h2 id="s2"><span class="n">PART 02</span>共享上下文：一个会话接住整个团队</h2>
+<p>角色有了，但如果每个人还在自己的窗口里用它，上下文照样是散的。</p>
+<p>所以在 LoopForge 里，大家不再各开各的窗口：产品、研发、测试和负责人加入同一个项目，找的是同一个 Main Bot。</p>
+<p>Main Bot 就是对话框里直接跟你聊的那个 AI，可以把它当成团队里的总助理：</p>
+<ul>
+<li><strong>顺手的活，它自己干</strong>。改一处小 Bug、写个方案草稿、查查某个接口是谁在调用，跟它说一句就行。</li>
+<li><strong>专业的活，它找人干</strong>。碰到要改接口、补测试这类活，它会把团队配好的角色叫过来，比如让后端研发工程师动手改，让测试工程师把用例补齐，最后把结果汇总给你。</li>
+</ul>
+<p>这样一来，谁都能找 Main Bot 聊，谁都能叫角色来帮忙。大家共用同一份上下文：前面谁说过什么、哪个角色交了什么、工作区里改了哪些代码，后来的人一进会话就能看到，接着往下聊就行。</p>
+<figure>
+  <img src="img/fig-06.png" alt="Main Bot 调度角色协作" loading="lazy">
+  <figcaption>Main Bot 调度角色协作</figcaption>
+</figure>
+
+<h2 id="s3"><span class="n">PART 03</span>把团队的工作流程沉淀成 SOP</h2>
+<p>大家能在一个现场里干活了，接下来要解决的是：怎么让每次都干得一样好。</p>
+<p>每个团队都有自己的工作流程：需求要先写清验收标准，代码合入前要有人评审，上线前要跑一遍测试。可这些流程大多停留在口头约定里，做不做得到全看人：一赶工，测试就省了；换个人评审，标准就松了。</p>
+<p>LoopForge 能把这套流程固定成一条 SOP，以后每次都照着跑。团队的做法，就从“大家都知道怎么做”，变成了“系统每次都这么做”。</p>
+<p>写 SOP 并不复杂，就是把 PART 01 配好的角色按顺序排起来。每个角色负责一个环节，做完交出明确的产物，下一个角色拿到就能接着做。比如团队的后端需求，可以这样走：</p>
+<div class="steps">
+  <div class="steps-row"><span class="st"><b class="tag t-r">需求分析师</b><i class="arw">→</i></span><span class="st"><b class="tag t-r">后端研发工程师</b><i class="arw">→</i></span><span class="st"><b class="tag t-r">代码评审员</b><i class="arw">→</i></span><span class="st"><b class="tag t-r">测试工程师</b><i class="arw">→</i></span><span class="st"><b class="tag t-s">运行测试</b><i class="arw">→</i></span><span class="st"><b class="tag t-r">验收专员</b><i class="arw">→</i></span><span class="st"><b class="tag t-h">负责人验收</b><i class="arw">→</i></span><span class="st"><b class="tag t-r">提交 PR/MR</b></span></div>
+  <div class="steps-legend"><span><em class="t-r"></em>角色节点</span><span><em class="t-s"></em>脚本节点</span><span><em class="t-h"></em>人工关口</span></div>
+</div>
+<p>不过，流程里也不是每一步都适合交给 AI。所以 SOP 会按活的性质，分给三种节点来做：</p>
+<ul>
+<li><strong>角色节点</strong>：需要判断的活，比如改代码、做评审；</li>
+<li><strong>脚本节点</strong>：结果确定的活，比如构建、跑测试。过没过看退出码，不听 AI 说“测过了”；</li>
+<li><strong>人工关口</strong>：需要人拍板的地方，比如负责人最后验收。</li>
+</ul>
+<p>流程跑起来，难免有哪一步没过。<strong>LoopForge 支持让流程转成一个 Loop</strong>：每个节点都可以设好失败后打回到哪里，没通过就带着意见自动退回去，修完再重新走一遍。为了不陷入死循环，返工还设了轮次上限，几轮还没修好，流程就停下来等人处理。</p>
+<figure>
+  <img src="img/fig-07.png" alt="后端需求 SOP 与失败打回路径" loading="lazy">
+  <figcaption>后端需求 SOP 与打回路径</figcaption>
+</figure>
+<p>SOP 也可以随团队的需要调整，每次修改都会保留历史版本，可以对比，也可以一键恢复。</p>
+<p>流程会自己打回、自己返工，人自然会想知道：它到底干了什么？</p>
+
+<h2 id="s4"><span class="n">PART 04</span>看得见，才敢交给它：可视化运行与全程留痕</h2>
+<p>来看一次真实运行。一条“审计日志按操作人筛选并导出”需求在完成开发后，被代码评审员拦了下来：导出接口缺少权限校验。评审意见随即被带回给后端研发工程师，修复、复审、测试依次完成，最终停在「负责人验收」。</p>
+<p>负责人不必翻日志寻找进度。打开运行详情，整条链路已经铺开：绿色代表通过，红色标记失败，琥珀色表示等待确认。此时前序节点全部通过，只剩最终验收。点击任意节点，还能继续查看代码改动、工具调用、失败原因和返工记录。</p>
+<figure>
+  <img src="img/fig-08.png" alt="运行详情停在负责人验收节点" loading="lazy">
+  <figcaption>流程停在「负责人验收」</figcaption>
+</figure>
+<p>所有需要人工处理的事项都会进入「待我确认」。负责人可以查看验收报告并作出决定；从原始需求、SOP 版本、参与角色，到打回原因、验收人和最终 PR，整次交付都有记录可查。</p>
+<div class="quote">无需全程守候，但任何时候都能回到现场。</div>
+<p class="bridge">这次返工，是因为权限要求没在一开始写清楚。<strong>下次还会再犯吗</strong>？答案就在这次运行留下的轨迹里。</p>
+
+<h2 id="s5"><span class="n">PART 05</span>持续迭代：每跑一次，流程就好一点</h2>
+<p>运行结束后，可以在详情页发起「智能评测」。AI 会回看这次运行的执行轨迹，从流程是否健康、耗时与等待、工具调用、Token 效率、失败恢复和交付完整性等维度分析这次运行。它不仅会告诉你哪里慢、返工了几轮，还会分析问题出在哪个环节。</p>
+<figure>
+  <img src="img/fig-09.png" alt="智能评测定位返工原因" loading="lazy">
+  <figcaption>智能评测定位返工原因</figcaption>
+</figure>
+<p>智能评测进一步发现，这次问题之所以到了代码评审才暴露，是因为需求模板和评审清单里都缺少权限检查。据此，它给出两条改进建议：</p>
+<ul>
+<li><strong>需求分析师</strong>：涉及查询或导出时，必须明确数据权限；</li>
+<li><strong>代码评审员</strong>：增加越权检查和权限测试。</li>
+</ul>
+<p>当然，<strong>AI 只负责提出建议，不会自动生效</strong>。负责人可以自行判断，选择合适的建议写入角色；如果涉及节点顺序或打回路径，再到设计器中调整。</p>
+<p>下一次再遇到查询或导出类需求，权限不再依赖某个人临时想起来，而会成为需求和评审阶段的<strong>默认检查项</strong>。</p>
+<figure>
+  <img src="img/fig-10.png" alt="统计页面展示流程改进效果" loading="lazy">
+  <figcaption>用数据验证改进效果</figcaption>
+</figure>
+<p>流程是不是真的变好了，也不需要凭感觉判断。在「统计」页，可以查看一次通过率、返工率、节点耗时、人工干预次数和 Token 成本，同一 SOP 的不同版本还能对比成功率、耗时和成本。有效的改进保留下来，效果不佳的规则继续调整或回退。</p>
+<div class="quote">一次交付解决问题，持续复盘减少问题重演。</div>
+<p>到这里，执行、验证、返工、验收和复盘已经连成闭环。可这一切都发生在白天，人一下班，闭环也就停了。</p>
+
+<h2 id="s6"><span class="n">PART 06</span>云端 7×24 小时：人下班了，流程还在转</h2>
+<h3>把工作现场留在云端</h3>
+<p>如果执行现场还留在个人电脑上，合上笔记本，Agent 停了，闭环也就断了。</p>
+<p>LoopForge 把这个现场搬到了云端。每次 SOP 启动，平台都会在服务器上创建一个独立的 Docker 沙箱，拉取代码、准备环境、创建分支，之后的开发、评审、测试和 PR 提交都在其中完成。人走了，现场还在，流程照样往下推进。</p>
+<p>一条需求对应一个沙箱，多条需求可以同时运行，互不干扰。流程停下来等待审批时，沙箱也不会一直占用资源：执行环境可以释放，任务现场则被完整保留；等人确认后，系统重新拉起环境，从停下的位置继续。</p>
+<p>这些沙箱运行在团队自己的服务器或云主机上，代码和运行数据都留在团队环境内。</p>
+<h3>定时任务：到点自动开工</h3>
+<p>工作现场留在云端后，还需要让任务自己开始。</p>
+<p>LoopForge 可以定时扫描需求池，将待处理的需求交给对应 SOP。已经执行或关闭的需求会自动跳过，单次派发数量也可以设置上限，避免占用过多资源。</p>
+<p>定时任务还可以执行提示词，例如汇总近期的运行情况，将失败、卡住和等待验收的任务整理成简报，推送到团队群里。</p>
+<figure class="figrow">
+  <img src="img/fig-11.png" alt="定时任务配置" loading="lazy"><img src="img/fig-12.png" alt="多条任务并行运行记录" loading="lazy">
+  <figcaption>定时任务配置与并行运行记录</figcaption>
+</figure>
+<p>配好以后，一个晚上大概是这样度过的：</p>
+<ul>
+<li><strong>23:00</strong>：系统发现 8 条待处理需求，分别创建沙箱并启动 SOP；</li>
+<li><strong>夜间</strong>：任务自行完成分析、开发、评审和测试，未通过的自动打回返工；</li>
+<li><strong>次日 9:00</strong>：运行简报推送到群里，6 条等待验收，2 条需要人工处理；</li>
+<li><strong>上午</strong>：负责人进入「待我确认」，集中验收结果并处理异常任务。</li>
+</ul>
+<div class="quote">晚上由 Loop 跑流程，早上由人验结果。</div>
+
+<div class="endmark" id="end"><span>END</span></div>
+<p>一套真正属于团队的工作方式，不该只存在于少数人的经验里。它应该能够被写进角色、编排成 SOP，并在一次次交付中继续完善。</p>
+<p>这正是 LoopForge 想做的事：</p>
+<p class="closing">让每个人的本事，变成整个团队的本事；<br>让团队的工作方式，成为一个会持续进化的 Loop。</p>
+<p>如果你也在探索怎样让 Agent 进入真实的团队工作流，可以拿一条需求试着跑一遍，看看角色分工、SOP 和云端 Loop 是怎样串起来的。</p>
+<p>LoopForge 已经开源，项目详情和代码都放在下面。</p>
+<p class="links">官网：<a href="https://loopforge.cn" target="_blank" rel="noopener noreferrer">loopforge.cn</a><span>｜</span>GitHub：<a href="https://github.com/Tencent/LoopForge" target="_blank" rel="noopener noreferrer">Tencent/LoopForge</a> ⭐</p>
+</div>
+</div>
+  </article>
+  <aside class="bp-toc"><span class="kick" data-t="toc">本文目录</span><nav></nav><button type="button" class="bp-totop" onclick="scrollTo({top:0})"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg><span data-t="top">回到顶部</span></button></aside>
+ </div>
+ <section class="bp-end">
+  <div class="bp-nav"></div>
+  <div class="bp-try">
+   <div><h2 data-t="endH">想在自己的团队试试？</h2><p data-t="endSub">一条命令自托管部署，跟着使用文档跑通第一条 SOP。</p></div>
+   <div class="cta"><a class="btn-k" data-href="docs/" href="../../docs/"><span data-t="docs">阅读使用文档</span><span class="ar"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a><a class="btn-t" href="https://github.com/Tencent/LoopForge" target="_blank" rel="noopener"><span data-t="star">在 GitHub 上关注</span></a></div>
+  </div>
+ </section>
+</main>
+<div id="foot"></div>
+<script src="../../site/nav.js?v=2"></script><script src="../blog.js?v=5"></script>
+</body></html>

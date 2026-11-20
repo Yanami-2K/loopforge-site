@@ -3,12 +3,14 @@
 const D = window.LF_RM, qs = new URLSearchParams(location.search);
 let L = qs.get('lang') || localStorage.getItem('lf-lang') || ((navigator.language || '').startsWith('zh') ? 'zh' : 'en');
 if (!D.ui[L]) L = 'zh';
+let R = D.releases.find(r => r.v === qs.get('v')) || D.releases[0];
 const RM = matchMedia('(prefers-reduced-motion: reduce)'), STILL = qs.has('still');
 if (STILL) document.body.classList.add('still');
 const calm = () => RM.matches || STILL;
 const Z = (a, b) => (L === 'zh' ? a : b);
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const withLang = p => p + (L === 'en' ? '?lang=en' : '');
+const subtitle = s => { const x = D.ui[L].status[s][1]; return typeof x === 'function' ? x(R.v) : x; };
 
 /* ---------- marks and icons, same artwork as the home page ---------- */
 let lgN = 0;
@@ -23,7 +25,7 @@ const IC = {
   loop: 'M17 2l3 3-3 3M4 11V9a4 4 0 0 1 4-4h12M7 22l-3-3 3-3M20 13v2a4 4 0 0 1-4 4H4',
   plug: 'M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4',
   cloud: 'M7 18a4.5 4.5 0 0 1-.5-9 6 6 0 0 1 11.6 1.5A3.8 3.8 0 0 1 17.5 18z',
-  plus: 'M12 5v14M5 12h14',
+  plus: 'M12 5v14M5 12h14', down: 'm6 9 6 6 6-6',
 };
 const ic = (k, c = '') => `<svg class="ic ${c}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${IC[k]}"/></svg>`;
 const AREA_IC = { delivery: 'flow', assets: 'loop', access: 'plug', platform: 'cloud' };
@@ -39,14 +41,14 @@ const head = (h, em, tag, cls = '') => `<${tag} class="h ${cls}">${h.split('<br>
   `<span class="hl"><span class="rv up" data-d="${80 + i * 90}">${em && x.includes(em) ? x.replace(em, `<em>${em}</em>`) : x}</span></span>`).join(L === 'en' ? ' ' : '')}</${tag}>`;
 
 
-function cardHTML(it, i) {
-  const t = it[L], u = D.ui[L], a = D.areas[it.a];
+function cardHTML(id, s) {
+  const it = D.items[id], t = it[L], u = D.ui[L], a = D.areas[it.a];
   const refs = it.refs || [];
   const num = refs.filter(r => r.label.includes('#'));
   const badge = num.length ? `<span class="rm-ref">${esc(num[0].label.replace('PR ', ''))}${num.length > 1 ? `<i>+${num.length - 1}</i>` : ''}</span>` : '';
-  const pill = it.s === 'progress' ? `<span class="rm-pill doing"><i></i>${u.status.progress[0]}</span>` : '';
+  const pill = s === 'progress' ? `<span class="rm-pill doing"><i></i>${u.status.progress[0]}</span>` : '';
   const people = it.people ? `<span class="rm-people">${it.people.map(p => `<b title="${esc(p)}">${esc(p[0].toUpperCase())}</b>`).join('')}</span>` : '';
-  return `<button type="button" class="rm-card" data-id="${i}">
+  return `<button type="button" class="rm-card" data-id="${id}" data-s="${s}">
     <span class="rm-ct"><span class="rm-tag">${ic(AREA_IC[it.a])}${a[L]}</span>${badge}</span>
     <h3>${esc(t.title)}</h3>
     <p>${esc(t.desc)}</p>
@@ -71,11 +73,14 @@ function build() {
     <div class="rm-hx">
      <div><span class="kick rv" data-d="0">${ic('map')}${u.kick}</span>${head(u.h, u.em, 'h1')}</div>
      <aside class="rm-ver rv" data-d="300">
-      <span class="rm-vk">${u.version}</span>
-      <b class="rm-vn">v0.4.1-rc.1</b>
-      <span class="rm-vm"><i class="led"></i>${u.released}</span>
-      <span class="rm-vm">${u.updated}</span>
-      <a class="btn-t" href="${GH}/releases/tag/v0.4.1-rc.1" target="_blank" rel="noopener">${u.notes}${arrow}</a>
+      <span class="rm-vk">${R === D.releases[0] ? u.version : u.past}</span>
+      <div class="rm-vs">
+       <button type="button" class="rm-vb" aria-haspopup="listbox" aria-expanded="false" aria-label="${u.pick}: ${esc(R.v)}"><b class="rm-vn">${esc(R.v)}</b>${ic('down', 'rm-vc')}</button>
+       <ul class="rm-vl" role="listbox" aria-label="${u.pick}" hidden>${D.releases.map((r, i) => `<li role="option" tabindex="-1" data-v="${esc(r.v)}" aria-selected="${r === R}"><b>${esc(r.v)}</b><span>${r.date}</span>${i === 0 ? `<i>${u.latest}</i>` : r.pre ? `<i>${u.pre}</i>` : ''}</li>`).join('')}</ul>
+      </div>
+      <span class="rm-vm"><i class="led"></i>${u.released(R.date, R.pre)}</span>
+      <span class="rm-vm">${u.updated(R.updated)}</span>
+      <a class="btn-t" href="${GH}/releases/tag/${encodeURIComponent(R.v)}" target="_blank" rel="noopener">${u.notes}${arrow}</a>
      </aside>
     </div>
     <p class="sub rv" data-d="220">${u.sub}</p>
@@ -84,8 +89,8 @@ function build() {
    <section class="rm-main">
     <div class="rm-board">
      ${ORDER.map(s => `<section class="rm-col" data-s="${s}">
-       <header class="rm-ch">${GLYPH[s]}<h2>${u.status[s][0]}</h2><b class="rm-n">0</b><small>${u.status[s][1]}</small></header>
-       <div class="rm-list">${D.items.map((it, i) => it.s === s ? cardHTML(it, i) : '').join('')}</div>
+       <header class="rm-ch">${GLYPH[s]}<h2>${u.status[s][0]}</h2><b class="rm-n">0</b><small>${subtitle(s)}</small></header>
+       <div class="rm-list">${R[s].map(id => cardHTML(id, s)).join('')}</div>
       </section>`).join('')}
     </div>
    </section>
@@ -133,19 +138,19 @@ function updateCounts() {
 
 /* ---------- detail dialog ---------- */
 let lastFocus = null;
-function openDlg(it) {
-  const u = D.ui[L], t = it[L], a = D.areas[it.a];
+function openDlg(id, s) {
+  const it = D.items[id], u = D.ui[L], t = it[L], a = D.areas[it.a];
   const dlg = document.getElementById('rmDlg'), panel = dlg.querySelector('.rm-panel');
   const refs = (it.refs || []).map(r => `<a class="rm-link" href="${r.url}" target="_blank" rel="noopener">${esc(r.label)}${ic('out')}</a>`).join('');
   const rows = [
     [u.area, `<span class="rm-tag">${ic(AREA_IC[it.a])}${a[L]}</span>`],
-    it.s === 'progress' ? [u.state, `<span class="rm-pill doing"><i></i>${u.status.progress[0]}</span>`] : null,
+    s === 'progress' ? [u.state, `<span class="rm-pill doing"><i></i>${u.status.progress[0]}</span>`] : null,
     it.people ? [u.owner, `<span class="rm-owners">${it.people.map(p => `<a href="https://github.com/${encodeURIComponent(p)}" target="_blank" rel="noopener"><b>${esc(p[0].toUpperCase())}</b>${esc(p)}</a>`).join('')}</span>`] : null,
     refs ? [u.links, refs] : null,
   ].filter(Boolean);
-  panel.dataset.s = it.s;
+  panel.dataset.s = s;
   panel.innerHTML = `
-    <header class="rm-dh"><span class="rm-ds">${GLYPH[it.s]}${u.status[it.s][0]}</span><button type="button" class="rm-x" aria-label="${u.close}">${ic('x')}</button></header>
+    <header class="rm-dh"><span class="rm-ds">${GLYPH[s]}${u.status[s][0]}</span><button type="button" class="rm-x" aria-label="${u.close}">${ic('x')}</button></header>
     <h2 id="rmDlgT">${esc(t.title)}</h2>
     <p class="rm-dd">${esc(t.desc)}</p>
     ${t.details ? `<div class="rm-dl"><span class="kick">${u.detail}</span><ul>${t.details.map((d, i) => `<li style="--i:${i}">${esc(d)}</li>`).join('')}</ul></div>` : ''}
@@ -164,6 +169,31 @@ function closeDlg() {
   if (lastFocus) lastFocus.focus({ preventScroll: true });
 }
 
+/* ---------- release switcher ---------- */
+function openVer() {
+  const vb = document.querySelector('.rm-vb'), vl = document.querySelector('.rm-vl');
+  vl.hidden = false; vb.setAttribute('aria-expanded', 'true');
+  (vl.querySelector('[aria-selected=true]') || vl.firstElementChild).focus();
+}
+function closeVer(refocus) {
+  const vb = document.querySelector('.rm-vb'), vl = document.querySelector('.rm-vl');
+  if (!vl || vl.hidden) return false;
+  vl.hidden = true; vb.setAttribute('aria-expanded', 'false');
+  if (refocus) vb.focus();
+  return true;
+}
+function pickVer(v) {
+  const r = D.releases.find(x => x.v === v);
+  if (!r || r === R) { closeVer(true); return; }
+  R = r;
+  const url = new URL(location);
+  if (R === D.releases[0]) url.searchParams.delete('v'); else url.searchParams.set('v', R.v);
+  history.replaceState(null, '', url);
+  boot(true);
+  document.querySelector('.rm-vb').focus({ preventScroll: true });
+}
+document.addEventListener('pointerdown', e => { if (!e.target.closest('.rm-vs')) closeVer(); });
+
 /* ---------- wiring ---------- */
 function bind() {
   const app = document.getElementById('app');
@@ -173,7 +203,18 @@ function bind() {
     const url = new URL(location); url.searchParams.set('lang', L); history.replaceState(null, '', url);
     boot(true);
   }));
-  app.querySelector('.rm-board').addEventListener('click', e => { const c = e.target.closest('.rm-card'); if (c) openDlg(D.items[+c.dataset.id]); });
+  app.querySelector('.rm-board').addEventListener('click', e => { const c = e.target.closest('.rm-card'); if (c) openDlg(c.dataset.id, c.dataset.s); });
+  const vb = app.querySelector('.rm-vb'), vl = app.querySelector('.rm-vl');
+  const opts = () => [...vl.querySelectorAll('[role=option]')];
+  vb.addEventListener('click', () => (vl.hidden ? openVer() : closeVer()));
+  vb.addEventListener('keydown', e => { if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); openVer(); } });
+  vl.addEventListener('click', e => { const o = e.target.closest('[role=option]'); if (o) pickVer(o.dataset.v); });
+  vl.addEventListener('keydown', e => {
+    const all = opts(), i = all.indexOf(document.activeElement);
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); all[(i + (e.key === 'ArrowDown' ? 1 : all.length - 1)) % all.length].focus(); }
+    else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (i >= 0) pickVer(all[i].dataset.v); }
+    else if (e.key === 'Tab') closeVer();
+  });
   app.querySelector('.rm-board').addEventListener('pointermove', e => {
     const c = e.target.closest('.rm-card'); if (!c) return;
     const r = c.getBoundingClientRect();
@@ -222,6 +263,6 @@ function boot(relang) {
 }
 
 addEventListener('scroll', onScroll, { passive: true });
-addEventListener('keydown', e => { if (e.key === 'Escape') closeDlg(); });
+addEventListener('keydown', e => { if (e.key === 'Escape' && !closeVer(true)) closeDlg(); });
 boot();
 })();

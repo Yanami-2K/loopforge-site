@@ -5,7 +5,7 @@ html.rm-lock{overflow:hidden}
 /* ---------- hero ---------- */
 .rm-hero{position:relative;max-width:1240px;margin:0 auto;padding:150px 48px 0;overflow-x:clip}
 .rm-hero:before{content:"";position:absolute;left:50%;top:-20%;width:1200px;height:760px;margin-left:-600px;background:radial-gradient(closest-side,rgba(82,108,232,.12),transparent 70%),radial-gradient(closest-side at 72% 40%,rgba(138,78,217,.08),transparent 70%);z-index:-1;pointer-events:none}
-.rm-hx{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:48px;align-items:end}
+.rm-hx{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:48px;align-items:end}
 .rm-hero .kick{margin-bottom:26px}
 .rm-hero h1.h{font-size:72px;line-height:1.1;letter-spacing:-.03em}
 :lang(en) .rm-hero h1.h{font-size:76px;line-height:1.0;letter-spacing:-.045em}
@@ -15,6 +15,20 @@ html.rm-lock{overflow:hidden}
 .rm-vk{font:500 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
 .rm-vn{font:200 52px/1 var(--sans);letter-spacing:-.04em;color:var(--ink);margin:6px 0 8px;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .rm-vm{display:flex;align-items:center;gap:8px;font:400 13px/1.5 var(--sans);color:var(--mute)}
+.rm-ver{position:relative;z-index:5}
+.rm-vs{position:relative;align-self:flex-start}
+.rm-vb{display:inline-flex;align-items:center;gap:6px;padding:0;margin:0;border:0;background:none;color:var(--faint);cursor:pointer;border-radius:8px;outline-offset:4px}
+.rm-vb .rm-vn{white-space:nowrap}
+.rm-vb .rm-vc{width:20px;height:20px;flex:none;transition:transform .25s var(--ease),color .2s}
+.rm-vb:hover .rm-vc,.rm-vb[aria-expanded=true] .rm-vc{color:var(--ink)}
+.rm-vb[aria-expanded=true] .rm-vc{transform:rotate(180deg)}
+.rm-vl{position:absolute;left:0;top:calc(100% - 2px);min-width:260px;margin:0;padding:6px;list-style:none;border-radius:10px;background:var(--raised);box-shadow:var(--lift2),inset 0 0 0 1px var(--rule);animation:rmvl .18s var(--ease)}
+.rm-vl li{display:flex;align-items:baseline;gap:10px;padding:9px 10px;border-radius:7px;cursor:pointer;font:400 13px/1.3 var(--sans);color:var(--mute);white-space:nowrap;outline:none}
+.rm-vl li b{font:500 14px/1.3 var(--mono);color:var(--ink)}
+.rm-vl li i{margin-left:auto;font:500 10.5px/1 var(--mono);letter-spacing:.05em;text-transform:uppercase;font-style:normal;color:var(--faint)}
+.rm-vl li:hover,.rm-vl li:focus-visible{background:rgba(82,108,232,.08)}
+.rm-vl li[aria-selected=true] b{color:var(--st-progress)}
+@keyframes rmvl{from{opacity:0;transform:translateY(-4px)}}
 .rm-ver .btn-t{height:38px;margin-top:4px;align-self:flex-start;font-size:13.5px;padding:0;background-position:0 calc(100% - 8px);background-size:100% 1px}
 
 /* ---------- status glyphs ---------- */

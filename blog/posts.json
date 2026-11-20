@@ -1,5 +1,17 @@
 [
   {
+    "slug": "from-personal-agent-to-team-loop",
+    "title": "从个人 Agent 到团队 Loop：LoopForge 如何让团队工作流在云端持续运行",
+    "title_en": "From personal agents to a team loop: how LoopForge keeps team workflows running in the cloud",
+    "summary": "把个人经验沉淀为团队角色和可复用 SOP，让共享上下文、过程留痕、持续改进与云端运行形成完整交付闭环。",
+    "summary_en": "Turn individual expertise into team roles and reusable SOPs, with shared context, observable runs, continuous improvement and cloud execution.",
+    "date": "2026-11-20",
+    "author": "LoopForge 团队",
+    "tag": "practice",
+    "minutes": 9,
+    "cover": "from-personal-agent-to-team-loop/img/cover-2.35.png"
+  },
+  {
     "slug": "zero-to-one-first-sop",
     "title": "从 0 到 1：部署平台，跑通第一条团队 SOP",
     "title_en": "From zero to one: deploy LoopForge and run your first team SOP",
@@ -22,5 +34,17 @@
     "tag": "practice",
     "minutes": 18,
     "cover": "loopforge-builds-loopforge/img/cover-2.35.png"
+  },
+  {
+    "slug": "coding-agent-enters-rd-team",
+    "title": "当 Coding Agent 走进研发团队：我们打造并开源了自进化研发平台 LoopForge",
+    "title_en": "When coding agents join the engineering team: how we built and open-sourced the self-evolving LoopForge platform",
+    "summary": "从本地 Coding Agent 出发，复盘 LoopForge 如何依次解决云端运行、团队共享、工程级 SOP、无人值守自动化与递归自改进。",
+    "summary_en": "A five-stage journey from local coding agents to shared cloud workspaces, engineering SOPs, unattended automation and recursive self-improvement.",
+    "date": "2026-11-03",
+    "author": "LoopForge 团队",
+    "tag": "practice",
+    "minutes": 20,
+    "cover": "coding-agent-enters-rd-team/img/cover-2.35.png"
   }
 ]

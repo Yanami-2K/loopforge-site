@@ -1,0 +1,120 @@
+/* Shared navigation finish from the approved homepage. Page layouts stay local. */
+:root{--accent-ink:#4058cc;--gutter:clamp(20px,4.8vw,76px)}
+.nav,.nav.sc{background:rgba(247,247,246,.97);border-bottom:1px solid #d9d9d8}
+.nbar{max-width:1536px;padding-inline:var(--gutter);height:68px}
+.lang,.lang button,.ghs{border-radius:2px}
+.ghs{background:none;box-shadow:none;border:0;padding-inline:8px}
+.btn-k,.btn-k.sm{border-radius:2px}
+.links>a:hover,.nd-t:hover,.nd-in a:hover .nd-x b{color:var(--accent-ink)}
+.nbar .lang{--lang-face:"PingFang SC","Microsoft YaHei",Arial,sans-serif;display:inline-flex;align-items:center;flex:none;gap:0;margin:0 3px;padding:0;border:0;border-radius:0;background:none;box-shadow:none}
+.nbar .lang button{
+  box-sizing:border-box;display:grid;align-items:center;flex:none;height:44px;
+  padding:0;border:0;border-radius:0;box-shadow:none;background:none;white-space:nowrap;
+  font:500 13px/1 var(--lang-face);
+  letter-spacing:normal;color:#686d77;transition:color .16s;
+}
+/* Face both labels toward the separator so the visible gaps stay balanced. */
+.nbar .lang button[lang="zh-CN"]{font-family:var(--lang-face);letter-spacing:normal;min-width:36px;justify-items:end;padding-inline-end:5px}
+.nbar .lang button[lang="en"]{min-width:32px;justify-items:start;padding-inline-start:4.5px;font-size:14px}
+.lang-slash{color:#a5a9b2;font:400 14px/1 Arial,sans-serif;user-select:none}
+.nbar .lang [aria-pressed=true],.nbar .lang button.on{font-weight:600;color:#20283b;background:none;box-shadow:none}
+.nbar .lang button:focus-visible{outline:1px solid var(--accent-ink);outline-offset:-2px}
+.nbar .btn-k:after{content:none}
+.skip-link{position:fixed;top:8px;left:12px;z-index:1000;transform:translateY(-160%);padding:12px 18px;background:#fff;color:#141418;font:500 16px/1.4 var(--sans)}
+.skip-link:focus{transform:none;outline:2px solid #4058cc}
+.site-disclosure{max-width:1536px;margin:auto;padding:0 var(--gutter) 24px;color:#62626c;font:400 12px/1.7 var(--sans)}
+.site-disclosure a{text-decoration:underline;text-underline-offset:3px}
+@media(hover:hover){.nbar .lang button:not([aria-pressed=true]):hover{color:var(--accent-ink);translate:none}}
+@media(min-width:761px) and (max-width:1100px){.nbar{gap:6px;padding-inline:22px}.nbar>.btn-k.sm{display:none}.nbar .links{margin-right:4px}}
+@media(max-width:760px){.nbar{height:60px}.nav.mo .links{top:60px}.nbar>.brand,.nbar>.ghs,.nbar>.nmb{min-height:44px}}
+@media(max-width:420px){.nbar .lang{margin:0}.nbar{padding-inline:14px;gap:4px}}
+@media(prefers-reduced-motion:reduce){.nbar .lang button{transition:none;translate:none!important}}
+
+.nav-search{display:flex;gap:6px;align-items:center;justify-content:center;min-height:44px;padding:0 5px;border:0;background:none;cursor:pointer;color:var(--ink);font:500 14px var(--sans)}
+.nav-search:hover{color:var(--accent-ink)}
+.nav-search .ic{width:17px;height:17px}
+@media(max-width:1100px){.nav-search span{display:none}}
+@media(max-width:760px){.nav-search{width:32px;padding:0}}
+@media(prefers-reduced-motion:no-preference){
+  main:not(:has(> .hero#top)):not(.d-main){animation:page-arrive .24s ease-out}
+  @keyframes page-arrive{from{opacity:.68}to{opacity:1}}
+}
+
+/* Keep the common routes anchored while search and the star count come and go. */
+.nav:has(.nd) { width:100vw; right:auto; }
+.nav .nbar:has(> .links) {
+  display:grid;
+  grid-template-areas:"brand routes language github demo search";
+  grid-template-columns:minmax(max-content,1fr) 344px 78px 140px 144px 64px;
+  gap:8px; height:68px; padding-inline:clamp(20px,4.8vw,76px);
+}
+.nbar:has(> .links) > .sp { display:none; }
+.nbar:has(> .links) > .brand { grid-area:brand; justify-self:start; }
+.nbar:has(> .links) > .links { grid-area:routes; margin:0; }
+.nbar:has(> .links) > .lang { grid-area:language; justify-content:center; margin:0; }
+.nbar:has(> .links) > .ghs { grid-area:github; justify-content:flex-start; }
+.nbar:has(> .links) > .btn-k.sm { grid-area:demo; justify-content:center; }
+.nbar:has(> .links) > .nav-search { grid-area:search; }
+@media(min-width:761px) {
+  .nav .nbar > .links { display:grid; grid-template-columns:48fr 76fr 84fr 72fr 64fr; gap:0; }
+  html:lang(en) .nav .nbar > .links {grid-template-columns:64fr 88fr 52fr 84fr 56fr}
+  .nav .nbar .links > [data-home].on::before {position:static;flex:none;margin:0 4px 0 0}
+  .nav .nbar > .ghs:has(.gct[hidden]) {justify-content:center}
+  .nav .nbar .links > a:not(.nm-only), .nav .nbar .nd-t {
+    box-sizing:border-box; display:flex; align-items:center; justify-content:center;
+    width:100%; min-height:44px; padding:0; white-space:nowrap;
+  }
+}
+@media(min-width:761px) and (max-width:1100px) {
+  .nav .nbar:has(> .links) { grid-template-columns:minmax(max-content,1fr) 320px 76px 138px 30px; grid-template-areas:"brand routes language github search"; padding-inline:18px; gap:5px; }
+  .nav .nbar:has(> .links) > .btn-k.sm { display:none; }
+}
+@media(max-width:760px) {
+  .nav .nbar:has(> .links) { grid-template-areas:"brand language github search menu"; grid-template-columns:minmax(0,1fr) max-content 34px 32px 38px; height:60px; padding-inline:14px; gap:4px; }
+  .nav .nbar:has(> .links) > .nmb { grid-area:menu; width:38px; min-width:0; margin:0; }
+  .nav .nbar:has(> .links) > .links { grid-area:auto; }
+  .nav.mo .nbar > .links { top:60px; }
+  .nav .nbar:has(> .links) > .ghs { justify-content:center; min-width:0; padding:0; }
+}
+@media(max-width:350px) {
+  .nav .nbar:has(> .links) { padding-inline:8px; gap:2px; }
+}
+
+/* The product index uses the same ink, rules and accent as its navigation bar. */
+.nav:has(.nd) {
+  --menu-surface:#fafaf8; --menu-title:#23283a; --menu-copy:#555e70;
+  --menu-rule:#d7dbe3; --menu-edge:#bfc6d4; --menu-ink:#4254a9; --menu-wash:#edf0f8;
+}
+.nav.nav-product {
+  --menu-surface:#141a23; --menu-title:#eef2fa; --menu-copy:#b7c3d5;
+  --menu-rule:#303a48; --menu-edge:#424f61; --menu-ink:#b2c6ff; --menu-wash:#202b3a;
+}
+.nav .nbar .nd-in { gap:0; }
+.nav .nbar .nd-in a {
+  gap:13px; min-height:59px; padding:9px 12px; border:0; border-radius:0;
+  transition:background-color .18s ease;
+}
+.nav .nbar .nd-in a+a { border-top:1px solid var(--menu-rule); }
+.nav .nbar .nd-in .nd-x b { color:var(--menu-title); font-weight:580; }
+.nav .nbar .nd-in .nd-x small { color:var(--menu-copy); }
+.nav .nbar .nd-in .nd-i {
+  width:26px; height:30px; background:transparent; color:var(--menu-ink);
+  border-radius:0; box-shadow:none; transform:none; transition:translate .18s ease;
+}
+.nav .nbar .nd-in a:is(:hover,:focus-visible) { background:var(--menu-wash); }
+.nav .nbar .nd-in a:is(:hover,:focus-visible,.on) .nd-x b { color:var(--menu-ink); }
+.nav .nbar .nd-in a:is(:hover,:focus-visible) .nd-i { translate:2px 0; }
+@media(min-width:761px) {
+  .nav .nbar .nd-in {
+    padding:5px; border:1px solid var(--menu-edge); border-radius:5px;
+    background:var(--menu-surface); box-shadow:0 12px 30px -14px #0a112766;
+  }
+  .nav .nbar .nd-in::before {
+    left:16px; top:-1px; width:38px; height:2px; margin:0; transform:none;
+    background:var(--menu-ink); box-shadow:none;
+  }
+}
+@media(prefers-reduced-motion:reduce) {
+ .nav .nbar .nd-p,.nav .nbar .nd-i,.nav .nbar .nd-in a { transition:none; }
+ .nav .nbar .nd-in a:is(:hover,:focus-visible) .nd-i { translate:none; }
+}

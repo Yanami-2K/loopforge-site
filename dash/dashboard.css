@@ -1,0 +1,85 @@
+/* Keep chart, series and status colors in the dashboard's light/dark theme. */
+@font-face{font-family:DashInter;src:url(../site/fonts/inter-tight-latin-wght-normal.woff2) format("woff2");font-weight:100 900;font-display:swap}
+@font-face{font-family:DashMono;src:url(../site/fonts/geist-mono-latin-wght-normal.woff2) format("woff2");font-weight:100 900;font-display:swap}
+.app{font-family:DashInter,"PingFang SC",system-ui,sans-serif}
+.dash-brand{display:inline-flex;gap:9px;align-items:center;text-decoration:none;font-size:18px;font-weight:650;color:var(--text-primary);min-height:44px;margin-bottom:18px}
+.dash-brand img{width:24px;height:24px}
+.app-header{border-block:1px solid var(--axis);padding-block:20px;align-items:center}
+.app-title{font:580 clamp(30px,3.6vw,56px)/1.12 DashInter,sans-serif;letter-spacing:-.046em}
+.app-sub{line-height:1.65;max-width:80ch}
+.mono,.tab-nums,.kpi-value,.range-btn,.sample-badge{font-family:DashMono,ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.range-btn,.kpis,.card,.reminder,.chip,.sample-badge,.reason-chip,.size-chip,.run-status-chip,.tooltip{border-radius:0}
+
+/* The range is a single choice above the navigation tabs. */
+.range-btn {
+  display:inline-flex; align-items:center; gap:7px; min-height:40px;
+  border:0; padding:6px 9px; color:var(--text-secondary); background:none;
+}
+.range-btn::before {
+  content:""; width:9px; height:9px; box-sizing:border-box;
+  border:1px solid var(--axis); border-radius:50%;
+}
+.range-btn:is(:hover,[aria-pressed=true]) { background:none; color:var(--text-primary); }
+.range-btn[aria-pressed=true]::before { border-color:var(--series-blue); background:var(--series-blue); box-shadow:inset 0 0 0 2px var(--surface-page); }
+.kpis{border-width:1px 0}.kpi-value{font-size:clamp(20px,2.4vw,36px);letter-spacing:-.05em}
+.tabs{gap:0;overflow-x:auto}
+.tab-btn{flex:none;min-height:44px;margin-right:clamp(8px,1.5vw,22px)}
+.tab-btn[aria-selected=true]{color:var(--series-blue)}
+.card{min-width:0;border-width:1px 0 0;box-shadow:none}
+/* A finding is an independently readable note in the overview. */
+.reminders { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
+.reminder:is(.crit,.warn,.good) {
+  --tone: var(--text-secondary);
+  display: block; border: 1px solid var(--grid); border-radius: 8px; padding: 16px 18px;
+  background: var(--surface-card); box-shadow: 0 2px 5px rgb(16 22 42 / 5%);
+  overflow-wrap: anywhere;
+}
+.reminder.crit { --tone: var(--series-orange); border-color: color-mix(in srgb,var(--tone) 35%,var(--grid)); }
+.reminder.warn { --tone: var(--status-warning); }
+.reminder .reminder-heading { display: grid; grid-template-columns: auto minmax(0,1fr) auto; gap: 9px; align-items: center; }
+.reminder .reminder-heading .reminder-icon {
+  color: var(--tone); background: var(--surface-sunken); width: 22px; height: 22px;
+  border-radius: 50%; margin: 0; font: 650 13px/1 DashMono,monospace;
+}
+.reminder.crit .reminder-heading .reminder-icon { background: var(--series-orange-wash); }
+.reminder.warn .reminder-heading .reminder-icon { background: var(--status-warning-bg); }
+.reminder-title { color: var(--text-primary); font-size: 15px; font-weight: 630; }
+.reminder .reminder-heading .reminder-label { color: var(--tone); font: 580 10px/1.4 DashMono,monospace; letter-spacing: .05em; }
+.reminder .reminder-text { margin: 9px 0 0 31px; font-size: 13px; line-height: 1.65; }
+@media(max-width:640px) {
+  .reminders { grid-template-columns: 1fr; gap: 10px; }
+  .reminder:is(.crit,.warn,.good) { padding: 14px; }
+}
+.session-toggle{background:none;color:inherit;border:0;padding:4px 0;font:inherit;cursor:pointer}
+.session-toggle[aria-expanded=true]{color:var(--series-blue)}
+tr.data-row td{transition:background-color .18s}
+tr.data-row:hover td,tr.data-row:focus-within td,tr.is-expanded td{background:var(--series-blue-wash)}
+.session-toggle:focus-visible{outline:2px solid var(--series-blue);outline-offset:2px}
+@media(max-width:700px){.app{padding:14px 16px 48px}.dash-brand{margin-bottom:8px}.card{padding:16px 10px}.kpi{min-width:0;padding:14px 10px}.tabs{max-width:100%}.filter-row{flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){tr.data-row td{transition:none}}
+.sample-badge{max-width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.6}
+@media(max-width:860px){.kpi:last-child:nth-child(odd){grid-column:1/-1}}
+footer.note{overflow-wrap:anywhere}
+
+.step-dot:is(.failed,.in_progress,.completed), .step-retry { color: var(--surface-card); }
+
+/* Distinguish routing decisions from the execution state of a step. */
+.health-bar-track { height: 8px; border-radius: 2px; }
+.health-legend { flex-wrap: wrap; gap: 4px 14px; }
+.run-card { background: var(--surface-card); border-radius: 4px; }
+.run-head { border-bottom: 1px solid var(--grid); padding-bottom: 10px; }
+.stepper { padding-top: 9px; }
+.step-dot { font-family: DashMono,monospace; border-width: 1px; }
+.step-dot.completed { background: var(--series-blue-wash); color: var(--status-good); border-color: var(--route-auto); }
+.step-dot.in_progress { outline: 2px solid var(--series-blue-wash); outline-offset: 2px; }
+.step-retry { border-radius: 3px; background: var(--status-warning-bg); color: var(--status-warning); right: -8px; }
+.step-connector { height: 1px; }
+
+@media (hover:hover) and (pointer:fine) {
+  .reminder:is(.crit,.warn,.good) { transition: background-color .18s,border-color .18s; }
+  .reminder:is(.crit,.warn,.good):hover {
+    background: color-mix(in srgb,var(--series-blue) 6%,var(--surface-card));
+    border-color: color-mix(in srgb,var(--series-blue) 55%,var(--grid));
+  }
+}
+@media (prefers-reduced-motion:reduce) { .reminder:is(.crit,.warn,.good) { transition: none; } }

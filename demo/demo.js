@@ -17,10 +17,7 @@ const I={
  check:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l4.5 4.5 10.5-10.5"/></svg>',
  term:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4zM7.5 9.5 10 12l-2.5 2.5M12.5 15h4"/></svg>',
  film:'<svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0zM10 8.5v7l5.5-3.5z"/></svg>',
- gh:'<svg class="mk" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>',
  x:'<svg class="mk" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.638 7.584H.474l8.6-9.83L0 1.154h7.594l5.243 6.932ZM17.61 20.644h2.039L6.486 3.24H4.298Z"/></svg>',
- star:'<svg viewBox="0 0 800 800" fill="currentColor" aria-hidden="true"><path d="M305.105 180.279C347.327 104.538 368.437 66.6667 400 66.6667C431.563 66.6667 452.673 104.537 494.893 180.279L505.817 199.874C517.817 221.398 523.813 232.16 533.17 239.26C542.523 246.361 554.17 248.997 577.47 254.268L598.683 259.068C680.67 277.619 721.667 286.894 731.42 318.258C741.173 349.62 713.227 382.303 657.33 447.663L642.87 464.573C626.987 483.147 619.043 492.433 615.47 503.923C611.9 515.413 613.1 527.803 615.5 552.587L617.687 575.147C626.137 662.353 630.363 705.957 604.83 725.34C579.293 744.723 540.91 727.05 464.143 691.707L444.283 682.56C422.47 672.517 411.563 667.493 400 667.493C388.437 667.493 377.53 672.517 355.717 682.56L335.857 691.707C259.089 727.05 220.706 744.723 195.172 725.34C169.637 705.957 173.863 662.353 182.313 575.147L184.499 552.587C186.901 527.803 188.102 515.413 184.529 503.923C180.956 492.433 173.014 483.147 157.131 464.573L142.67 447.663C86.7749 382.303 58.8272 349.62 68.5806 318.258C78.3339 286.894 119.329 277.619 201.318 259.068L222.53 254.268C245.828 248.997 257.478 246.361 266.831 239.26C276.185 232.16 282.184 221.398 294.182 199.874L305.105 180.279Z"/></svg>',
- spk:'<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0l2.5 9.5L24 12l-9.5 2.5L12 24l-2.5-9.5L0 12l9.5-2.5L12 0z"/></svg>',
  replay:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.3-5.7"/><path d="M4 4v4h4"/></svg>',
 };
 // Start times match the title cards in the video.
@@ -36,6 +33,21 @@ const CH=[
  [60.4,'评测与复盘','Score and improve','给每次运行打分，改进建议一键写回 SOP','Runs get scored; fixes go into the SOP'],
  [72.5,'开源部署','Open source','MIT 协议，clone 后跑一个安装脚本','MIT licensed; clone and run one install script'],
 ];
+// Small chapter symbols follow the actions shown in the recording.
+const chapterPaths = [
+ 'M3 4h18v13H9l-5 4v-4H3z M7 8h10 M7 12h6',
+ 'M4 10a8 8 0 1 1 1 7 M4 4v6h6',
+ 'M3 12h5m0 0 5-7h8M8 12h13M8 12l5 7h8',
+ 'M5 19V5m0 7h6c4 0 7-2 7-6 M14 7l4-4 4 4',
+ 'M3 5h15v12H3z M1 20h20 M15 11l3 3 5-6',
+ 'M2 3h14v10H7l-4 4v-4H2z M10 16h7l4 4V9h-2',
+ 'M2 9h6v6H2z M9 12h5 M14 5v14 M14 5h7 M14 19h7',
+ 'M8 7l-2-3m10 3 2-3 M8 8h8v7a4 4 0 0 1-8 0z M4 10h4m8 0h4M3 14h5m8 0h5M5 19l3-2m8 0 3 2',
+ 'M3 3v17h18 M6 15l4-5 4 2 6-7 M16 5h4v4',
+ 'M3 4h18v16H3z M7 9l3 3-3 3 M13 15h4'
+];
+const chapterIcon=i=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="${chapterPaths[i]}"/></svg>`;
+const chaptersLabel=Z('分段目录','Chapters');
 const mmss=s=>{s=Math.max(0,Math.floor(s||0));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
 const nn=i=>String(i+1).padStart(2,'0');
 document.documentElement.lang=L==='zh'?'zh-CN':'en';
@@ -44,14 +56,12 @@ const home='../'+(L==='en'?'?lang=en':'');
 const docs='../docs/'+(L==='en'?'?lang=en':'');
 const app=document.getElementById('app');
 app.innerHTML=`
-<header class="nav"><div class="nbar"><a class="brand" href="${home}">${LOGO()}<span>LoopForge</span></a><a class="back" href="${home}"><span class="ar">${I.arrow}</span>${Z('返回首页','Home')}</a><a class="back" href="${docs}">${Z('使用文档','Docs')}</a><span class="sp"></span>
-<span class="lang"><button data-l="zh" class="${L==='zh'?'on':''}">${Z('中','ZH')}</button><button data-l="en" class="${L==='en'?'on':''}">EN</button></span>
-<a class="ghs" href="${GH}" target="_blank" rel="noopener" aria-label="GitHub"><span class="gsw"><span class="g1">${I.gh}</span><span class="g2">${I.star}</span><i class="sk s1">${I.spk}</i><i class="sk s2">${I.spk}</i></span><span class="gtx">GitHub</span><span class="gct" hidden></span></a><a class="btn-k sm" href="#deploy">${Z('快速部署','Self-host')}<span class="ar">${I.arrow}</span></a></div></header>
+${LF_NAV.header({L, root:'../', page:'demo'})}
 <main>
-<section class="hd wrap"><span class="kick rv"><i class="led"></i>${Z('实机演示 · 1 分 20 秒','Walkthrough · 1:20')}</span>
-<h1 class="h rv d1">${Z('<em>80 秒</em>，看一个需求怎么走到 PR','From request to PR in <em>80 seconds</em>')}</h1>
+<div class="screening-room"><section class="hd wrap"><div class="film-meta rv">${I.film}<span>${Z('实机演示','Walkthrough')} · <time datetime="PT80S">${Z('1 分 20 秒','1:20')}</time></span></div>
+<h1 class="h rv d1">${Z('80 秒，看一个需求怎么走到 <span>PR</span>','From request to <span>PR</span> in 80 seconds')}</h1>
 <p class="sub rv d2">${Z('一句话提需求，多个 Agent 在云端并行开发，验收不过自动打回重跑，最后提交 PR，并给这次运行打分。','One line of request, agents building in parallel in the cloud, failed checks sent back and rerun, then a pull request and a score for the run.')}</p></section>
-<section class="stage wrap rv d3">
+<div id="player" class="player-layout wrap"><section class="stage" aria-label="${Z('视频播放','Video player')}">
 <div class="screen" tabindex="-1">
 <video playsinline preload="metadata" poster="${POSTER}" aria-label="${Z('LoopForge 演示视频','LoopForge demo video')}"><source src="${SRC}" type="video/mp4"></video>
 <span class="now" aria-live="polite"><b></b><span></span></span>
@@ -61,12 +71,21 @@ app.innerHTML=`
 <button class="pp" type="button" aria-label="${Z('播放','Play')}">${I.play}</button>
 <span class="tm"><span class="cur">0:00</span> / <span class="dur">1:20</span></span>
 <div class="track" role="slider" tabindex="0" aria-label="${Z('进度','Seek')}" aria-valuemin="0" aria-valuemax="80" aria-valuenow="0"><span class="rail"></span><span class="buf"></span><span class="done"></span>${CH.map(()=>'<span class="mk"></span>').join('')}<span class="knob"></span><span class="tip"></span></div>
+<button class="strip-toggle" type="button" aria-label="${chaptersLabel}" aria-controls="chapter-strip" aria-expanded="false" title="${chaptersLabel}"><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="2" y="4" width="16" height="12" rx="2"/><path d="M7 4v12M13 4v12"/></svg><span>${chaptersLabel}</span></button>
 <button class="mu" type="button" aria-label="${Z('静音','Mute')}">${I.vol}</button>
 <button class="fs" type="button" aria-label="${Z('全屏','Fullscreen')}">${I.fs}</button>
-</div></div></section>
-<section class="chap wrap" aria-label="${Z('分段目录','Chapters')}"><div class="chh"><span class="kick">${I.film}${Z('分段目录','Chapters')}</span><span class="hint">${Z('点击跳转 · 数字键 1–0 也可以','Click to jump · or press 1–0')}</span></div><ol>
-${CH.map(([t,a,b,c,d],i)=>`<li class="rv" data-d="${i}"><button type="button" data-i="${i}"><span class="ct"><b>${nn(i)}</b><time>${mmss(t)}</time></span><strong>${Z(a,b)}</strong><small>${Z(c,d)}</small><span class="bar"><i></i></span></button></li>`).join('')}
+</div></div>
+<section id="chapter-strip" class="filmstrip" aria-labelledby="strip-label" hidden>
+<header><h2 id="strip-label">${chaptersLabel}</h2>
+<span class="strip-count">${CH.length}</span>
+<button class="strip-close" type="button" aria-label="${Z('收起目录','Close chapters')}">×</button></header>
+<ol>${CH.map(([start,zh,en],i)=>`<li><button type="button" data-i="${i}"><span class="strip-index"><b>${nn(i)}</b>${chapterIcon(i)}</span><strong>${Z(zh,en)}</strong><time>${mmss(start)}</time></button></li>`).join('')}</ol>
+</section>
+</section>
+<section class="chap" id="chapters" aria-label="${Z('分段目录','Chapters')}"><div class="chh"><span class="kick">${I.film}${Z('分段目录','Chapters')}</span><span class="hint">${Z('点击跳转','Select a chapter')}<span class="key-hint">${Z(' · 数字键 1–0 也可以',' · or press 1–0')}</span></span></div><ol>
+${CH.map(([t,a,b,c,d],i)=>`<li><button type="button" data-i="${i}"><span class="ct"><span class="chapter-index"><b>${nn(i)}</b>${chapterIcon(i)}</span><span class="chapter-time"><span class="range-mini" aria-hidden="true"><i></i></span><time>${mmss(t)}</time></span></span><strong>${Z(a,b)}</strong><small>${Z(c,d)}</small><span class="bar"><i></i></span></button></li>`).join('')}
 </ol></section>
+</div></div>
 <section class="fin wrap" id="deploy"><span class="fl">${LOGO()}</span><h2 class="h">${Z('看完了，<em>自己部署</em>跑一遍','Now <em>run it yourself</em>')}</h2>
 <p class="sub">${Z('MIT 协议开源，需要 Docker 和 Python 3。','MIT licensed; requires Docker and Python 3.')}</p>
 <div class="ibox"><div class="ibh"><i></i><i></i><i></i><span>bash</span><span class="sp"></span><button type="button" class="cp">${I.copy}<span>${Z('复制','Copy')}</span></button></div>
@@ -74,7 +93,7 @@ ${CH.map(([t,a,b,c,d],i)=>`<li class="rv" data-d="${i}"><button type="button" da
 <div class="cta"><a class="btn-k" href="${docs}">${Z('使用文档','Read docs')}<span class="ar">${I.arrow}</span></a><a class="btn-t" href="${home}">${Z('回到首页','Back to home')}<span class="ar">${I.arrow}</span></a></div></section>
 </main>
 <footer class="ft"><a class="brand" href="${home}">${LOGO()}<span>LoopForge</span></a><span>${Z('LoopForge 由腾讯开源，遵循 MIT 协议','LoopForge is open-sourced by Tencent under the MIT License')} · <a href="${GH}" target="_blank" rel="noopener">github.com/Tencent/LoopForge</a></span></footer>`;
-app.querySelectorAll('.chap li').forEach(li=>li.style.setProperty('--d',li.dataset.d));
+
 
 const $=s=>app.querySelector(s);
 const v=$('video'),screen=$('.screen'),big=$('.big'),snd=$('.snd'),pp=$('.pp'),mu=$('.mu'),track=$('.track'),done=$('.track .done'),buf=$('.track .buf'),knob=$('.track .knob'),tip=$('.track .tip');
@@ -86,7 +105,57 @@ const toggle=()=>v.paused||v.ended?play():v.pause();
 const seek=t=>{v.currentTime=Math.min(Math.max(0,t),dur-.05)};
 const chapAt=t=>{let c=0;CH.forEach(([s],i)=>{if(t>=s)c=i});return t<CH[0][0]?-1:c};
 
-function layoutMarks(){marks.forEach((m,i)=>{m.style.left=CH[i][0]/dur*100+'%'});track.setAttribute('aria-valuemax',Math.round(dur));$('.dur').textContent=mmss(dur)}
+const strip = $('.filmstrip');
+const stage = $('.stage');
+const stripToggle = $('.strip-toggle');
+const stripItems = [...strip.querySelectorAll('li button')];
+function openStrip(open,restoreFocus=false){
+ strip.hidden = !open;
+ stripToggle.setAttribute('aria-expanded',String(open));
+ if(open){
+  const current = stripItems[Math.max(0,chapAt(v.currentTime))];
+
+  current.focus({preventScroll:true});
+  requestAnimationFrame(()=>{
+   if(strip.hidden || document.fullscreenElement)return;
+   const topInset=$('.nav').getBoundingClientRect().bottom+8;
+   const combined=stage.getBoundingClientRect();
+   const bounds=combined.height<=innerHeight-topInset-8?combined:strip.getBoundingClientRect();
+   const delta=bounds.top<topInset?bounds.top-topInset:Math.max(0,bounds.bottom-innerHeight+8);
+   if(Math.abs(delta)>1)scrollBy({top:delta,behavior:reduced?'instant':'smooth'});
+  });
+ } else if(restoreFocus) stripToggle.focus({preventScroll:true});
+ poke();
+}
+stripToggle.onclick=()=>openStrip(strip.hidden);
+$('.strip-close').onclick=()=>openStrip(false,true);
+stripItems.forEach((button,i)=>button.onclick=()=>{
+ seek(CH[i][0]); play(); openStrip(false,true);
+});
+strip.addEventListener('keydown',e=>{
+ const i=stripItems.indexOf(e.target);
+ const columns=getComputedStyle(strip.querySelector('ol')).gridTemplateColumns.split(' ').length;
+ const step={ArrowUp:-1,ArrowDown:1,ArrowLeft:columns===2?-5:-1,ArrowRight:columns===2?5:1}[e.key];
+ if(i<0||!step)return;
+ e.preventDefault();e.stopPropagation();
+ const button=stripItems[Math.min(CH.length-1,Math.max(0,i+step))];
+ button.focus({preventScroll:true});
+});
+document.addEventListener('focusin',e=>{
+ if(!strip.hidden && !strip.contains(e.target) && e.target!==screen && !stripToggle.contains(e.target))openStrip(false);
+});
+document.addEventListener('pointerdown',e=>{
+ if(!strip.hidden && !stage.contains(e.target))openStrip(false);
+});
+document.addEventListener('keydown',e=>{
+ if(e.key==='Escape'&&!strip.hidden){e.preventDefault();openStrip(false,true)}
+});
+function layoutMarks(){
+ CH.forEach(([start],i)=>{
+  chapBtns[i].style.setProperty('--cue-start',start/dur*100+'%');
+  chapBtns[i].style.setProperty('--cue-length',((CH[i+1]?.[0]??dur)-start)/dur*100+'%');
+ });
+marks.forEach((m,i)=>{m.style.left=CH[i][0]/dur*100+'%'});track.setAttribute('aria-valuemax',Math.round(dur));$('.dur').textContent=mmss(dur)}
 v.addEventListener('loadedmetadata',()=>{if(isFinite(v.duration))dur=v.duration;layoutMarks()});
 layoutMarks();
 
@@ -97,6 +166,7 @@ function paint(){
  $('.cur').textContent=mmss(t);track.setAttribute('aria-valuenow',Math.floor(t));track.setAttribute('aria-valuetext',mmss(t));
  const c=chapAt(t);
  if(c!==last){
+  stripItems.forEach((b,i)=>b.setAttribute('aria-current',i===c));
   chapBtns.forEach((b,i)=>{b.setAttribute('aria-current',i===c);if(i!==c)b.querySelector('.bar i').style.width='0'});last=c;
   nowEl.classList.remove('on');if(c>=0){nowEl.firstChild.textContent=nn(c)+' / '+CH.length;nowEl.lastChild.textContent=Z(CH[c][1],CH[c][2]);void nowEl.offsetWidth;nowEl.classList.add('on')}
  }
@@ -117,21 +187,51 @@ big.addEventListener('click',e=>{e.stopPropagation();if(v.ended)seek(0);v.muted=
 pp.addEventListener('click',e=>{e.stopPropagation();toggle()});
 mu.addEventListener('click',e=>{e.stopPropagation();v.muted=!v.muted;if(!v.muted&&v.volume===0)v.volume=1});
 snd.addEventListener('click',e=>{e.stopPropagation();v.muted=false;v.volume=1});
-$('.fs').addEventListener('click',e=>{e.stopPropagation();if(document.fullscreenElement)document.exitFullscreen();else if(screen.requestFullscreen)screen.requestFullscreen();else if(v.webkitEnterFullscreen)v.webkitEnterFullscreen()});
-screen.addEventListener('click',e=>{if(e.target.closest('.ctl'))return;toggle()});
-screen.addEventListener('dblclick',e=>{if(!e.target.closest('.ctl'))$('.fs').click()});
+$('.fs').addEventListener('click',e=>{e.stopPropagation();if(document.fullscreenElement)document.exitFullscreen();else if(stage.requestFullscreen)stage.requestFullscreen();else if(v.webkitEnterFullscreen)v.webkitEnterFullscreen()});
+screen.addEventListener('click',e=>{if(e.target.closest('.ctl,.filmstrip'))return;if(!strip.hidden){openStrip(false,true);return}toggle()});
+screen.addEventListener('dblclick',e=>{if(!e.target.closest('.ctl,.filmstrip'))$('.fs').click()});
 $('.ctl').addEventListener('click',e=>e.stopPropagation());
 
 let idleT=0;
-function poke(){screen.classList.remove('idle');clearTimeout(idleT);idleT=setTimeout(()=>{if(!v.paused&&!track.classList.contains('drag'))screen.classList.add('idle')},2200)}
+function poke(){screen.classList.remove('idle');clearTimeout(idleT);idleT=setTimeout(()=>{if(strip.hidden&&!v.paused&&!track.classList.contains('drag'))screen.classList.add('idle')},2200)}
 screen.addEventListener('pointermove',poke);screen.addEventListener('focusin',poke);
 
-const ratio=e=>{const r=track.getBoundingClientRect();return Math.min(1,Math.max(0,(e.clientX-r.left)/r.width))};
-function hover(e){const x=ratio(e),t=x*dur,c=chapAt(t);tip.style.left=x*100+'%';tip.textContent=mmss(t)+(c>=0?' · '+Z(CH[c][1],CH[c][2]):'')}
-track.addEventListener('pointermove',e=>{hover(e);if(track.classList.contains('drag'))seek(ratio(e)*dur)});
-track.addEventListener('pointerdown',e=>{track.setPointerCapture(e.pointerId);track.classList.add('drag');hover(e);seek(ratio(e)*dur)});
-const up=()=>{track.classList.remove('drag');poke()};
-track.addEventListener('pointerup',up);track.addEventListener('pointercancel',up);
+function trackTarget(event, snap) {
+ const bounds = track.getBoundingClientRect();
+ const x = Math.min(bounds.width,Math.max(0,event.clientX-bounds.left));
+ const time = x / bounds.width * dur;
+ if (snap) {
+  const radius = Math.min(event.pointerType==='touch' ? 8 : 5,bounds.width*.022);
+  const marker = CH.find(([start])=>Math.abs(start/dur*bounds.width-x)<=radius);
+  if (marker) return marker[0];
+ }
+ return time;
+}
+function showTime(time) {
+ const i = chapAt(time);
+ tip.textContent = mmss(time)+(i<0 ? '' : ' · '+Z(CH[i][1],CH[i][2]));
+ const half = tip.offsetWidth/2;
+ tip.style.left = Math.max(half,Math.min(track.clientWidth-half,track.clientWidth*time/dur))+'px';
+}
+let dragStart = null;
+track.addEventListener('pointerdown',event=>{
+ if (!event.isPrimary || event.button!==0) return;
+ track.setPointerCapture(event.pointerId);
+ track.classList.add('drag');
+ dragStart = event.clientX;
+ const t = trackTarget(event,true);
+ showTime(t);
+ seek(t);
+});
+track.addEventListener('pointermove',event=>{
+ if (!event.isPrimary) return;
+ const dragging = dragStart!==null;
+ const t = trackTarget(event,!dragging || Math.abs(event.clientX-dragStart)<3);
+ showTime(t);
+ if (dragging) seek(t);
+});
+function endDrag(){dragStart=null;track.classList.remove('drag');poke()}
+track.addEventListener('lostpointercapture',endDrag);
 track.addEventListener('keydown',e=>{const k={ArrowLeft:-5,ArrowRight:5,ArrowDown:-10,ArrowUp:10}[e.key];if(k){e.preventDefault();e.stopPropagation();seek(v.currentTime+k)}else if(e.key==='Home'){e.preventDefault();seek(0)}else if(e.key==='End'){e.preventDefault();seek(dur)}});
 
 chapBtns.forEach((b,i)=>b.addEventListener('click',()=>{seek(CH[i][0]);play();const r=screen.getBoundingClientRect();if(r.top<0||r.bottom>innerHeight)screen.scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'})}));
@@ -148,13 +248,58 @@ document.addEventListener('keydown',e=>{
 });
 
 
-$('.cp').addEventListener('click',e=>{const b=e.currentTarget,txt=[...app.querySelectorAll('.ibox code')].map(c=>c.textContent).join('\n');navigator.clipboard?.writeText(txt).then(()=>{b.classList.add('ok');b.innerHTML=I.check+'<span>'+Z('已复制','Copied')+'</span>';clearTimeout(b._t);b._t=setTimeout(()=>{b.classList.remove('ok');b.innerHTML=I.copy+'<span>'+Z('复制','Copy')+'</span>'},1600)},()=>{})});
+$('.cp').addEventListener('click', async event => {
+ const button = event.currentTarget;
+ const box = button.closest('.ibox');
+ const command = [...box.querySelectorAll('code')].map(code => code.textContent).join('\n');
+ clearTimeout(button._t);
+ try {
+  await navigator.clipboard.writeText(command);
+  box.querySelector('.copy-fallback')?.remove();
+  button.classList.add('ok');
+  button.innerHTML = I.check + '<span>' + Z('已复制','Copied') + '</span>';
+  button._t = setTimeout(() => {
+   button.classList.remove('ok');
+   button.innerHTML = I.copy + '<span>' + Z('复制','Copy') + '</span>';
+  }, 1600);
+ } catch {
+  let field = box.querySelector('.copy-fallback');
+  if (!field) {
+   field = document.createElement('textarea');
+   field.className = 'copy-fallback';
+   field.readOnly = true;
+   field.rows = 3;
+   field.setAttribute('aria-label', Z('手动复制部署命令','Copy deployment commands manually'));
+   box.append(field);
+  }
+  field.value = command;
+  button.classList.remove('ok');
+  button.querySelector('span').textContent = Z('请手动复制','Copy manually');
+  field.focus();
+  field.select();
+ }
+});
 try{const c=JSON.parse(localStorage.getItem('lf-stars')||'null');if(c&&typeof c.n==='number'){const e=$('.ghs .gct');e.textContent=c.n>=1e4?(c.n/1e3).toFixed(1)+'k':c.n.toLocaleString('en-US');e.hidden=false}}catch(e){}
+LF_NAV.bind();
 const nav=$('.nav'),onSc=()=>nav.classList.toggle('sc',scrollY>8);addEventListener('scroll',onSc,{passive:true});onSc();
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{rootMargin:'0px 0px -10% 0px'});
 app.querySelectorAll('.chap,.fin').forEach(el=>io.observe(el));
 app.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>{localStorage.setItem('lf-lang',b.dataset.l);const u=new URL(location);u.searchParams.set('lang',b.dataset.l);location.replace(u)}));
 
 // Muted autoplay so the page opens on a moving scene; sound is one click away.
-if(!reduced){v.muted=true;play()}
+function cueRetryChapter(){
+ const cue = () => {seek(CH[1][0]); $('.player-layout').scrollIntoView({block:'start',behavior:'instant'})};
+ if(v.readyState >= 1) cue(); else v.addEventListener('loadedmetadata',cue,{once:true});
+}
+function openLinkedStrip(){
+ $('.player-layout').scrollIntoView({block:'start',behavior:'instant'});
+ openStrip(true);
+}
+addEventListener('hashchange',()=>{
+ if(location.hash === '#retry') cueRetryChapter();
+ if(location.hash === '#chapter-strip') openLinkedStrip();
+});
+if(location.hash === '#retry') cueRetryChapter();
+else if(location.hash === '#chapter-strip') openLinkedStrip();
+else if(!reduced){v.muted=true;play()}
 })();

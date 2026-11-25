@@ -8,13 +8,17 @@
 <meta name="referrer" content="no-referrer"><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate" type="application/rss+xml" title="LoopForge 博客" href="https://loopforge.cn/blog/feed.xml">
 <link rel="preload" href="../../site/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../site/site.css?v=38">
+<link rel="stylesheet" href="../../site/site.css?v=39">
 <link rel="stylesheet" href="../blog.css?v=6">
-</head><body class="bp-page" data-root="../../" data-slug="loopforge-builds-loopforge">
+<link rel="stylesheet" href="../journal.css?v=13">
+<link rel="stylesheet" href="../../site/chrome.css?v=8">
+<link rel="stylesheet" href="../reader.css?v=5">
+</head><body class="bp-page reader-edition" data-root="../../" data-slug="loopforge-builds-loopforge">
+<a class="skip-link" href="#main">跳到内容 / Skip to content</a>
 <div id="nav"></div>
-<main class="bp">
+<main class="bp" id="main">
  <header class="bp-head">
-  <a class="bp-back rv" data-d="0" data-href="blog/" href="../"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span data-t="back">返回博客</span></a>
+  <div class="reader-imprint"><a class="bp-back" data-href="blog/" href="../"><em lang="en">Journal<span>.</span></em><span class="imprint-link" data-t="back">返回博客</span></a></div>
   <div class="bc-meta rv" data-d="60"><span class="bc-tag" data-tag="practice" data-tag-label="practice">团队实践</span><time datetime="2026-11-15">2026 年 11 月 15 日</time><span class="bc-dot"></span><span data-min="18">18 分钟阅读</span></div>
   <h1 class="rv" data-d="120">用 LoopForge 迭代 LoopForge：手把手搭一套 24 小时运转的 AI 研发工作台</h1>
   <p class="bp-sum rv" data-d="200">AI 写代码很快，但盯流程、审 PR、解冲突依然耗人。本文以 LoopForge 维护自身仓库的线上环境为样板，分 10 步配齐沙箱、交付 SOP 与 5 个后台定时任务，附全套可照抄的 Prompt。</p>
@@ -44,19 +48,19 @@
 cd LoopForge
 ./start.sh</code></pre></div>
 <figure>
-<div class="shot"><img src="img/gif/01-install.gif" alt="./start.sh 自动完成环境体检、拉取发布镜像并启动服务" loading="lazy"></div>
+<div class="shot"><img width="960" height="335" src="img/gif/01-install.gif" alt="./start.sh 自动完成环境体检、拉取发布镜像并启动服务" loading="lazy"></div>
 <figcaption>./start.sh 自动完成环境体检、拉取发布镜像并启动服务</figcaption>
 </figure>
 <p>如果国内服务器拉取 <code>ghcr.io</code> 较慢，执行时加上镜像加速变量 <code>MIRROR=ghcr.nju.edu.cn ./start.sh</code> 即可。启动后浏览器打开 <code>http://服务器IP:8090</code>，第一个注册的账号自动成为平台管理员。</p>
 <h3 class="step"><span>2</span>认识工作台首页</h3>
 <figure>
-<div class="shot"><img src="img/02-home.webp" alt="工作台首页：上方直接与 Main Bot 对话，下方提供快速接入等配置向导" loading="lazy"></div>
+<div class="shot"><img width="1440" height="900" src="img/02-home.webp" alt="工作台首页：上方直接与 Main Bot 对话，下方提供快速接入等配置向导" loading="lazy"></div>
 <figcaption>工作台首页：上方直接与 Main Bot 对话，下方提供快速接入等配置向导</figcaption>
 </figure>
 <p>登录进来就是日常协作的主工作台：中间的输入框可以把探索任务直接交给 <strong>Main Bot</strong>，支持用 <code>@</code> 随时唤起项目里的角色、技能、需求、SOP 或代码仓库；首次接入团队项目时，点下方的<strong>「快速接入」</strong>向导，跟着指引几步就能把鉴权凭据、代码仓库与默认流程配齐。</p>
 <h3 class="step"><span>3</span>按需配置干活的编程 CLI</h3>
 <figure>
-<div class="shot"><img src="img/03-cli-menu.webp" alt="输入框下方随时切换底层编程 CLI，各自使用你自己的凭据" loading="lazy"></div>
+<div class="shot"><img width="1440" height="900" src="img/03-cli-menu.webp" alt="输入框下方随时切换底层编程 CLI，各自使用你自己的凭据" loading="lazy"></div>
 <figcaption>输入框下方随时切换底层编程 CLI，各自使用你自己的凭据</figcaption>
 </figure>
 <p>LoopForge 不绑定单一模型厂商。在设置里填好你顺手的编程 CLI 凭据（CodeBuddy、Codex、Claude Code、Cursor CLI、OpenCode 等），就能在对话、SOP 节点和定时任务里自由选用——<strong>同一条流水线，完全可以让擅长深度推理的模型做方案与评审，让响应快的模型负责日常编码。</strong></p>
@@ -65,18 +69,18 @@ cd LoopForge
 <p class="h2-sub">给 Agent 划定安全、一致的施工现场</p>
 <h3 class="step"><span>4</span>新建项目，挂载代码仓库</h3>
 <figure>
-<div class="shot"><img src="img/real-project-repo.webp" alt="项目配置 → 代码仓库：SOP 与定时任务运行时会自动检出这里的仓库" loading="lazy"></div>
+<div class="shot"><img width="1440" height="900" src="img/real-project-repo.webp" alt="项目配置 → 代码仓库：SOP 与定时任务运行时会自动检出这里的仓库" loading="lazy"></div>
 <figcaption>项目配置 → 代码仓库：SOP 与定时任务运行时会自动检出这里的仓库</figcaption>
 </figure>
 <p>进入「设置 → 项目配置」创建项目，在「代码仓库」页接入你的 GitHub 仓库并指定默认分支（平台内置了 GitHub 设备码快捷授权，也支持通过 SSH 接入 GitLab、Gitea 等自建托管）。一个项目下可以同时挂载多个仓库，前后端分仓也能放在同一个项目里协同推进。</p>
 <h3 class="step"><span>5</span>配好隔离沙箱，告别“我本地是好的”</h3>
 <figure>
-<div class="shot"><img src="img/real-sandbox.webp" alt="环境资产 → 沙箱：为项目绑定独立的 Docker 运行容器" loading="lazy"></div>
+<div class="shot"><img width="1440" height="900" src="img/real-sandbox.webp" alt="环境资产 → 沙箱：为项目绑定独立的 Docker 运行容器" loading="lazy"></div>
 <figcaption>环境资产 → 沙箱：为项目绑定独立的 Docker 运行容器</figcaption>
 </figure>
 <p>让 Agent 写代码跑测试，最忌讳直接污染宿主机，或者因为缺依赖卡在半路。在 LoopForge 里，所有任务都在隔离的 Docker 沙箱里执行，<strong>绝不触碰宿主机环境。</strong> 你只需要在「环境资产」里用一份 Dockerfile 把项目的编译工具链写清楚：</p>
 <figure>
-<div class="shot"><img src="img/real-env.webp" alt="我们为 LoopForge 自身仓库配置的编译环境：Go 1.26 + Node 22 + 编程 CLI" loading="lazy"></div>
+<div class="shot"><img width="999" height="433" src="img/real-env.webp" alt="我们为 LoopForge 自身仓库配置的编译环境：Go 1.26 + Node 22 + 编程 CLI" loading="lazy"></div>
 <figcaption>我们为 LoopForge 自身仓库配置的编译环境：Go 1.26 + Node 22 + 编程 CLI</figcaption>
 </figure>
 <p>镜像构建好之后，无论是白天谁触发的 SOP，还是凌晨两点准时醒来的定时任务，全都跑在分毫不差的同一个容器环境里，彻底杜绝环境不一致带来的玄学报错。</p>
@@ -85,31 +89,31 @@ cd LoopForge
 <p class="h2-sub">把“聊一次改一次”变成带硬门禁的流水线</p>
 <h3 class="step"><span>6</span>选一套标准交付 SOP</h3>
 <figure>
-<div class="shot"><img src="img/sop-flow-zh.webp" alt="交付 SOP 编排：专职 Agent、确定性脚本与人工关口各司其职，不过关自动打回" loading="lazy"></div>
+<div class="shot"><img width="1600" height="365" src="img/sop-flow-zh.webp" alt="交付 SOP 编排：专职 Agent、确定性脚本与人工关口各司其职，不过关自动打回" loading="lazy"></div>
 <figcaption>交付 SOP 编排：专职 Agent、确定性脚本与人工关口各司其职，不过关自动打回</figcaption>
 </figure>
 <p>平台内置了后端交付、前端交付、产品方案、缺陷修复等开箱即用的 SOP 蓝图，复制到项目后就能在可视化画布上自由增删。整条流水线由三类核心节点咬合而成：<strong>Agent 节点</strong>负责思考、设计与改代码；<strong>脚本节点</strong>负责跑确定性的编译测试命令；<strong>人工关口</strong>在关键节点暂停，等你核对证据后拍板。任何一步没过关，都会带着具体问题自动打回上游节点返工。</p>
 <h3 class="step"><span>7</span>拆开角色职责，杜绝“自己审自己”</h3>
 <figure>
-<div class="shot"><img src="img/real-role.webp" alt="角色配置：独立绑定提示词、底层 CLI、模型、规范与阶段产物" loading="lazy"></div>
+<div class="shot"><img width="1036" height="699" src="img/real-role.webp" alt="角色配置：独立绑定提示词、底层 CLI、模型、规范与阶段产物" loading="lazy"></div>
 <figcaption>角色配置：独立绑定提示词、底层 CLI、模型、规范与阶段产物</figcaption>
 </figure>
 <p>在同一个聊天框里让刚写完代码的 Agent 顺手自检，它大概率会顺着刚才的惯性告诉你“没问题”。而在 SOP 里，需求定型、方案设计、开发实现、独立评审分别由独立的角色担任，还能统一挂载仓库根目录的编码规范（如 <code>AGENTS.md</code>）。比如「独立评审」角色<strong>全程没有参与代码编写</strong>，没有任何包袱，只对着 <code>git diff</code> 和验收标准逐条挑刺，发现阻断隐患直接打回开发重做。</p>
 <blockquote><p>写角色提示词有个屡试不爽的窍门：平时你在聊天框里每次都忍不住重复叮嘱 Agent 的那句话，就是最该写进角色规矩里的红线。</p></blockquote>
 <h3 class="step"><span>8</span>提需求，一键点「触发」</h3>
 <figure>
-<div class="shot"><img src="img/real-issues.webp" alt="需求列表：每张需求单绑定对应 SOP，当前卡在哪一环、进度多少一目了然" loading="lazy"></div>
+<div class="shot"><img width="1440" height="900" src="img/real-issues.webp" alt="需求列表：每张需求单绑定对应 SOP，当前卡在哪一环、进度多少一目了然" loading="lazy"></div>
 <figcaption>需求列表：每张需求单绑定对应 SOP，当前卡在哪一环、进度多少一目了然</figcaption>
 </figure>
 <p>把要做的事项建进需求列表（也可以交由后面的“自动调研”任务自动生成），选好关联的交付 SOP，点下右侧的「触发」，流水线就开始在后台自主闯关。推进过程中不用人守着屏幕，随时回列表就能看到它走到了哪一步、产出了哪个待合入的 PR。</p>
 <h3 class="step"><span>9</span>盯紧“0 Token 脚本校验”，凭实证放行</h3>
 <figure>
-<div class="shot"><img src="img/real-run-topo.webp" alt="运行详情拓扑：每个阶段的耗时、尝试次数与产出文档全程留痕" loading="lazy"></div>
+<div class="shot"><img width="999" height="190" src="img/real-run-topo.webp" alt="运行详情拓扑：每个阶段的耗时、尝试次数与产出文档全程留痕" loading="lazy"></div>
 <figcaption>运行详情拓扑：每个阶段的耗时、尝试次数与产出文档全程留痕</figcaption>
 </figure>
 <p>点进任意一次运行记录，每个节点的输出日志、工具调用轨迹与阶段文档都留得清清楚楚。其中最硬核的一环，是紧跟在编码后面的脚本校验节点：</p>
 <figure>
-<div class="shot"><img src="img/real-run-verify.webp" alt="确定性校验节点实录：直接跑编译、静态检查与单测，消耗 0 Token" loading="lazy"></div>
+<div class="shot"><img width="633" height="429" src="img/real-run-verify.webp" alt="确定性校验节点实录：直接跑编译、静态检查与单测，消耗 0 Token" loading="lazy"></div>
 <figcaption>确定性校验节点实录：直接跑编译、静态检查与单测，消耗 0 Token</figcaption>
 </figure>
 <p>这一步消耗的 Token 是 0——<strong>代码到底过没过关，只认命令退出码是不是 0，绝不听模型自己汇报“我测过了”。</strong>就拿我们实跑“定时任务支持按模型配置推理强度”这条需求来说：上游角色先梳理出老数据兼容要求与 16 条验收标准，开发节点在独立分支改完 13 个文件后，脚本节点当场跑通格式检查、全量编译、静态检查、后端单测与前端 189 项测试，随后才流向独立评审与人工验收。万一中途某一步需要调整，点「从这里重跑」就能保留上游设计成果，只重跑当前及后续节点。</p>
@@ -119,13 +123,13 @@ cd LoopForge
 <p>单次需求能稳稳交付之后，下一步就是把那些“每天都要干、但极度切割注意力”的日常维护活交给后台时钟。</p>
 <h3 class="step"><span>10</span>新建定时任务，配齐五环自举闭环</h3>
 <figure>
-<div class="shot"><img src="img/real-task-form.webp" alt="新建 AI 定时任务：填好名称、Cron 周期、执行器模型与提示词即可生效" loading="lazy"></div>
+<div class="shot"><img width="1440" height="900" src="img/real-task-form.webp" alt="新建 AI 定时任务：填好名称、Cron 周期、执行器模型与提示词即可生效" loading="lazy"></div>
 <figcaption>新建 AI 定时任务：填好名称、Cron 周期、执行器模型与提示词即可生效</figcaption>
 </figure>
 <p>在「设置 → 定时任务」点击<strong>「新建 AI 定时任务」</strong>，配置非常直观：任务名称、运行频率（常用间隔或 Cron 表达式）、选用的 CLI 与模型、以及任务提示词。被定时唤醒的 Agent 拥有与主工作台完全一致的权限——能读写 GitHub、拉起沙箱跑测试、用浏览器查资料，也能往平台需求池提单，跑完还能把摘要推给群 Bot。</p>
 <p>在维护 LoopForge 自身仓库时，我们在线上挂了五个错峰接力的定时任务：</p>
 <figure>
-<div class="shot"><img src="img/real-sched-all.webp" alt="LoopForge 项目下实际在线运转的五个 AI 定时任务" loading="lazy"></div>
+<div class="shot"><img width="1440" height="900" src="img/real-sched-all.webp" alt="LoopForge 项目下实际在线运转的五个 AI 定时任务" loading="lazy"></div>
 <figcaption>LoopForge 项目下实际在线运转的五个 AI 定时任务</figcaption>
 </figure>
 <div class="table-wrap"><table><thead><tr><th>任务名称</th><th>运行节奏</th><th>核心职责</th></tr></thead><tbody><tr><td>自动调研</td><td>每天 09:00</td><td>给社区 Issue 去噪归类，追踪同类工具动态，落成源码级需求单</td></tr><tr><td>PR 审查</td><td>每小时整点</td><td>逐个过初审，核对边界逻辑与测试断言，给出明确结论与理由</td></tr><tr><td>CI 巡检</td><td>每小时半点</td><td>紧盯自动化分支的冲突与失败用例，进沙箱合入 main 并自愈修复</td></tr><tr><td>补充测试</td><td>每天 02:00</td><td>挑一个低覆盖核心包补齐表驱动单测，严禁触碰生产代码</td></tr><tr><td>架构守护</td><td>每周一 03:00</td><td>对照 AGENTS.md 扫描跨层违规并小步重构，队列满额自动熔断</td></tr></tbody></table></div>
@@ -133,35 +137,35 @@ cd LoopForge
 <p>想让后台任务长期跑还不添乱，秘诀全在提示词里怎么“立规矩”。下面看看这五个任务的真实运行记录与防坑设计（完整 Prompt 均附在文末）：</p>
 <h4 class="task">① 自动调研：只读去噪，落成需求单<span class="when">每天 09:00</span></h4>
 <figure>
-<div class="shot"><img src="img/real-research-triage.webp" alt="调研实录：自动筛除脚本批量提交的清理单，按功能模块归拢真实用户痛点" loading="lazy"></div>
+<div class="shot"><img width="1440" height="900" src="img/real-research-triage.webp" alt="调研实录：自动筛除脚本批量提交的清理单，按功能模块归拢真实用户痛点" loading="lazy"></div>
 <figcaption>调研实录：自动筛除脚本批量提交的清理单，按功能模块归拢真实用户痛点</figcaption>
 </figure>
 <p>调研任务提示词的第一行就焊死了红线：<strong>对 GitHub 保持严格只读</strong>，绝不在公开仓库乱发评论或乱建 Issue 制造噪音，所有结论统一写进 LoopForge 的需求池。它会同步查阅同类工具的近期演进，并打开源码工作区核实现状，把模糊诉求落成指明具体包名、结构体与验收标准的待办单，做与不做完全由维护者定夺：</p>
 <figure>
-<div class="shot"><img src="img/real-research-issues.webp" alt="结合同类工具演进与本仓源码核对后，自动生成的待办需求单" loading="lazy"></div>
+<div class="shot"><img width="1440" height="900" src="img/real-research-issues.webp" alt="结合同类工具演进与本仓源码核对后，自动生成的待办需求单" loading="lazy"></div>
 <figcaption>结合同类工具演进与本仓源码核对后，自动生成的待办需求单</figcaption>
 </figure>
 <h4 class="task">② PR 审查：拒收敷衍的 LGTM<span class="when">每小时整点</span></h4>
 <figure>
-<div class="shot"><img src="img/real-review-session.webp" alt="整点审查台账：批准、要求修改与跳过原因逐一列明，绝不刷屏" loading="lazy"></div>
+<div class="shot"><img width="1440" height="900" src="img/real-review-session.webp" alt="整点审查台账：批准、要求修改与跳过原因逐一列明，绝不刷屏" loading="lazy"></div>
 <figcaption>整点审查台账：批准、要求修改与跳过原因逐一列明，绝不刷屏</figcaption>
 </figure>
 <p>它替维护者把最费眼力的初审活干在前面：重点抓“号称纯重构却暗改了边界条件”“超出关联需求范围”“新增逻辑没写有效断言”等隐患。为了杜绝形式主义和评论轰炸，规矩立得很死：<strong>严禁只回一句 LGTM</strong>，哪怕给通过也必须用两三句话交代核验了哪些核心函数与单测；<strong>已审过且没有新提交的 PR 直接跳过</strong>。它只负责给结论，合入按钮永远留给人按。</p>
 <h4 class="task">③ CI 巡检：只修自动化自己的分支<span class="when">每小时半点</span></h4>
 <figure>
-<div class="shot"><img src="img/real-ci-session-crop.webp" alt="半点巡检实录：检测到 16 项 CI 全绿且无冲突，仅待人工审批，本轮安静跳过" loading="lazy"></div>
+<div class="shot"><img width="1440" height="424" src="img/real-ci-session-crop.webp" alt="半点巡检实录：检测到 16 项 CI 全绿且无冲突，仅待人工审批，本轮安静跳过" loading="lazy"></div>
 <figcaption>半点巡检实录：检测到 16 项 CI 全绿且无冲突，仅待人工审批，本轮安静跳过</figcaption>
 </figure>
 <p>主干分支全天都在合入代码，在途 PR 很容易撞上冲突或红叉。半点唤醒的巡检助手会自动检出分支、合入最新 <code>main</code> 解掉冲突并重跑测试。安全边界同样锁死两条：<strong>只允许处理自动化账号自己提的 PR</strong>，人类同事的分支一行不碰；风平浪静时只在工作台留一张巡检表，绝不去 GitHub 刷存在感。</p>
 <h4 class="task">④ 每日补单测：生产代码一行不改<span class="when">每天 02:00</span></h4>
 <figure>
-<div class="shot"><img src="img/real-test-session.webp" alt="补单测实录：新增 3 个表驱动测试文件，目标包覆盖率从 83.3% 提升至 86.0%" loading="lazy"></div>
+<div class="shot"><img width="1440" height="900" src="img/real-test-session.webp" alt="补单测实录：新增 3 个表驱动测试文件，目标包覆盖率从 83.3% 提升至 86.0%" loading="lazy"></div>
 <figcaption>补单测实录：新增 3 个表驱动测试文件，目标包覆盖率从 83.3% 提升至 86.0%</figcaption>
 </figure>
 <p>让 AI 补测试最怕踩一个坑——测试跑不过时，它反手把原本正确的业务代码改了去迁就断言。因此提示词里立下死规矩：<strong>先查重防堆积，只准新建测试文件，严禁改动任何一行生产代码</strong>（若发现疑似业务缺陷，只准记在 PR 描述里交给人看）。上面这次凌晨运行中，它挑中核心领域层薄弱模块，一口气补齐 3 个测试文件并通过 <code>-race</code> 竞态检测，稳稳把覆盖率从 83.3% 抬升到 86.0%。</p>
 <h4 class="task">⑤ 架构守护：队列满额就主动熔断<span class="when">每周一 03:00</span></h4>
 <figure>
-<div class="shot"><img src="img/real-refactor-session-crop.webp" alt="水位熔断实录：检测到待合入的架构优化 PR 已超过上限，当场停手退出" loading="lazy"></div>
+<div class="shot"><img width="1440" height="601" src="img/real-refactor-session-crop.webp" alt="水位熔断实录：检测到待合入的架构优化 PR 已超过上限，当场停手退出" loading="lazy"></div>
 <figcaption>水位熔断实录：检测到待合入的架构优化 PR 已超过上限，当场停手退出</figcaption>
 </figure>
 <p>架构守护负责对照 <code>AGENTS.md</code> 扫描跨层调用，每次做 200 行以内的纯结构微调。实战里我们很快发现：<strong>自动重构千万不能贪多</strong>——如果待审队列里已经积压了一批重构单，后台还闷头继续提，只会把团队的评审队列彻底堵死。所以我们给它装上了水位上限：动手前先数未合入的【架构优化】PR，<strong>满 10 个立刻停手退出</strong>，连沙箱都不拉起。</p>
@@ -239,5 +243,5 @@ cd LoopForge
  </section>
 </main>
 <div id="foot"></div>
-<script src="../../site/nav.js?v=2"></script><script src="../blog.js?v=5"></script>
+<script src="../../site/nav.js?v=8"></script><script src="../reader-gallery.js"></script><script src="../blog.js?v=16"></script>
 </body></html>

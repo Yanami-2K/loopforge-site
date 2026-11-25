@@ -1,8 +1,8 @@
-# LoopForge 官网 · Official website
+# LoopForge 非官方社区介绍页 · Unofficial community introduction
 
 **在线访问 / Live:** https://loopforge.cn/
 
-这是 [Tencent/LoopForge](https://github.com/Tencent/LoopForge) 的官网。首页是一条纵向滚动的长页：首屏标题与 SOP 设计器动画 → 五个团队痛点 → 六步演进，每步都是按真实界面还原的动画（云端 7×24 工作区、共享会话与 Main Bot、带门禁可接管的 SOP、门禁自愈、定时与 Issue 自动化、工程级 RSI 复盘）→ 内嵌产品视频 → 部署 → 结尾。每段示意界面由 HTML/CSS 绘制，滚动进入视口时播放一次，可点“重播”；遵守 `prefers-reduced-motion`，`?still=1` 直接显示最终状态（用于截图）。内容依据 LoopForge 仓库与官方公众号文章《当 Coding Agent 走进研发团队》，功能名称与平台一致，需求、数字和对话为示例数据。中英文案在 `site/content.js`，页面与动画在 `site/flow.js`，样式在 `site/site.css`。旧的 Local 分段故事保留在 `local.html`。
+这是 [Tencent/LoopForge](https://github.com/Tencent/LoopForge) 的非官方社区介绍页，由社区维护。首页是一条纵向滚动的长页：首屏标题与 SOP 设计器动画 → 五个团队痛点 → 六步演进，每步都是按真实界面还原的动画（云端 7×24 工作区、共享会话与 Main Bot、带门禁可接管的 SOP、门禁自愈、定时与 Issue 自动化、工程级 RSI 复盘）→ 内嵌产品视频 → 部署 → 结尾。每段示意界面由 HTML/CSS 绘制，滚动进入视口时播放一次，可点“重播”；遵守 `prefers-reduced-motion`，`?still=1` 直接显示最终状态（用于截图）。内容依据 LoopForge 仓库与官方公众号文章《当 Coding Agent 走进研发团队》，功能名称与平台一致，需求、数字和对话为示例数据。中英文案在 `site/content.js`，页面与动画在 `site/flow.js`，样式在 `site/site.css`。旧的 Local 分段故事保留在 `local.html`。
 
 **产品演示视频:** https://loopforge.cn/demo/ 。`demo/` 是一个独立的视频播放页（`demo/index.html` + `demo.css` + `demo.js`，视频与封面在 `demo/media/`）：80 秒产品演示，自定义播放控件，进度条上标出 10 个章节，右侧章节列表可点击跳转并随播放高亮；默认静音自动播放（遵守 `prefers-reduced-motion`），快捷键 空格/K 播放暂停、←/→ 快退快进 5 秒、M 静音、F 全屏、1–9 跳章节。中英文跟随首页的 `?lang=` / `lf-lang`。页面 CSP 为 `connect-src 'none'`，除静态文件外不发请求。视频按 H.264 1080p、`+faststart` 编码，需由支持 Range 请求的服务器提供才能拖动进度（GitHub Pages 支持；本地可用 `npx http-server`）。
 
@@ -12,7 +12,7 @@
 
 原 `playground/` 是手工模拟，现在跳转到 `demo/` 演示视频。LoopForge 以 [MIT 协议](https://github.com/Tencent/LoopForge/blob/main/LICENSE) 开源。
 
-The official website for [Tencent/LoopForge](https://github.com/Tencent/LoopForge), focused on the self-hosted platform. The original Local story is retained at `local.html`.
+An unofficial community introduction for [Tencent/LoopForge](https://github.com/Tencent/LoopForge), focused on the self-hosted platform. The original Local story is retained at `local.html`.
 
 The blog lives at `blog/` with an RSS feed at `blog/feed.xml`. Post metadata is in `blog/posts.json` (`title_en` / `summary_en` are shown when the page is in English; article bodies are Chinese); each post is a static page at `blog/<slug>/index.html` with its images in `img/`. After adding a post, run `python3 blog/build_feed.py` to regenerate the feed. The top nav (`site/nav.js`) is shared by the home, roadmap and blog pages.
 
@@ -31,8 +31,9 @@ All conversations, diffs, review comments, test output and dashboard numbers are
 ## 本地预览 / Run locally
 
 ```bash
-python3 -m http.server 8000
-# open http://localhost:8000/
+node scripts/preview.mjs
+# open http://localhost:8317/
+# or choose another port: node scripts/preview.mjs 8000
 ```
 
 纯静态，无构建步骤。Static files only, no build step. 中文 / English: `?lang=zh` / `?lang=en`.
@@ -51,3 +52,11 @@ Product logos are used only to label which agent each command targets; they are 
 ## License
 
 MIT, see [LICENSE](LICENSE). `dash/index.html` © Tencent, MIT. `site/fonts/`: Inter Tight, Geist Mono and Montserrat (600, used for the LoopForge wordmark), SIL Open Font License 1.1 (`site/fonts/OFL-*.txt`). The logo (`site/logo.svg`, `favicon.svg`) and the cyan / blue / violet palette follow the product video.
+
+## 新版首页与 Journal / Product home and Journal
+
+首页沿用原有静态技术栈，新增 `site/home.css` 与 `site/phase-film.js`。2.1 秒日食与晨昏线转场只播放一次，离开视口暂停，减少动效偏好与 `?still=1` 直接显示静态终态。图文、导航及工具栏来自已确认的设计。必要的影像和字体来源见 `site/home/ASSETS.md`。
+
+Journal 入口仍为 `blog/`，四篇文章的原 URL、正文和 RSS 保留。索引使用 `posts.json`，分类和搜索在 `blog/blog.js`，视觉适配在 `blog/journal.css`。中英文切换延用 `lf-lang`；正文保留中文，英文界面提示 Written in Chinese。
+
+没有新增构建依赖或打包步骤。可继续使用原来的静态部署方式。视频拖动需要支持 HTTP Range 的服务器。

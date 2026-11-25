@@ -4,41 +4,48 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Agent Observability</title>
+<script>
+  const previewTheme = new URLSearchParams(location.search).get('theme');
+  if (previewTheme === 'light' || previewTheme === 'dark') document.documentElement.dataset.theme = previewTheme;
+</script>
 <style>
 :root{
-  --surface-page:#f9f9f7; --surface-card:#fcfcfb; --surface-sunken:#f2f1ec;
-  --text-primary:#0b0b0b; --text-secondary:#52514e; --text-muted:#898781;
-  --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,0.10);
-  --series-blue:#2a78d6; --series-orange:#eb6834; --series-aqua:#1baf7a; --series-yellow:#eda100;
-  --series-blue-wash:rgba(42,120,214,0.10); --series-orange-wash:rgba(235,104,52,0.10);
-  --seq-100:#cde2fb; --seq-200:#9ec5f4; --seq-350:#5598e7; --seq-450:#2a78d6; --seq-600:#184f95;
-  --status-good:#0ca30c; --status-warning:#b8790a; --status-critical:#d03b3b;
-  --status-good-bg:rgba(12,163,12,0.10); --status-warning-bg:rgba(184,121,10,0.12); --status-critical-bg:rgba(208,59,59,0.10);
-  --accent-ring:rgba(42,120,214,0.35);
+  --surface-page:#f7f8fb; --surface-card:#ffffff; --surface-sunken:#f1f3f9;
+  --text-primary:#0b0b0b; --text-secondary:#495366; --text-muted:#627087;
+  --grid:#e2e5ee; --axis:#bcc3d0; --border:rgba(11,11,11,0.10);
+  --series-blue:#435cd5; --series-orange:#7865aa; --series-aqua:#468698; --series-yellow:#ad8948;
+  --series-blue-wash:rgba(66,90,179,0.10); --series-orange-wash:rgba(120,101,170,0.10);
+  --seq-100:#cde2fb; --seq-200:#9ec5f4; --seq-350:#5598e7; --seq-450:#435cd5; --seq-600:#184f95;
+  --status-good:#354a94; --status-warning:#7650af; --status-critical:#a83e66;
+  --status-good-bg:#eaedfa; --status-warning-bg:#f3eefb; --status-critical-bg:#f9ecf1;
+  --route-auto:#4d63d8; --route-fallback:#9171ca; --route-pass:#b7c2d4;
+  --accent-ring:rgba(66,90,179,0.35);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --surface-page:#0d0d0d; --surface-card:#1a1a19; --surface-sunken:#161615;
-    --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#898781;
-    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
-    --series-blue:#3987e5; --series-orange:#d95926; --series-aqua:#199e70; --series-yellow:#c98500;
-    --series-blue-wash:rgba(57,135,229,0.14); --series-orange-wash:rgba(217,89,38,0.14);
-    --seq-100:#184f95; --seq-200:#1c5cab; --seq-350:#256abf; --seq-450:#3987e5; --seq-600:#86b6ef;
-    --status-good:#0ca30c; --status-warning:#fab219; --status-critical:#e66767;
-    --status-good-bg:rgba(12,163,12,0.16); --status-warning-bg:rgba(250,178,25,0.14); --status-critical-bg:rgba(230,103,103,0.14);
-    --accent-ring:rgba(57,135,229,0.4);
+    --surface-page:#10121a; --surface-card:#191d29; --surface-sunken:#141824;
+    --text-primary:#ffffff; --text-secondary:#bcc3d0; --text-muted:#627087;
+    --grid:#2c3244; --axis:#414960; --border:rgba(255,255,255,0.10);
+    --series-blue:#9cafff; --series-orange:#bda7e9; --series-aqua:#83bbc8; --series-yellow:#d3ba81;
+    --series-blue-wash:rgba(156,175,255,0.14); --series-orange-wash:rgba(189,167,233,0.14);
+    --seq-100:#184f95; --seq-200:#1c5cab; --seq-350:#256abf; --seq-450:#9cafff; --seq-600:#86b6ef;
+    --status-good:#abc6db; --status-warning:#e5c386; --status-critical:#f0a9c1;
+    --status-good-bg:rgba(72,103,131,0.16); --status-warning-bg:rgba(229,195,134,0.14); --status-critical-bg:rgba(240,169,193,0.14);
+    --route-auto:#8c9bff; --route-fallback:#c29bee; --route-pass:#68758e;
+  --accent-ring:rgba(156,175,255,0.4);
   }
 }
 :root[data-theme="dark"]{
-  --surface-page:#0d0d0d; --surface-card:#1a1a19; --surface-sunken:#161615;
-  --text-primary:#ffffff; --text-secondary:#c3c2b7; --text-muted:#898781;
-  --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,0.10);
-  --series-blue:#3987e5; --series-orange:#d95926; --series-aqua:#199e70; --series-yellow:#c98500;
-  --series-blue-wash:rgba(57,135,229,0.14); --series-orange-wash:rgba(217,89,38,0.14);
-  --seq-100:#184f95; --seq-200:#1c5cab; --seq-350:#256abf; --seq-450:#3987e5; --seq-600:#86b6ef;
-  --status-good:#0ca30c; --status-warning:#fab219; --status-critical:#e66767;
-  --status-good-bg:rgba(12,163,12,0.16); --status-warning-bg:rgba(250,178,25,0.14); --status-critical-bg:rgba(230,103,103,0.14);
-  --accent-ring:rgba(57,135,229,0.4);
+  --surface-page:#10121a; --surface-card:#191d29; --surface-sunken:#141824;
+  --text-primary:#ffffff; --text-secondary:#bcc3d0; --text-muted:#627087;
+  --grid:#2c3244; --axis:#414960; --border:rgba(255,255,255,0.10);
+  --series-blue:#9cafff; --series-orange:#bda7e9; --series-aqua:#83bbc8; --series-yellow:#d3ba81;
+  --series-blue-wash:rgba(156,175,255,0.14); --series-orange-wash:rgba(189,167,233,0.14);
+  --seq-100:#184f95; --seq-200:#1c5cab; --seq-350:#256abf; --seq-450:#9cafff; --seq-600:#86b6ef;
+  --status-good:#abc6db; --status-warning:#e5c386; --status-critical:#f0a9c1;
+  --status-good-bg:rgba(72,103,131,0.16); --status-warning-bg:rgba(229,195,134,0.14); --status-critical-bg:rgba(240,169,193,0.14);
+  --route-auto:#8c9bff; --route-fallback:#c29bee; --route-pass:#68758e;
+  --accent-ring:rgba(156,175,255,0.4);
 }
 *{box-sizing:border-box;}
 body{background:var(--surface-page); color:var(--text-primary); font-family:"IBM Plex Sans","Segoe UI",system-ui,sans-serif; margin:0;}
@@ -228,14 +235,16 @@ td.strong{color:var(--text-primary); font-weight:600;}
 footer.note{margin-top:30px; font-size:11.5px; color:var(--text-muted); line-height:1.7; border-top:1px solid var(--grid); padding-top:14px;}
 footer.note code{font-family:"IBM Plex Mono",monospace; background:var(--surface-sunken); padding:1px 5px; border-radius:4px;}
 </style>
+<link rel="stylesheet" href="dashboard.css?v=6">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
 </head>
 <body>
 
 <div class="app">
+  <a class="dash-brand" href="../"><img src="../site/logo.svg" alt="">LoopForge</a>
   <div class="app-header">
     <div>
-      <div class="app-title">Agent Observability</div>
+      <h1 class="app-title">Agent Observability</h1>
       <div class="app-sub">读取本地 <span class="mono">dashboard-data.json</span>（由 <span class="mono">build_dashboard_data.py</span> 从 metrics.ndjson / workflow-state.json 聚合而成）&middot; LoopForge 项目</div>
     </div>
     <div class="sample-badge" id="dataStatusBadge">加载中…</div>
@@ -261,7 +270,7 @@ footer.note code{font-family:"IBM Plex Mono",monospace; background:var(--surface
   <section class="tab-panel" id="panel-overview">
     <div class="card">
       <div class="card-head"><span class="card-title">建议关注</span><span class="card-note">按当前范围内的阈值规则实时算出，不是固定文案</span></div>
-      <div class="reminders" id="reminders"></div>
+      <div class="reminders" id="reminders" role="list"></div>
     </div>
 
     <div class="card">
@@ -343,9 +352,9 @@ footer.note code{font-family:"IBM Plex Mono",monospace; background:var(--surface
         <div class="health-bar">
           <div class="health-bar-track" id="hBar"></div>
           <div class="health-legend">
-            <span><span class="legend-swatch" style="background:var(--status-good);display:inline-block"></span> auto_dispatch</span>
-            <span><span class="legend-swatch" style="background:var(--status-warning);display:inline-block"></span> fallback_to_main</span>
-            <span><span class="legend-swatch" style="background:var(--text-muted);display:inline-block"></span> passthrough（*_failed 等本就该回 main）</span>
+            <span><span class="legend-swatch" style="background:var(--route-auto);display:inline-block"></span> auto_dispatch</span>
+            <span><span class="legend-swatch" style="background:var(--route-fallback);display:inline-block"></span> fallback_to_main</span>
+            <span><span class="legend-swatch" style="background:var(--route-pass);display:inline-block"></span> passthrough（*_failed 等本就该回 main）</span>
           </div>
         </div>
       </div>
@@ -483,12 +492,13 @@ footer.note code{font-family:"IBM Plex Mono",monospace; background:var(--surface
     items.forEach(function(it){
       var card = document.createElement("div");
       card.className = "reminder "+it.level;
+      card.setAttribute("role","listitem");
       var icon = it.level==="crit" ? "!" : (it.level==="warn" ? "!" : "✓");
       card.innerHTML =
-        '<div class="reminder-icon">'+icon+'</div>'+
-        '<div><div class="reminder-label">'+(it.level==="crit"?"critical":it.level==="warn"?"warning":"good")+'</div>'+
-        '<div style="font-size:12.5px;font-weight:600;margin-top:2px;">'+it.label+'</div>'+
-        '<div class="reminder-text">'+it.text+'</div></div>';
+        '<div class="reminder-heading"><span class="reminder-icon" aria-hidden="true">'+icon+'</span>'+
+        '<strong class="reminder-title">'+it.label+'</strong>'+
+        '<span class="reminder-label">'+(it.level==="crit"?"critical":it.level==="warn"?"warning":"good")+'</span></div>'+
+        '<div class="reminder-text">'+it.text+'</div>';
       el.appendChild(card);
     });
   }
@@ -764,7 +774,7 @@ footer.note code{font-family:"IBM Plex Mono",monospace; background:var(--surface
         ? '<span class="chip crit"><span class="chip-dot"></span>有失败</span>'
         : '<span class="chip good"><span class="chip-dot"></span>正常</span>';
       tr.innerHTML =
-        '<td class="strong mono">'+s.id+'</td>'+
+        '<td class="strong mono"><button type="button" class="session-toggle" aria-expanded="false"></button></td>'+
         '<td class="tab-nums">'+s.date+'</td>'+
         '<td>'+s.agent+'</td>'+
         '<td class="tab-nums">'+s.turns+'</td>'+
@@ -778,6 +788,10 @@ footer.note code{font-family:"IBM Plex Mono",monospace; background:var(--surface
       var expandTr = document.createElement("tr");
       expandTr.className = "expand-row";
       expandTr.hidden = true;
+      var sessionButton = tr.querySelector(".session-toggle");
+      sessionButton.textContent = s.id;
+      expandTr.id = "session-detail-" + s.id;
+      sessionButton.setAttribute("aria-controls", expandTr.id);
       var td = document.createElement("td");
       td.colSpan = 9;
       // 把同一 turn 里连续且工具名相同的调用合并成一段（累加耗时、记次数），
@@ -834,7 +848,11 @@ footer.note code{font-family:"IBM Plex Mono",monospace; background:var(--surface
       expandTr.appendChild(td);
       tbody.appendChild(expandTr);
 
-      tr.addEventListener("click", function(expandTr){ return function(){ expandTr.hidden = !expandTr.hidden; }; }(expandTr));
+      tr.addEventListener("click", function(){
+        expandTr.hidden = !expandTr.hidden;
+        sessionButton.setAttribute("aria-expanded", String(!expandTr.hidden));
+        tr.classList.toggle("is-expanded", !expandTr.hidden);
+      });
     });
   }
 
@@ -940,7 +958,7 @@ footer.note code{font-family:"IBM Plex Mono",monospace; background:var(--surface
     document.getElementById("hFallbackRate").textContent = rate.toFixed(1)+"%";
     var bar = document.getElementById("hBar");
     bar.innerHTML = "";
-    [["auto_dispatch",tok("--status-good")],["fallback_to_main",tok("--status-warning")],["passthrough",tok("--text-muted")]].forEach(function(pair){
+    [["auto_dispatch","var(--route-auto)"],["fallback_to_main","var(--route-fallback)"],["passthrough","var(--route-pass)"]].forEach(function(pair){
       var seg = document.createElement("div");
       seg.className = "health-bar-seg";
       seg.style.width = (total? d[pair[0]]/total*100 : 0)+"%";
@@ -1076,6 +1094,11 @@ footer.note code{font-family:"IBM Plex Mono",monospace; background:var(--surface
       Object.keys(panels).forEach(function(k){ document.getElementById(panels[k]).hidden = (k!==btn.dataset.tab); });
     });
   });
+
+  var linkedTab = new URLSearchParams(location.search).get("tab");
+  if (Object.prototype.hasOwnProperty.call(panels, linkedTab)) {
+    document.querySelector('.tab-btn[data-tab="' + linkedTab + '"]').click();
+  }
 
   window.addEventListener("resize", function(){
     renderCostChart(); renderModelChart(); renderTokenChart(); renderHeatmap();

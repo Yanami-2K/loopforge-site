@@ -1,6 +1,6 @@
 (function(){
 const T=window.LF_T,qs=new URLSearchParams(location.search);
-let L=qs.get('lang')||localStorage.getItem('lf-lang')||((navigator.language||'').startsWith('zh')?'zh':'en');if(!T[L])L='zh';
+let L=qs.get('lang')||localStorage.getItem('lf-lang')||'zh';if(!T[L])L='zh';
 /* ---------- easing tokens: out (entrances), io (moves), spring lives in CSS ---------- */
 function bez(x1,y1,x2,y2){const cx=3*x1,bx=3*(x2-x1)-cx,ax=1-cx-bx,cy=3*y1,by=3*(y2-y1)-cy,ay=1-cy-by;const sx=t=>((ax*t+bx)*t+cx)*t,sy=t=>((ay*t+by)*t+cy)*t;
  return x=>{if(x<=0)return 0;if(x>=1)return 1;let a=0,b=1,t=x;for(let i=0;i<24;i++){t=(a+b)/2;if(sx(t)<x)a=t;else b=t}return sy(t)}}
@@ -30,7 +30,7 @@ const MARK={
 const mark=(id,cls='')=>{const m=MARK[id];if(m.parts)return `<svg class="mk ${cls}" viewBox="${m.box}" aria-hidden="true">${m.parts.map(p=>`<path fill="${p[0]}" d="${p[1]}"/>`).join('')}</svg>`;return `<svg class="mk ${cls}" viewBox="${m[0]}" fill="currentColor" aria-hidden="true"><path d="${m[1]}"/></svg>`};
 const AGENTS=[['claude','Claude Code'],['codex','Codex'],['cursor','Cursor'],['codebuddy','CodeBuddy'],['pi','Pi']];
 const EXECS=[['codebuddy','CodeBuddy'],['codex','Codex'],['claude','Claude Code'],['opencode','OpenCode'],['cursor','Cursor'],['agy','Antigravity'],['kimi','Kimi Code'],['pi','Pi'],['dsh','DeepSeek Harness']];
-const TRY=()=>'demo/'+(L==='en'?'?lang=en':'');
+const TRY=()=>'demo/?lang='+L;
 const DOCS=()=>'docs/'+(L==='en'?'?lang=en':'');
 /* ---------- line icons (24px grid, 1.7 stroke) ---------- */
 const IC={home:'M3 10.5 12 3.5l9 7M5.5 9v11h13V9M10 20v-5.5h4V20',chart:'M4 20h16M7 16v-5M12 16V6M17 16v-8',list:'M8 6h12M8 12h12M8 18h12M4 6h.01M4 12h.01M4 18h.01',
@@ -65,6 +65,46 @@ const shell=(on,main,side='',top=true)=>`<div class="app"><aside class="arl"><sp
  <section class="amn">${top?`<header class="atp"><span class="asr">${ic('search')}<em>${Z('搜索需求、运行、SOP 或 Agent','Search runs, SOPs, agents…')}</em><kbd>⌘K</kbd></span><span class="sp"></span><span class="apj">LOOP · LoopForge ${ic('down')}</span><span class="alng">中 / EN</span><span class="aad"><i>A</i>admin</span></header>`:''}<div class="abd">${main}</div></section></div>`;
 const tg=(t,c='')=>`<span class="tg ${c}">${t}</span>`;
 /* ---------- hero: the SOP designer ---------- */
+const {plates, install: installPhaseFilm}=window.LF_PHASE;
+
+let releaseCover;
+function bindCover(){
+ if(releaseCover)releaseCover();
+ const frame=document.querySelector('.camera-frame'), cover=frame.closest('.hxl');
+ installPhaseFilm(frame);
+ const reduced=matchMedia('(prefers-reduced-motion:reduce)');
+ const word=cover.querySelector('.loop-word');
+ const period=cover.querySelector('.loop-period');
+ let motion=[];
+ function stop(){motion.forEach(a=>a.cancel());motion=[]}
+ function play(){
+  stop();if(reduced.matches || qs.has('still'))return;
+
+  for(const [i,line] of [...cover.querySelectorAll('.slogan-line')].entries()){
+   motion.push(line.animate([{opacity:.62},{opacity:1}],{duration:580,delay:i*105,fill:'backwards',easing:'ease-out'}));
+  }
+  if(word && period){
+   const reveal={delay:320,duration:260,fill:'backwards'};
+   motion.push(word.animate([
+    {clipPath:'inset(-45% 108% -55% -8%)'},
+    {clipPath:'inset(-45% -12% -55% -8%)'}
+   ],{...reveal,easing:'cubic-bezier(.26,.56,.42,1)'}));
+   motion.push(period.animate([{opacity:0},{opacity:0,offset:.58},{opacity:1}],reveal));
+
+  }
+ }
+ // Apply the opening pose before the first paint, including on a cold visit.
+ const bounds=cover.getBoundingClientRect();
+ const visibleHeight=Math.min(bounds.bottom,innerHeight)-Math.max(bounds.top,0);
+ if(bounds.height>0 && visibleHeight>=bounds.height*.55)play();
+ const io=new IntersectionObserver(([entry])=>{
+  if(!entry.isIntersecting)stop();
+  else if(entry.intersectionRatio>=.55 && !motion.length)play();
+ },{threshold:[0,.55]});
+ io.observe(cover);reduced.addEventListener('change',stop);
+ releaseCover=()=>{io.disconnect();reduced.removeEventListener('change',stop);stop()};
+}
+
 function hero(t){const c=t.hero;
  const N=[['bot','需求定型','Clarify','requirement.md',60,70],['bot','方案设计','Design','design.md',300,70],['bot','开发实现','Implement','patch.diff',540,70],
   ['bot','独立评审','Review','review.md',540,250],['script','运行测试','Run tests','go test ./...',300,250],['shield','人工验收','Sign-off',Z('打回 → 开发实现','reject → Implement'),60,250]];
@@ -87,7 +127,12 @@ function hero(t){const c=t.hero;
   <label>${Z('门禁','Gate')}</label><div class="fld mono">go test ./... · exit 0</div>
   <label>${Z('失败时','On failure')}</label><div class="fld">${Z('打回 · 重试上限 3','send back · retry ≤ 3')}</div></aside></div></div>`;
  return F(1240,shell('flow',main,'',true),1)}
-const TAGS=()=>[[Z('Agent 节点 · 独立配置执行器','Agent node · configurable executor'),'l',22],[Z('脚本门禁 · 按退出码客观判定','Script gate · verified by exit code'),'l',62],[Z('人工门禁 · 关键节点人工把关','Human gate · sign-off on key nodes'),'r',70],[Z('失败打回 · 附带报错自动返工','Reject edge · auto-rework with logs'),'r',38]];
+const designerNotes=()=>[
+ ['bot',Z('Agent 节点','Agent node'),Z('独立配置执行器','Configure each executor')],
+ ['script',Z('脚本门禁','Script gate'),Z('按退出码客观判定','Verify the exit code')],
+ ['shield',Z('人工门禁','Human gate'),Z('关键节点人工把关','Sign off on key steps')],
+ ['loop',Z('失败打回','On failure'),Z('附带报错自动返工','Retry with error logs')]
+];
 /* 01 cloud workspaces */
 function cloud(t){const c=t.cloud;const S=[['sbx-7f3a','LOOP-12',Z('修复订单导出的时区错误','Fix timezone bug in order export'),'run',[.18,1.1]],['sbx-2c91','LOOP-15',Z('订单列表按状态筛选','Filter orders by status'),'board',[.24,.62]],['sbx-e4b0','#219',Z('依赖安全检查 · 升级 lodash','Dependency check · bump lodash'),'list',[.3,.48]],['sbx-91d2','LOOP-17',Z('退款回调重试','Retry refund callbacks'),'run',[.36,1.1]]];
  const thumb=k=>`<div class="th2 ${k}"><i class="r"></i><div>${k==='board'?'<p><i></i><i></i><i></i><i></i></p><p><i></i><i></i><i></i><i></i></p>':k==='list'?'<p></p><p></p><p></p><p></p><p></p>':'<p></p><p class="w"></p><p class="n"><i></i><i></i><i></i><i></i></p><p></p>'}</div></div>`;
@@ -172,13 +217,12 @@ function stars(){const show=n=>document.querySelectorAll('.ghs .gct').forEach(e=
 const tmark=id=>id==='platform'?`<span class="mk lgm">${LOGO()}</span>`:mark(id);
 function install(t){const n=t.install;
  return `<div class="sec-h"><span class="kick">${ic('term')}${Z('快速部署','Deploy')}</span>${head({h:t.dep.h,em:t.dep.em,sub:n.sub})}</div>
- <div class="dep2"><div class="tabs rv" data-at=".14"><span class="ind" data-k="ind"></span>${TABS().map((a,i)=>`<button data-id="${a[0]}" class="${i?'':'act'}">${tmark(a[0])}${a[1]}</button>`).join('')}</div>
- <div class="ibox rv" data-at=".22"><div class="ibh"><i></i><i></i><i></i><span>bash</span><span class="sp"></span><button data-copy>${ic('copy')}${n.copy}</button></div><div class="row"><span>$</span><code data-k="ic">${INS.platform[0]}</code></div>
+ <div class="dep2"><div class="tabs rv" data-at=".14"><span class="ind" data-k="ind"></span>${TABS().map((a,i)=>`<button data-id="${a[0]}" aria-pressed="${!i}" class="${i?'':'act'}">${tmark(a[0])}${a[1]}</button>`).join('')}</div>
+ <div class="ibox rv" data-at=".22"><div class="ibh"><i></i><i></i><i></i><span>bash</span><span class="sp"></span><button data-copy>${ic('copy')}${n.copy}</button></div><textarea class="install-copy-field" rows="3" readonly hidden aria-label="${Z('手动复制两行部署命令','Copy both deployment commands manually')}"></textarea><div class="row"><span>$</span><code data-k="ic">${INS.platform[0]}</code></div>
  <div class="row"><span>$</span><code data-k="is">${INS.platform[1]}</code></div><div class="st"><span class="ps">›</span> <code data-k="ist">${stLine('platform')}</code></div><div class="ed" data-k="ied">${edNote('platform')}</div></div>
  <p class="inote rv" data-at=".3">${n.note} <code>npx -y loopforge-cli@latest doctor</code> · <a href="${DOCS()}#install">${Z('安装指引','Install guide')}</a></p></div>`}
 const STEPS=[['cloud',cloud,'cloud'],['chat',chat,'users'],['sop',sop,'flow'],['gate',gate,'shield'],['auto',auto,'clock'],['rsi',rsi,'loop']];
-const PIC=['cloud','users','bug','clock','loop'];
-const LEN={hero:2.4,why:1,head:.6,cloud:2,chat:2.6,sop:2.6,gate:2.6,auto:2.6,rsi:2.6,install:2,fin:.7};
+const LEN={film:.4,cover:2.4,hero:2.4,why:1,head:.6,cloud:2,chat:2.6,sop:2.6,gate:2.6,auto:2.6,rsi:2.6,install:2,fin:.7};
 const PLAY='<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15a1 1 0 001.5.86l12.6-7.5a1 1 0 000-1.72L8.5 3.64A1 1 0 007 4.5z"/></svg>';
 /* ---------- typing with human cadence ---------- */
 function cadence(s){const a=[...s];let h=7,t=0;const out=[];for(let i=0;i<a.length;i++){h=(h*9301+49297)%233280;const j=.55+h/233280*.9;const prev=a[i-1]||'';
@@ -187,52 +231,190 @@ function cadence(s){const a=[...s];let h=7,t=0;const out=[];for(let i=0;i<a.leng
 function setCount(e,k){const o=e.dataset.cnt;if(k>=1){if(e.textContent!==o)e.textContent=o;return}
  e.textContent=o.replace(/\d+(?:\.\d+)?/g,m=>{const d=(m.split('.')[1]||'').length;return (parseFloat(m)*k).toFixed(d)})}
 /* ---------- build ---------- */
+const requestedCover=qs.get('cover');
+const coverVariant=['a','b'].includes(requestedCover)?requestedCover:'fusion';
+document.documentElement.dataset.cover=coverVariant;
+function coverTitle(copy){
+ const words=line=>line.replace(/\b(loop)\b/i,'<span class="loop-word">$&</span>');
+ if(coverVariant==='b' && L==='zh'){
+  const [first,second]=copy.h.split('<br>');
+  const split=second.indexOf('Loop');
+  return [first,second.slice(0,split),words(second.slice(split))].map(line=>'<span class="slogan-line">'+line+'</span>').join('');
+ }
+ return copy.h.split('<br>').map(line=>{
+  const isFusionHeadline=coverVariant==='fusion' && L==='zh' && line.includes(copy.em);
+  const phrase=isFusionHeadline
+   ? words(copy.em).replace('可执行的','<span class="executable-phrase">可执行的</span>')
+   : words(copy.em);
+  let marked=line.replace(copy.em,'<em>'+phrase+'</em>');
+  if(isFusionHeadline)marked=marked.replace(/。$/,'<span class="loop-period">。</span>');
+  return '<span class="slogan-line">'+marked+'</span>';
+ }).join(L==='en'?' ':'');
+}
+let activeRun=location.hash==='#scene-gate'?'gate':'sop';
+function storyScenes(t){
+ const scenes=STEPS.map(([k,fn,icn],i)=>`<article class="stp u" id="scene-${k}" data-u="${k}"><header class="sth"><span class="stn rv" data-at=".02">${String(i+1).padStart(2,'0')}</span><div class="stt"><span class="kick">${ic(icn)}${t.story.marks[i]}</span>${head({h:t[k].h,em:t[k].em},'h3')}</div><p class="sub rv" data-at=".14">${t[k].sub}</p></header>
+   <div class="stage">${fn(t)}${sceneTools(t)}</div></article>`);
+ const switches=['sop','gate'].map((id,i)=>`<button type="button" data-scene="${id}" aria-controls="scene-${id}" aria-pressed="${activeRun===id}">${t.story.marks[i+2]}</button>`).join('');
+ return scenes[0]+scenes[1]+`<div class="run-exhibit" data-active="${activeRun}">
+  <div class="run-choices" role="group" aria-label="${Z('运行演示','Run walkthroughs')}">${switches}</div><div class="run-panels">${scenes[2]}${scenes[3]}</div></div>
+  ${scenes[4]}${scenes[5]}`;
+}
+function bindRunScenes(app){
+ const exhibit=app.querySelector('.run-exhibit');
+ const syncPanels=()=>{
+  exhibit.querySelectorAll('.stp').forEach(panel=>{panel.inert=panel.dataset.u!==activeRun});
+  exhibit.querySelectorAll('[data-scene]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.scene===activeRun)));
+ };
+ syncPanels();
+ const select=id=>{
+  if(activeRun===id)return;
+  activeRun=id;
+  exhibit.dataset.active=id;
+  syncPanels();
+  const model=U.find(m=>m.n===id);
+  reset(model);play(model,false);
+ };
+ exhibit.querySelectorAll('[data-scene]').forEach(b=>b.addEventListener('click',()=>select(b.dataset.scene)));
+}
+function demoButton(label){
+ const symbol=`<span class="projector-mark" aria-hidden="true"><span class="projector-screen"><span class="projector-moon"></span></span><span class="projector-play"></span></span>`;
+ return `<a class="btn-k demo-control" href="${TRY()}">${symbol}<span class="action-label">${label}</span><small class="runtime" aria-hidden="true">01:20</small></a>`;
+}
+function sceneTools(t){
+ return `<div class="scene-tools"><button type="button" class="rp">${ic('loop')}${t.replay}</button><button type="button" class="enlarge">${ic('search')}${Z('放大界面','Enlarge view')}</button></div>`;
+}
 let U=[];
 function build(){const t=T[L];document.documentElement.lang=L==='zh'?'zh-CN':'en';
  const MD=document.querySelector('meta[name=description]');window.LF_ZH_META=window.LF_ZH_META||[document.title,MD?MD.content:''];document.title=Z(LF_ZH_META[0],'LoopForge · Open-source, self-evolving cloud AI delivery platform');if(MD)MD.content=Z(LF_ZH_META[1],'LoopForge is an open-source, self-hosted, self-evolving cloud AI delivery platform: 24/7 cloud workspaces, a shared conversation with one Main Bot, SOPs with hard gates, scheduled and issue automation, and a review after every run that improves the process.');
  const GH='https://github.com/Tencent/LoopForge',ids=['why','story','video','deploy'];
  const c=t.hero,w=t.why,arrow=`<span class="ar">${ic('arrow')}</span>`;
- document.getElementById('app').innerHTML=`<header class="nav"><i class="nprog"></i><div class="nbar"><a class="brand" href="#top">${LOGO(1)}<span>LoopForge</span></a><span class="sp"></span>
+ document.getElementById('app').innerHTML=`<header class="nav nav-product"><i class="nprog"></i><div class="nbar"><a class="brand" href="#top">${LOGO(1)}<span>LoopForge</span></a><span class="sp"></span>
  ${LF_NAV.links({L,page:'home'})}
- <div class="lang"><button data-l="zh" class="${L==='zh'?'on':''}" aria-label="${Z('中文','Chinese')}">${Z('中','ZH')}</button><button data-l="en" class="${L==='en'?'on':''}">EN</button></div>
- <a class="ghs" href="${GH}" target="_blank" rel="noopener" aria-label="GitHub"><span class="gsw"><span class="g1">${mark('gh')}</span><span class="g2">${STAR}</span><i class="sk s1">${SPK}</i><i class="sk s2">${SPK}</i></span><span class="gtx">GitHub</span><span class="gct" hidden></span></a><a class="btn-k sm" href="${TRY()}">${t.try}${arrow}</a>${LF_NAV.menu(L)}</div></header>
- <main>
- <section class="hero u" id="top" data-u="hero"><div class="hx"><div class="hxl"><span class="kick rv" data-at=".02"><i class="led"></i>${Z('MIT 开源 · 可自主部署','MIT licensed · self-hosted')}</span>${head({h:c.h,em:c.em},'h1')}</div>
-  <div class="hxr"><p class="sub rv" data-at=".16">${c.sub}</p><div class="cta rv" data-at=".22"><a class="btn-k" href="${TRY()}">${t.try}${arrow}</a><a class="btn-t" href="#deploy">${c.deploy}${arrow}</a></div>
-  <div class="ags rv" data-at=".28"><small>${c.exec}</small>${EXECS.map((a,i)=>`<span class="ag" style="--i:${i}" data-tip="${a[1]}" aria-label="${a[1]}">${mark(a[0])}</span>`).join('')}<span class="sep"></span><a class="ag" style="--i:${EXECS.length}" href="${GH}" target="_blank" rel="noopener" data-tip="GitHub" aria-label="GitHub">${mark('gh')}</a><button type="button" class="ag wx" style="--i:${EXECS.length+1}" aria-label="${Z('微信交流群','WeChat group')}" aria-haspopup="true">${mark('wechat')}<span class="qr" role="tooltip"><img src="site/wechat-qr.png" width="132" height="132" alt="${Z('LoopForge 微信交流群二维码','LoopForge WeChat group QR code')}" loading="lazy"><b>${Z('扫码加入交流群','Scan to join on WeChat')}</b></span></button></div></div></div>
-  <div class="hwin">${TAGS().map((g,i)=>`<span class="atag ${g[1]} rv" data-at="${f2(.5+i*.06)}" style="top:${g[2]}%"><b>${g[0]}</b><i></i></span>`).join('')}${hero(t)}</div></section>
+ ${LF_NAV.language(L)}
+ <a class="ghs" href="${GH}" target="_blank" rel="noopener" aria-label="GitHub"><span class="gsw"><span class="g1">${mark('gh')}</span><span class="g2">${STAR}</span><i class="sk s1">${SPK}</i><i class="sk s2">${SPK}</i></span><span class="gtx">GitHub</span><span class="gct" hidden></span></a><a class="btn-k sm" href="${TRY()}">${t.try}<span class="ar">${ic('arrow')}</span></a>${LF_NAV.menu(L)}</div></header>
+ <main id="main">
+ <section class="hero" id="top"><div class="hx u" data-u="cover"><div class="hxl"><div class="cover-image" aria-hidden="true"><div class="camera-frame"><img src="${plates.terminator.src}" width="2400" height="1600" fetchpriority="high" alt=""></div></div><div class="cover-copy"><div class="product-signature"><span>${Z('云端 AI 自进化交付平台','Self-evolving cloud AI delivery platform')}</span><small>${Z('MIT 开源','MIT licensed')}</small></div><h1 class="h">${coverTitle(c)}</h1><p class="sub rv" data-at=".055"><span class="copy-main">${c.detail}</span><span class="copy-note">${c.detailFoot}</span></p><div class="cta rv" data-at=".075">${demoButton(t.try)}<a class="btn-t" href="#deploy">${ic('term')}<span class="action-label">${c.deploy}</span>${arrow}</a></div><div class="hero-capabilities" aria-label="${Z('产品能力','Product capabilities')}"><span>${Z('7×24 云端工作区','24/7 cloud workspaces')}</span><span>${Z('团队共享会话','Shared team sessions')}</span><span>${Z('带质量门禁的 SOP','SOPs with quality gates')}</span></div></div></div><div class="hxr">
+  <div class="ags rv" data-at=".035"><small>${c.exec}</small>${EXECS.map((a,i)=>`<button type="button" class="ag agent-trigger" style="--i:${i}" data-tip="${a[1]}" aria-label="${a[1]}" aria-pressed="false">${mark(a[0])}</button>`).join('')}<span class="sep"></span><a class="ag" style="--i:${EXECS.length}" href="${GH}" target="_blank" rel="noopener" data-tip="GitHub" aria-label="GitHub">${mark('gh')}<span class="community-label">GitHub</span></a><button type="button" class="ag wx" style="--i:${EXECS.length+1}" aria-label="${Z('微信交流群','WeChat group')}" aria-expanded="false" aria-controls="wechat-qr" aria-haspopup="true">${mark('wechat')}<span class="community-label">${Z('微信交流群','WeChat group')}</span><span class="qr" id="wechat-qr" role="tooltip"><img src="site/wechat-qr.png" width="132" height="132" alt="${Z('LoopForge 微信交流群二维码','LoopForge WeChat group QR code')}" loading="lazy"><b>${Z('扫码加入交流群','Scan to join on WeChat')}</b></span></button></div></div></div>
+  <div class="hwin u" id="designer" data-u="hero"><div class="designer-canvas">${hero(t)}<ul class="designer-notes">${designerNotes().map(([icon,title,detail],i)=>`<li class="rv" data-at="${f2(.5+i*.06)}">${ic(icon)}<div><b>${title}</b><span>${detail}</span></div></li>`).join('')}</ul></div>${sceneTools(t)}</div>
+  <div id="designer-transition" class="lunar-edge" aria-hidden="true"></div></section>
  <section class="why wrap u" id="why" data-u="why"><div class="sec-h"><span class="kick">${ic('gauge')}${Z('核心价值','Why LoopForge')}</span>${head(w)}</div>
-  <div class="pains">${w.pains.map((x,i)=>`<div class="pain rv" data-at="${(.18+i*.05).toFixed(2)}"><span class="pn">${x[0]}</span><span class="pi">${ic(PIC[i])}</span><h3>${x[1]}</h3><p>${x[2]}</p></div>`).join('')}</div></section>
+  <ol class="pains">${w.pains.map(([number,title,description]) => `<li class="pain"><span class="pn" aria-hidden="true">${number}</span><h3>${title}</h3><p>${description}</p></li>`).join('')}</ol></section>
  <section class="story wrap" id="story"><div class="sec-h u" data-u="head"><span class="kick">${ic('spark')}${Z('核心机制','How it works')}</span>${head(t.story)}</div>
-  ${STEPS.map(([k,fn,icn],i)=>`<article class="stp u" data-u="${k}"><header class="sth"><span class="stn rv" data-at=".02">${String(i+1).padStart(2,'0')}</span><div class="stt"><span class="kick">${ic(icn)}${t.story.marks[i]}</span>${head({h:t[k].h,em:t[k].em},'h3')}</div><p class="sub rv" data-at=".14">${t[k].sub}</p></header>
-   <div class="stage">${fn(t)}<button class="rp" type="button">${ic('loop')}${t.replay}</button></div></article>`).join('')}</section>
+  ${storyScenes(t)}</section>
  <section class="video wrap" id="video"><div class="sec-h u" data-u="head"><span class="kick">${ic('play')}${Z('实机演示','Walkthrough')}</span>${head(t.video)}</div>
-  <div class="vframe"><video preload="none" playsinline poster="demo/media/loopforge-promo${Z('','-en')}.jpg?v=12" src="demo/media/loopforge-promo${Z('','-en')}.mp4?v=12"></video>
-  <button class="play" type="button"><i>${PLAY}</i><span>${t.video.play}</span></button></div>
+  <div class="vframe u" data-u="film"><video preload="none" playsinline poster="${Z('demo/media/loopforge-promo.jpg','demo/media/loopforge-promo-en.jpg')}" data-src="demo/media/loopforge-promo${Z('','-en')}.mp4?v=12"></video>
+  <button class="play" type="button" aria-label="${t.video.play}"><b class="film-key" aria-hidden="true">${PLAY}<time datetime="PT1M20S">01:20</time></b><small class="film-error" role="status"></small></button></div>
   <div class="vfoot"><a class="btn-t" href="${TRY()}">${t.video.cta}${arrow}</a></div></section>
- <section class="deploy wrap u" id="deploy" data-u="install">${install(t)}</section>
- <section class="fin u" data-u="fin"><span class="fl rv pop" data-at=".02">${LOGO()}</span>${head(t.fin)}
-  <div class="cta rv" data-at=".2"><a class="btn-k" href="${TRY()}">${t.try}${arrow}</a><a class="btn-t" href="${DOCS()}">${Z('阅读使用文档','Read docs')}${arrow}</a><a class="btn-t" href="${GH}" target="_blank" rel="noopener">${mark('gh')}${t.install.gh}${arrow}</a></div></section>
+ <section class="deploy wrap u" id="deploy" data-u="install"><lf-lunar-surface aria-hidden="true"></lf-lunar-surface>${install(t)}</section>
+ <section class="fin u" id="closing" data-u="fin"><div class="fin-inner"><span class="fl rv" data-at=".02">${LOGO()}</span>${head(t.fin)}
+  <div class="cta rv" data-at=".2">${demoButton(t.try)}<a class="btn-t" href="${DOCS()}">${Z('阅读使用文档','Read docs')}${arrow}</a><a class="btn-t" href="${GH}" target="_blank" rel="noopener">${mark('gh')}${t.install.gh}${arrow}</a></div></div></section>
  </main>
- <footer class="ft"><a class="brand" href="#top">${LOGO(1)}<span>LoopForge</span></a><span>${t.install.foot} · <a href="${GH}" target="_blank" rel="noopener">github.com/Tencent/LoopForge</a> · ${Z('产品 Logo 归各自所有者','product logos belong to their owners')}</span></footer>`;
+ <footer class="ft"><a class="brand" href="#top">${LOGO(1)}<span>LoopForge</span></a><span>${t.install.foot} · <a href="${GH}" target="_blank" rel="noopener">github.com/Tencent/LoopForge</a> · ${Z('产品 Logo 归各自所有者','product logos belong to their owners')}</span></footer><p class="site-disclosure">${Z('非官方社区介绍页，由社区维护；LoopForge 产品由腾讯开源。界面对话、测试结果与看板数字为演示数据。','Unofficial community introduction. LoopForge is open-sourced by Tencent. UI conversations, test results and dashboard figures are illustrative.')} <a href="https://github.com/Yanami-2K/loopforge-site" target="_blank" rel="noopener">${Z('本站源码','Site source')}</a> · <a href="LICENSE">MIT</a> · ${Z('月面影像','Lunar imagery')}: <a href="site/home/ASSETS.md">NASA / Artemis II · LRO / GSFC / ASU</a></p>`;
  const app=document.getElementById('app');
+ const viewer=document.createElement('dialog');
+ viewer.className='scene-viewer';
+ viewer.setAttribute('aria-label',Z('放大界面','Enlarged view'));
+ viewer.innerHTML=`<form method="dialog"><button autofocus>${Z('关闭','Close')} ×</button></form><div class="scene-pan" tabindex="0"></div>`;
+ app.append(viewer);
+ const pan=viewer.querySelector('.scene-pan');
+ viewer.addEventListener('close',()=>pan.replaceChildren());
+ app.querySelectorAll('.enlarge').forEach(button=>button.addEventListener('click',()=>{
+  const scene=button.closest('.u');
+  const copy=scene.querySelector('.fz').cloneNode(true);
+  copy.querySelectorAll('[id]').forEach(el=>el.removeAttribute('id'));
+  copy.style.transform='none';
+  copy.style.margin='0 auto';
+  pan.className='scene-pan '+['pz','rdone','r2'].filter(c=>scene.classList.contains(c)).join(' ');
+  pan.replaceChildren(copy);
+  viewer.showModal();
+  if(!RM.matches&&!STILL){
+   const source=scene.querySelector('.fit').getBoundingClientRect();
+   const destination=viewer.getBoundingClientRect();
+   const ratio=Math.min(1,source.width/destination.width);
+   const x=source.left+source.width/2-destination.left-destination.width/2;
+   const y=source.top+source.height/2-destination.top-destination.height/2;
+   viewer.animate([{opacity:.45,transform:`translate(${x}px,${y}px) scale(${ratio})`},{opacity:1,transform:'none'}],{duration:340,easing:'cubic-bezier(.16,1,.3,1)'});
+  }
+  pan.scrollTo(0,0);
+ }));
  U=[...app.querySelectorAll('.u')].map(el=>{const q=s=>[...el.querySelectorAll(s)];const n=el.dataset.u;
   const m={el,n,dur:Math.round(LEN[n]*3400),p:0,done:false,playing:false,at:q('[data-at]'),off:q('[data-off]'),tick:q('[data-tick]'),cnt:q('[data-cnt]'),sw:q('[data-sw]'),press:q('[data-press]'),st:q('[data-st]'),path:q('[data-path]')};
-  el.querySelectorAll('[data-k]').forEach(e=>{if(!m[e.dataset.k])m[e.dataset.k]=e});return m});
+  el.querySelectorAll('[data-k]').forEach(e=>{if(!m[e.dataset.k])m[e.dataset.k]=e});m.surface=m.win?.closest('.fit')||(n==='film'?el:null);
+  m.watchTarget=m.win?m.surface.parentElement:el;
+  return m});
  U.forEach(m=>{const b=m.el.querySelector('.rp');if(b)b.addEventListener('click',()=>{reset(m);play(m)})});
- app.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.l===L)return;L=b.dataset.l;localStorage.setItem('lf-lang',L);const u=new URL(location);u.searchParams.set('lang',L);history.replaceState(null,'',u);boot()}));
- const ins=U.find(m=>m.n==='install');ins.el.querySelectorAll('.tabs button').forEach(b=>b.addEventListener('click',()=>{ins.manual=true;pick(ins,b.dataset.id,!RM.matches)}));
- const wxb=app.querySelector('.ags .wx');wxb.addEventListener('click',e=>{e.stopPropagation();wxb.classList.toggle('open')});document.addEventListener('click',()=>wxb.classList.remove('open'));
- ins.el.querySelector('[data-copy]').addEventListener('click',e=>{const b=e.currentTarget;navigator.clipboard&&navigator.clipboard.writeText(ins.ic.textContent+'\n'+ins.is.textContent);b.classList.add('ok');b.innerHTML=ic('check')+t.install.copied;clearTimeout(b._t);b._t=setTimeout(()=>{b.classList.remove('ok');b.innerHTML=ic('copy')+t.install.copy},1400)});
- app.querySelectorAll('.stage').forEach(g=>g.addEventListener('pointermove',e=>{const r=g.getBoundingClientRect();g.style.setProperty('--mx',(e.clientX-r.left)+'px');g.style.setProperty('--my',(e.clientY-r.top)+'px')},{passive:true}));
+ app.querySelectorAll('.lang button').forEach(b=>b.addEventListener('click',()=>{if(b.dataset.l===L)return;L=b.dataset.l;localStorage.setItem('lf-lang',L);const u=new URL(location);u.searchParams.set('lang',L);if(location.protocol!=='file:')history.replaceState(null,'',u);boot();app.querySelector('.lang [aria-pressed=true]').focus({preventScroll:true})}));
+ bindInstallControls(U.find(m=>m.n==='install'),t.install);
+ bindCover();
+ bindRunScenes(app);
+ const agents=app.querySelector('.ags');
+ agents.querySelectorAll('.agent-trigger').forEach(g=>{g.addEventListener('click',e=>{if(e.detail>0&&e.pointerType!=='touch'&&e.pointerType!=='pen'&&matchMedia('(hover:hover) and (pointer:fine)').matches)return;const open=!g.classList.contains('inspect');agents.querySelectorAll('.agent-trigger').forEach(x=>{x.classList.remove('inspect');x.setAttribute('aria-pressed','false')});if(open){g.classList.add('inspect');g.setAttribute('aria-pressed','true')}});g.addEventListener('keydown',e=>{if(e.key==='Escape'){g.classList.remove('inspect');g.setAttribute('aria-pressed','false');g.blur()}});g.addEventListener('blur',()=>{g.classList.remove('inspect');g.setAttribute('aria-pressed','false')})});
+ const wxb=app.querySelector('.ags .wx');wxb.addEventListener('click',e=>{e.stopPropagation();wxb.classList.toggle('open');wxb.setAttribute('aria-expanded',String(wxb.classList.contains('open')))});document.onclick=()=>{wxb.classList.remove('open');wxb.setAttribute('aria-expanded','false')};wxb.addEventListener('keydown',e=>{if(e.key==='Escape'){wxb.classList.remove('open');wxb.setAttribute('aria-expanded','false');wxb.blur()}});
+
+ const finePointer=matchMedia('(hover:hover) and (pointer:fine)');
+ app.querySelectorAll('.stage').forEach(surface=>{
+  surface.addEventListener('pointermove',event=>{
+   if(!finePointer.matches||RM.matches||STILL)return;
+   const rect=surface.getBoundingClientRect();
+   surface.style.setProperty('--mx',(event.clientX-rect.left)+'px');
+   surface.style.setProperty('--my',(event.clientY-rect.top)+'px');
+  },{passive:true});
+ });
  const vf=app.querySelector('.vframe'),v=vf.querySelector('video');
- vf.querySelector('.play').addEventListener('click',()=>{vf.classList.add('on');v.controls=true;v.play()});
+ vf.querySelector('.play').addEventListener('click',()=>{vf.classList.add('on');v.controls=true;if(!v.src)v.src=v.dataset.src;v.play().catch(()=>{vf.classList.remove('on');v.controls=false;vf.querySelector('.film-error').textContent=Z('视频需要联网 · 再试一次','Connect to play · Try again')})});
 }
 /* ---------- install tabs: sliding indicator + command retype ---------- */
-function placeInd(m){const b=m.el.querySelector('.tabs button.act');if(!b)return;m.ind.style.width=b.offsetWidth+'px';m.ind.style.transform=`translateX(${b.offsetLeft}px)`}
+function bindInstallControls(ins,labels){
+ const button=ins.el.querySelector('[data-copy]');
+ const manualField=ins.el.querySelector('.install-copy-field');
+ let revision=0, timeout;
+ function resetCopy(){
+  revision++;
+  clearTimeout(timeout);
+  manualField.hidden=true;
+  button.classList.remove('ok');
+  button.innerHTML=ic('copy')+labels.copy;
+ }
+ ins.el.querySelectorAll('.tabs button').forEach(tab=>tab.addEventListener('click',()=>{
+  resetCopy();
+  ins.manual=true;
+  pick(ins,tab.dataset.id,!RM.matches);
+ }));
+ button.addEventListener('click',async ()=>{
+  resetCopy();
+  const request=revision;
+  const id=ins.el.querySelector('.tabs .act').dataset.id;
+  ins.manual=true;
+  pick(ins,id,false);
+  const command=INS[id].slice(0,2).join('\n');
+  try{
+   await navigator.clipboard.writeText(command);
+  }catch{
+   if(request!==revision || !button.isConnected)return;
+   manualField.value=command;
+   manualField.hidden=false;
+   manualField.focus({preventScroll:true});
+   manualField.select();
+   let copied=false;
+   try{copied=document.execCommand('copy')}catch{}
+   if(!copied){
+    button.innerHTML=ic('copy')+Z('请手动复制','Copy manually');
+    return;
+   }
+   manualField.hidden=true;
+   button.focus({preventScroll:true});
+  }
+  if(request!==revision || !button.isConnected)return;
+  button.classList.add('ok');
+  button.innerHTML=ic('check')+labels.copied;
+  timeout=setTimeout(resetCopy,1400);
+ });
+}
+function placeInd(m){const b=m.el.querySelector('.tabs button.act');if(!b)return;m.ind.style.width=b.offsetWidth+'px';m.ind.style.height=b.offsetHeight+'px';m.ind.style.transform=`translate(${b.offsetLeft}px, ${b.offsetTop}px)`}
 function retype(el,text,delay=0){clearInterval(el._iv);clearTimeout(el._to);const c=cadence(text),dur=Math.min(900,180+text.length*16);
  el._to=setTimeout(()=>{const t0=performance.now();el._iv=setInterval(()=>{const k=cl((performance.now()-t0)/dur);let n=0;while(n<c.length&&c[n]<=k)n++;el.textContent=[...text].slice(0,n).join('');el.classList.toggle('typing',k<1);if(k>=1)clearInterval(el._iv)},16)},delay)}
-function pick(m,id,animate){m.el.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('act',x.dataset.id===id));m.cur=id;placeInd(m);const v=INS[id];
+function pick(m,id,animate){m.el.querySelectorAll('.tabs button').forEach(x=>{x.classList.toggle('act',x.dataset.id===id);x.setAttribute('aria-pressed',String(x.dataset.id===id))});m.cur=id;placeInd(m);const v=INS[id];
  const set=[[m.ic,v[0]],[m.is,v[1]],[m.ist,stLine(id)]];
  if(animate){set.forEach(([e,s],i)=>retype(e,s,i*140));m.ied.classList.remove('on');void m.ied.offsetWidth;m.ied.textContent=edNote(id);m.ied.classList.add('on')}
  else{set.forEach(([e,s])=>{clearInterval(e._iv);clearTimeout(e._to);e.textContent=s;e.classList.remove('typing')});m.ied.textContent=edNote(id);m.ied.classList.add('on')}}
@@ -242,10 +424,9 @@ function pointer(m,keys,p){const c=m.mc;if(!c)return;if(!m._pts)m._pts=keys.map(
  const P0=keys[0][0]-.03,P1=keys[keys.length-1][0]+.05;const vis=p>=P0&&p<=P1;c.style.opacity=vis?1:0;if(!vis)return;
  let x=m._pts[0].x,y=m._pts[0].y;for(let i=1;i<keys.length;i++){if(p>=keys[i][0]){x=m._pts[i].x;y=m._pts[i].y;continue}const t=EIO(R(p,keys[i-1][0]+(keys[i-1][2]?.015:0),keys[i][0]));x=lerp(m._pts[i-1].x,m._pts[i].x,t);y=lerp(m._pts[i-1].y,m._pts[i].y,t);break}
  c.style.transform=`translate(${x}px,${y}px)`;c.classList.toggle('click',keys.some(k=>k[2]&&p>=k[0]&&p<k[0]+.025))}
-const tilt=w=>e=>{w.style.transform=e>=1?'':`perspective(2400px) rotateX(${10*(1-e)}deg) translateY(${36*(1-e)}px)`};
+
 const KBW=220,KBH=104;
 const UPD={
- hero:(m,p)=>{tilt(m.win)(EO(R(p,-.05,.3)))},
  cloud:(m,p)=>{const mins=Math.round(lerp(0,155,EIO(R(p,.05,.95))));const h=(23*60+40+mins)%1440;m.clk.textContent=String(Math.floor(h/60)).padStart(2,'0')+':'+String(h%60).padStart(2,'0')},
  sop:(m,p)=>{pointer(m,[[.46,[700,140]],[.5,'pz',1],[.6,[560,330]],[.66,'rs',1],[.74,[820,420]]],p);
   const pz=p>=.5&&p<.66;m.el.classList.toggle('pz',pz);m.el.classList.toggle('rdone',p>=.95);if(pz)m.st.forEach(e=>{if(e.classList.contains('go'))e.classList.add('hold')});else m.st.forEach(e=>e.classList.remove('hold'))},
@@ -253,6 +434,10 @@ const UPD={
   m.g1.className='gnd dn';m.g0.className='gnd '+(re?'go':p>=.72?'dn':r?'rj':'dn');m.g3.className='gnd '+(p<.18?'':p<.32?'go':f?'bad':p<.72?'':p<.78?'go':'dn');m.g4.className='gnd '+(pass?'wt':'');
   m.bad.classList.toggle('on',f);m.okb.classList.toggle('on',pass);m.rl.classList.toggle('on',r);m.er.classList.toggle('on',r);m.e2.classList.toggle('on',p>=.18);m.e3.classList.toggle('on',pass);m.a0.textContent=p>=.56?'2':'1';m.a3.textContent=p>=.72?'2':'1'},
  auto:(m,p)=>{const cnt=[0,0,0,0];m.path.forEach(e=>{const pts=e.dataset.path.split(',').map(s=>s.split(':').map(Number));let col=0;pts.forEach(([a,c])=>{if(p>=a)col=c});
+   if(m.playing && !RM.matches && !STILL && e.dataset.column!==undefined && Number(e.dataset.column)!==col){
+    e.animate([{boxShadow:'0 2px 5px #23335c12'},{offset:.65,boxShadow:'0 6px 18px #546fc340, 0 0 0 2px #829cf599'},{boxShadow:'0 2px 5px #23335c12'}],{duration:650,easing:'ease-out'});
+   }
+   e.dataset.column=String(col);
    const row=cnt[col]++;e.style.transform=`translate(${col*(KBW+12)}px,${row*(KBH+10)}px)`;e.className=e.className.replace(/\bc[0-3]\b/g,'').trim()+' c'+col});
   cnt.forEach((n,i)=>m['n'+i].textContent=n);if(m.cf)m.cf.classList.toggle('on',p>=.6&&p<.76)},
  rsi:(m,p)=>{pointer(m,[[.06,[640,300]],[.12,'go',1],[.4,[760,330]],[.55,'ap0',1],[.59,'ap1',1],[.63,'ap2',1],[.7,[600,420]]],p);
@@ -267,20 +452,49 @@ function run(m,p){
  m.cnt.forEach(e=>setCount(e,EO(R(p,+e.dataset.a,+e.dataset.b))));
  m.sw.forEach(e=>e.classList.toggle('swon',p>=+e.dataset.sw));m.press.forEach(e=>e.classList.toggle('press',p>=+e.dataset.press&&p<+e.dataset.press+.03));
  m.st.forEach(e=>{const[a,b]=e.dataset.st.split(',').map(Number);e.classList.toggle('go',p>=a&&p<b);e.classList.toggle('dn',p>=b)});
- if(UPD[m.n])UPD[m.n](m,p);if(m.win&&m.n!=='hero')tilt(m.win)(EO(R(p,0,.16)))}
+ if(UPD[m.n])UPD[m.n](m,p);}
 /* ---------- each block plays on its own clock once it scrolls into view ---------- */
 const RM=matchMedia('(prefers-reduced-motion: reduce)'),STILL=qs.has('still');if(STILL)document.body.classList.add('still');
-function play(m){cancelAnimationFrame(m.raf);if(RM.matches||STILL){m.p=1;finish(m);return}
+function play(m,entrance=true){cancelAnimationFrame(m.raf);if(RM.matches||STILL){m.p=1;finish(m);return}
+ if(m.surface){
+  m.arrival?.cancel();
+  m.surface.classList.remove('awaiting-entrance');
+  if(entrance){
+   const style=getComputedStyle(m.surface);
+   m.arrival=m.surface.animate([
+    {opacity:.16,transform:'translate(var(--arrival-x),var(--arrival-y)) scale(var(--arrival-scale))'},
+    {opacity:1,transform:'translate(0,0) scale(1)'}
+   ],{duration:parseFloat(style.getPropertyValue('--arrival-time')),easing:'cubic-bezier(.17,.65,.22,1)'});
+  }
+ }
  m.playing=true;m.el.classList.remove('played');const t0=performance.now()-m.p*m.dur;
  const tick=now=>{m.p=cl((now-t0)/m.dur);run(m,m.p);if(m.p<1)m.raf=requestAnimationFrame(tick);else finish(m)};m.raf=requestAnimationFrame(tick)}
-function finish(m){m.playing=false;m.done=true;run(m,1);m.el.classList.add('played')}
+function finish(m){m.surface?.classList.remove('awaiting-entrance');m.playing=false;m.done=true;run(m,1);m.el.classList.add('played')}
 function reset(m){cancelAnimationFrame(m.raf);m.p=0;m.done=false;m.st2=undefined;m.manual=false;m._pts=null;
  m.el.classList.add('rewind');run(m,0);void m.el.offsetWidth;m.el.classList.remove('rewind')}
 let io;
-function watch(){if(io)io.disconnect();io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;const m=U.find(x=>x.el===e.target);io.unobserve(e.target);if(m&&!m.done&&!m.playing)play(m)}),{rootMargin:'0px 0px -25% 0px'});
- U.forEach(m=>{if(m.done){run(m,1);m.el.classList.add('played')}else io.observe(m.el)})}
+function watch(){
+ io?.disconnect();
+ const owners=new Map(U.map(m=>[m.watchTarget,m]));
+ io=new IntersectionObserver(entries=>entries.forEach(entry=>{
+  const model=owners.get(entry.target);
+  if(!entry.isIntersecting||model.el.inert||(model.surface&&entry.intersectionRatio<.18))return;
+  io.unobserve(entry.target);
+  if(!model.done&&!model.playing)play(model);
+ }),{threshold:[0,.18],rootMargin:'0px 0px -10% 0px'});
+ U.forEach(m=>{
+  if(m.done){run(m,1);m.el.classList.add('played')}
+  else{
+   if(m.surface && !m.playing)m.surface.classList.add('awaiting-entrance');
+   io.observe(m.watchTarget);
+  }
+ });
+}
 /* ---------- windows scale to their column ---------- */
-function fit(){document.querySelectorAll('.fit').forEach(f=>{const z=f.firstElementChild,b=z.offsetWidth,w=f.clientWidth,k=Math.min(+f.dataset.max||1,w/b);
+function fit(){
+ const wx=document.querySelector('.ags .wx'),qr=wx?.querySelector('.qr');
+ if(qr){const r=wx.getBoundingClientRect(),center=r.left+r.width/2,half=qr.offsetWidth/2;qr.style.setProperty('--qr-nudge',(Math.max(half+12,Math.min(document.documentElement.clientWidth-half-12,center))-center)+'px')}
+ document.querySelectorAll('.fit').forEach(f=>{const z=f.firstElementChild,b=z.offsetWidth,w=f.clientWidth;if(!b||!w)return;const k=Math.min(+f.dataset.max||1,w/b);
  z.style.transform=`scale(${k.toFixed(4)})`;z.style.marginLeft=Math.max(0,(w-b*k)/2)+'px';f.style.height=Math.ceil(z.offsetHeight*k)+'px'});U.forEach(m=>m._pts=null)}
 /* ---------- nav state ---------- */
 function onScroll(){const y=innerHeight*.45;let on=null;
@@ -289,11 +503,13 @@ function onScroll(){const y=innerHeight*.45;let on=null;
  LF_NAV.sync();
  document.querySelector('.nav').classList.toggle('sc',scrollY>8);
  const pg=document.querySelector('.nprog'),mx=document.documentElement.scrollHeight-innerHeight;if(pg)pg.style.transform=`scaleX(${mx>0?(scrollY/mx).toFixed(4):0})`}
-function boot(){const keep=scrollY,prev=U.map(m=>m.done);build();LF_NAV.bind();if(prev.length===U.length)U.forEach((m,i)=>{m.done=prev[i];if(m.done)m.p=1});
- U.forEach(m=>run(m,m.p));fit();watch();onScroll();stars();scrollTo(0,keep)}
+function boot(){const keep=scrollY,prev=U.map(m=>m.done);U.forEach(m=>{cancelAnimationFrame(m.raf);['ic','is','ist'].forEach(k=>{if(m[k]){clearInterval(m[k]._iv);clearTimeout(m[k]._to)}})});build();LF_NAV.bind();if(prev.length===U.length)U.forEach((m,i)=>{m.done=prev[i];if(m.done)m.p=1});
+ U.forEach(m=>{if(RM.matches||STILL){m.p=1;finish(m)}else run(m,m.p)});fit();watch();onScroll();stars();scrollTo(0,keep)}
 window.LF={get units(){return U},play,reset,fit};
 addEventListener('scroll',onScroll,{passive:true});
 addEventListener('resize',()=>{fit();onScroll();const m=U.find(x=>x.n==='install');if(m)placeInd(m)});
 document.fonts&&document.fonts.ready.then(()=>{fit();const m=U.find(x=>x.n==='install');if(m)placeInd(m)});
+RM.addEventListener('change',()=>{if(RM.matches)U.forEach(m=>{cancelAnimationFrame(m.raf);m.arrival?.cancel();m.p=1;finish(m)})});
 boot();
+if (location.hash) requestAnimationFrame(()=>{const target=document.getElementById(location.hash.slice(1));if(target)target.scrollIntoView({behavior:'instant'})});
 })();

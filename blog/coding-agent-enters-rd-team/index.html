@@ -8,14 +8,18 @@
 <meta name="referrer" content="no-referrer"><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate" type="application/rss+xml" title="LoopForge 博客" href="https://loopforge.cn/blog/feed.xml">
 <link rel="preload" href="../../site/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../site/site.css?v=38">
+<link rel="stylesheet" href="../../site/site.css?v=39">
 <link rel="stylesheet" href="../blog.css?v=6">
 <link rel="stylesheet" href="original.css?v=1">
-</head><body class="bp-page" data-root="../../" data-slug="coding-agent-enters-rd-team">
+<link rel="stylesheet" href="../journal.css?v=13">
+<link rel="stylesheet" href="../../site/chrome.css?v=8">
+<link rel="stylesheet" href="../reader.css?v=5">
+</head><body class="bp-page reader-edition" data-root="../../" data-slug="coding-agent-enters-rd-team">
+<a class="skip-link" href="#main">跳到内容 / Skip to content</a>
 <div id="nav"></div>
-<main class="bp">
+<main class="bp" id="main">
  <header class="bp-head">
-  <a class="bp-back rv" data-d="0" data-href="blog/" href="../"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span data-t="back">返回博客</span></a>
+  <div class="reader-imprint"><a class="bp-back" data-href="blog/" href="../"><em lang="en">Journal<span>.</span></em><span class="imprint-link" data-t="back">返回博客</span></a></div>
   <div class="bc-meta rv" data-d="60"><span class="bc-tag" data-tag="practice" data-tag-label="practice">团队实践</span><time datetime="2026-11-03">2026 年 11 月 3 日</time><span class="bc-dot"></span><span data-min="20">20 分钟阅读</span></div>
   <h1 class="rv" data-d="120">当 Coding Agent 走进研发团队：我们打造并开源了自进化研发平台 LoopForge</h1>
   <p class="bp-sum rv" data-d="200">从本地 Coding Agent 出发，复盘 LoopForge 如何依次解决云端运行、团队共享、工程级 SOP、无人值守自动化与递归自改进。</p>
@@ -34,7 +38,7 @@
     </div>
 
     <figure>
-      <img loading="lazy" src="img/hero-loop.gif" alt="从需求到 MR，再闭合成 LoopForge 循环">
+      <img width="960" height="720" loading="lazy" src="img/hero-loop.gif" alt="从需求到 MR，再闭合成 LoopForge 循环">
       <figcaption>▲ 需求进，MR 出：过程交给 Agent，人只在关键节点拍板</figcaption>
     </figure>
 
@@ -85,7 +89,7 @@
     <h3 class="sub"><span>1</span>一个共享会话 + 一个 Main Bot 窗口 + 同一个云端工作区</h3>
     <p>我们放弃了嘈杂的多 Bot 群聊，坚持<strong>“一个对话同一时间只绑定一个云端工作区，且只有一个 Main Bot 对接全组成员”</strong>。每次任务对应一个团队共享会话，产品、设计、研发直接进入同一个会话与 Main Bot 对话，成员换人发言时底层自动续接同一个会话上下文，操作的也是背后的同一个真实工作区。</p>
     <figure>
-      <img src="img/collab-fast.gif" alt="产品、设计、研发在同一个会话里与 Main Bot 协作" loading="lazy">
+      <img width="960" height="720" src="img/collab-fast.gif" alt="产品、设计、研发在同一个会话里与 Main Bot 协作" loading="lazy">
       <figcaption>▲ 产品、设计、研发在同一个会话里，和同一个 Main Bot 对话</figcaption>
     </figure>
     <p>遇到改行文案、调个样式、修个小 Bug 这类日常需求，任何成员直接在共享会话里跟 Main Bot 说一句，Main Bot 当场打开云端工作区改代码、跑验证并一键提交 MR，全组实时可见、无需二次同步。</p>
@@ -123,7 +127,7 @@
     <h3 class="sub"><span>2</span>Main Bot 主副驾三层秩序：既能自动驾驶，又能随时丝滑接管</h3>
     <p>引入 SOP 后，并不意味着人失去了掌控感。我们把协作收敛为可进可退的<strong>“人 ↔ Main Bot ↔ SOP 节点”三层主副驾结构</strong>：</p>
     <figure>
-      <img src="img/layers.gif" alt="成员 → Main Bot → SOP 编排 → 云端工作区" loading="lazy">
+      <img width="960" height="720" src="img/layers.gif" alt="成员 → Main Bot → SOP 编排 → 云端工作区" loading="lazy">
       <figcaption>▲ 小事 Main Bot 直接改并提 MR；大事派发 SOP，可随时暂停、接管、恢复，测试不过自动打回</figcaption>
     </figure>
     <p>当 SOP 正在自动运行时，共享会话上方实时展示节点流水线，点击任意节点即可查看它的思考过程与执行日志。如果中途发现方向偏了，不需要去底层乱插话，除了可以在在线编辑器或终端里直接修改外，只需跟 Main Bot 说一声，就能按三种方式受控接管：</p>
@@ -136,7 +140,7 @@
     <h3 class="sub"><span>3</span>工程级 RSI：内环门禁当场自愈 + 外环复盘递归自改进</h3>
     <p>前沿 AI 领域一直在探索 <strong>RSI（Recursive Self-Improvement，递归自我改进）</strong>。但在真实的研发团队里，靠重新训练模型权重既不现实也太慢；我们真正落地的是<strong>工程级 RSI——让系统的执行轨迹反哺系统自身的 SOP、角色规范与验证门禁</strong>，形成“执行 → 客观检验 → 复盘诊断 → 改写流程 → 下一轮更准”的进化飞轮：</p>
     <figure>
-      <img src="img/rsi.gif" alt="返工被复盘成处方，写回 SOP 后下一次一次通过" loading="lazy">
+      <img width="960" height="720" src="img/rsi.gif" alt="返工被复盘成处方，写回 SOP 后下一次一次通过" loading="lazy">
       <figcaption>▲ 第 1 次返工两次、55 分 → 复盘开出处方、新增门禁 → 第 2 次一次通过、96 分</figcaption>
     </figure>
     <ol class="num">
@@ -172,7 +176,7 @@
     <div class="part"><span class="no">SUMMARY</span><h2>总结：从个人工具到自演进研发组织的五步跨越</h2><div class="bar"></div></div>
     <p>回看 LoopForge 的演进历程，如果借用自动驾驶的 L1~L5 分级来衡量研发团队落地 Agent 的深度，这五步恰好勾勒出了一条清晰的工程进阶路径：</p>
     <figure>
-      <img src="img/levels-v2.gif" alt="L1 到 L5 分级" loading="lazy">
+      <img width="960" height="720" src="img/levels-v2.gif" alt="L1 到 L5 分级" loading="lazy">
       <figcaption>▲ 从本地单机工具走向云端共享、SOP 自治与自演进组织</figcaption>
     </figure>
     <div class="levels">
@@ -206,7 +210,7 @@
     </a>
     <div class="qr-box">
       <p style="margin:14px 0 6px;text-align:center;font-size:14px;color:var(--sub)">扫描下方二维码加入 <strong>LoopForge 交流群</strong>：</p>
-      <img src="img/qrcode.png" alt="扫描二维码加入 LoopForge 交流群" loading="lazy">
+      <img width="396" height="396" src="img/qrcode.png" alt="扫描二维码加入 LoopForge 交流群" loading="lazy">
     </div>
 </div>
 </div>
@@ -222,5 +226,5 @@
  </section>
 </main>
 <div id="foot"></div>
-<script src="../../site/nav.js?v=2"></script><script src="../blog.js?v=5"></script>
+<script src="../../site/nav.js?v=8"></script><script src="../reader-gallery.js"></script><script src="../blog.js?v=16"></script>
 </body></html>

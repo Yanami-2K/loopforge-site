@@ -7,11 +7,8 @@ let L = qs.get('lang') || localStorage.getItem('lf-lang') || ((navigator.languag
 if (!DATA[L]) L = 'zh';
 
 let query = '';
-const GH = 'https://github.com/Tencent/LoopForge';
 
-const LOGO = `<svg viewBox="12 12 88 88" fill="none" aria-hidden="true"><defs><linearGradient id="dlfg" x1="19" y1="20" x2="93" y2="93" gradientUnits="userSpaceOnUse"><stop stop-color="#008DCC"/><stop offset=".48" stop-color="#526CE8"/><stop offset="1" stop-color="#8A4ED9"/></linearGradient></defs><path d="M53 72C53 59 63 52.5 73 52.5S93 59 93 72 83 91.5 73 91.5 53 85 53 72V40C53 27 44.5 20.5 36 20.5S19 27 19 40" stroke="url(#dlfg)" stroke-width="7.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 const IC_SEARCH = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg>`;
-const IC_GH = `<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>`;
 const IC_MENU = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>`;
 
 function esc(s) {
@@ -52,6 +49,7 @@ function renderMarkdown(md) {
   let html = '';
   let i = 0;
   let hIdx = 0;
+  let sectionNumber = 0;
   const headings = [];
 
   while (i < lines.length) {
@@ -65,6 +63,7 @@ function renderMarkdown(md) {
 
     // Code block
     if (trimmed.startsWith('```')) {
+      const syntax = trimmed.slice(3).trim();
       const codeLines = [];
       i++;
       while (i < lines.length && !lines[i].trim().startsWith('```')) {
@@ -72,7 +71,7 @@ function renderMarkdown(md) {
         i++;
       }
       i++;
-      html += `<pre><code>${codeLines.join('\n')}</code></pre>`;
+      html += `<div class="d-code"><div class="d-code-tools"><span>${esc(syntax || (L === 'en' ? 'Code' : '代码'))}</span><button type="button" data-copy>${L === 'en' ? 'Copy' : '复制'}</button></div><pre><code>${codeLines.join('\n')}</code></pre></div>`;
       continue;
     }
 
@@ -90,8 +89,10 @@ function renderMarkdown(md) {
       const text = hm[2].trim();
       const plain = text.replace(/[`*]/g, '');
       const id = 'sec-' + (++hIdx);
-      headings.push({ id, level, text: plain });
-      html += `<h${level} id="${id}">${inlineMd(text)}</h${level}>`;
+      const section = level === 2 ? String(++sectionNumber).padStart(2,'0') : '';
+      headings.push({ id, level, text: plain, section });
+      const prefix = section ? '<span class="section-no" aria-hidden="true">'+section+'</span>' : '';
+      html += `<h${level} id="${id}">${prefix}${inlineMd(text)}</h${level}>`;
       i++;
       continue;
     }
@@ -219,13 +220,13 @@ function buildSidebar(activeId) {
         return `<details class="d-sub ${hasOn ? 'has-on' : ''}" open>
           <summary>${esc(it.group)}</summary>
           <div class="d-sub-list">
-            ${childrenFiltered.map(ch => `<a class="d-link ${ch.id === activeId ? 'on' : ''}" href="#${ch.id}" data-doc="${ch.id}">${esc(ch.title)}</a>`).join('')}
+            ${childrenFiltered.map(ch => `<a class="d-link ${ch.id === activeId ? 'on' : ''}" ${ch.id === activeId ? 'aria-current="page"' : ''} href="#${ch.id}" data-doc="${ch.id}">${esc(ch.title)}</a>`).join('')}
           </div>
         </details>`;
       }
       if (!matchesSearch(it.id, it.title, q)) return '';
       hasAny = true;
-      return `<a class="d-link ${it.id === activeId ? 'on' : ''}" href="#${it.id}" data-doc="${it.id}">${esc(it.title)}</a>`;
+      return `<a class="d-link ${it.id === activeId ? 'on' : ''}" ${it.id === activeId ? 'aria-current="page"' : ''} href="#${it.id}" data-doc="${it.id}">${esc(it.title)}</a>`;
     }).join('');
 
     if (!itemsHtml) return '';
@@ -235,6 +236,72 @@ function buildSidebar(activeId) {
   return secsHtml || `<div class="d-empty">${esc(d.ui.searchEmpty)}</div>`;
 }
 
+let outline = [];
+let activeSection = null;
+let frame = 0;
+function updateOutline() {
+  frame = 0;
+  if (!outline.length) return;
+  let current = outline[0];
+  for (const entry of outline) {
+    if (entry.heading.getBoundingClientRect().top > 120) break;
+    current = entry;
+  }
+  if (scrollY > 0 && scrollY+innerHeight >= document.documentElement.scrollHeight-2) {
+    current = outline[outline.length-1];
+  }
+  if (current === activeSection) return;
+  activeSection = current;
+  document.querySelector('.d-inline-location').textContent = current.links[0].lastElementChild.textContent;
+  outline.forEach(entry => {
+    entry.links.forEach(link => {
+      if (entry === current) link.setAttribute('aria-current','location');
+      else link.removeAttribute('aria-current');
+    });
+  });
+}
+addEventListener('scroll', () => { if (!frame) frame = requestAnimationFrame(updateOutline); }, {passive:true});
+document.addEventListener('click', async event => {
+  const button = event.target.closest('.d-code button[data-copy]');
+  if (!button) return;
+  const code = button.closest('.d-code').querySelector('code');
+  try {
+    await navigator.clipboard.writeText(code.textContent);
+    button.textContent = L === 'en' ? 'Copied' : '已复制';
+    setTimeout(() => { button.textContent = L === 'en' ? 'Copy' : '复制'; }, 1400);
+  } catch {
+    const range = document.createRange();
+    range.selectNodeContents(code);
+    const selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+});
+function setDirectory(open) {
+  document.body.classList.toggle('d-nav-open', open);
+  document.getElementById('dMenuBtn').setAttribute('aria-expanded', String(open));
+}
+function focusSearch() {
+  document.querySelector('#dSiteNav .nav.mo .nmb')?.click();
+  const dialog = document.getElementById('dSearchDialog');
+  if (dialog.open) return;
+  const input = dialog.querySelector('input');
+  input.value = '';
+  showSearchResults();
+  dialog.showModal();
+  input.focus();
+}
+function showSearchResults() {
+  const dialog = document.getElementById('dSearchDialog');
+  const term = dialog.querySelector('input').value.trim().toLowerCase();
+  const matches = flatten(DATA[L].tree).filter(item => matchesSearch(item.id, item.title, term));
+  if (term) matches.sort((a, b) => Number(b.title.toLowerCase().includes(term)) - Number(a.title.toLowerCase().includes(term)));
+  dialog.querySelector('.d-search-results').innerHTML = matches.map(item =>
+    `<a href="#${esc(item.id)}"><small>${esc(item.secTitle)}</small><strong>${esc(item.title)}</strong></a>`
+  ).join('') || `<p role="status">${esc(DATA[L].ui.searchEmpty)}</p>`;
+  dialog.querySelector('.d-search-results').scrollTop = 0;
+}
+let chapterMotion;
 function render(scrollTop = true) {
   const d = DATA[L];
   const activeId = currentId();
@@ -249,31 +316,18 @@ function render(scrollTop = true) {
 
   const prevItem = idx > 0 ? flat[idx - 1] : null;
   const nextItem = idx >= 0 && idx + 1 < flat.length ? flat[idx + 1] : null;
-  const homeUrl = '../' + (L === 'en' ? '?lang=en' : '');
-  const demoUrl = '../demo/' + (L === 'en' ? '?lang=en' : '');
-
   const app = document.getElementById('app');
-  if (!app.querySelector('.d-top')) {
+  if (!document.getElementById('dSide')) {
     app.innerHTML = `
-      <header class="d-top">
-        <div class="d-topbar">
-          <button type="button" class="d-menu-btn" id="dMenuBtn" aria-label="Menu">${IC_MENU}</button>
-          <a class="d-brand" href="${homeUrl}">${LOGO}<span>LoopForge</span></a>
-          <span class="d-badge" id="dBrandSub"></span>
-          <nav class="d-top-links">
-            <a id="dBackHome" href="${homeUrl}"></a>
-            <a id="dWatchDemo" href="${demoUrl}"></a>
-            <a id="dRoadmap" href="../roadmap/"></a>
-            <a id="dBlog" href="../blog/"></a>
-          </nav>
-          <span class="d-sp"></span>
-          <div class="d-lang">
-            <button type="button" data-lang="zh">中</button>
-            <button type="button" data-lang="en">EN</button>
-          </div>
-          <a class="d-gh" href="${GH}" target="_blank" rel="noopener">${IC_GH}<span>GitHub</span></a>
+      <div id="dSiteNav"></div>
+      <dialog id="dSearchDialog">
+        <div class="d-search-head">
+          <input type="search" autocomplete="off" autofocus>
+          <button type="button"><span aria-hidden="true">×</span></button>
         </div>
-      </header>
+        <div class="d-search-results"></div>
+      </dialog>
+      <div class="d-directory"><button type="button" class="d-menu-btn" id="dMenuBtn" aria-controls="dSide" aria-expanded="false">${IC_MENU}<span></span></button></div>
       <div class="d-layout">
         <aside class="d-side" id="dSide">
           <div class="d-side-head">
@@ -282,7 +336,7 @@ function render(scrollTop = true) {
           </div>
           <div class="d-search">
             ${IC_SEARCH}
-            <input type="search" id="dSearchInput" autocomplete="off">
+            <input type="search" id="dSearchInput" autocomplete="off" aria-keyshortcuts="/">
             <kbd aria-hidden="true">/</kbd>
           </div>
           <nav id="dSideTree"></nav>
@@ -290,10 +344,11 @@ function render(scrollTop = true) {
         <main class="d-main">
           <article class="d-article">
             <header class="d-head">
-              <span class="d-kicker" id="dKicker"></span>
+              <div class="d-folio"><span class="d-kicker" id="dKicker"></span><span id="dPageNumber"></span></div>
               <h1 id="dTitle"></h1>
               <p class="d-lead" id="dLead"></p>
             </header>
+            <details class="d-inline-toc"><summary></summary><nav></nav></details>
             <div class="d-body" id="dBody"></div>
             <footer class="d-pager" id="dPager"></footer>
           </article>
@@ -307,58 +362,78 @@ function render(scrollTop = true) {
       </div>
     `;
 
+    const dialog = document.getElementById('dSearchDialog');
+    dialog.querySelector('input').addEventListener('input', showSearchResults);
+    dialog.querySelector('input').addEventListener('keydown', event => {
+      if (event.key === 'Enter' && !event.isComposing) {
+        event.preventDefault();
+        dialog.querySelector('.d-search-results a')?.click();
+      }
+    });
+    dialog.querySelector('button').addEventListener('click', () => dialog.close());
+    dialog.querySelector('.d-search-results').addEventListener('click', event => {
+      if (!event.target.closest('a')) return;
+      dialog.close();
+      setDirectory(false);
+    });
+    dialog.addEventListener('click', event => {
+      if (event.target !== dialog) return;
+      const r = dialog.getBoundingClientRect();
+      if (event.clientX < r.left || event.clientX > r.right || event.clientY < r.top || event.clientY > r.bottom) dialog.close();
+    });
     document.getElementById('dMenuBtn').addEventListener('click', () => {
-      document.body.classList.toggle('d-nav-open');
+      setDirectory(!document.body.classList.contains('d-nav-open'));
     });
     document.getElementById('dSearchInput').addEventListener('input', e => {
       query = e.target.value;
       document.getElementById('dSideTree').innerHTML = buildSidebar(currentId());
     });
     window.addEventListener('keydown', e => {
-      if (e.key === '/' && document.activeElement !== document.getElementById('dSearchInput')) {
+      if (e.key === '/' && !dialog.open && !e.target.closest('input,textarea,[contenteditable=true]')) {
         e.preventDefault();
-        document.getElementById('dSearchInput').focus();
+        focusSearch();
       }
     });
-    app.querySelectorAll('.d-lang button').forEach(btn => {
-      btn.addEventListener('click', () => {
-        if (btn.dataset.lang === L) return;
-        L = btn.dataset.lang;
-        localStorage.setItem('lf-lang', L);
-        const u = new URL(location.href);
-        u.searchParams.set('lang', L);
-        history.replaceState(null, '', u);
-        render(false);
-      });
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && !dialog.open && document.body.classList.contains('d-nav-open')) {
+        setDirectory(false);
+        document.getElementById('dMenuBtn').focus();
+      }
     });
   }
-
-  document.getElementById('dBrandSub').textContent = d.ui.brandSub;
-  const backEl = document.getElementById('dBackHome');
-  backEl.textContent = d.ui.backHome;
-  backEl.href = homeUrl;
-  const demoEl = document.getElementById('dWatchDemo');
-  demoEl.textContent = d.ui.watchDemo;
-  demoEl.href = demoUrl;
-  const q = L === 'en' ? '?lang=en' : '';
-  const roadmapEl = document.getElementById('dRoadmap');
-  roadmapEl.textContent = d.ui.roadmap;
-  roadmapEl.href = '../roadmap/' + q;
-  const blogEl = document.getElementById('dBlog');
-  blogEl.textContent = d.ui.blog;
-  blogEl.href = '../blog/' + q;
-
-  app.querySelectorAll('.d-lang button').forEach(btn => {
-    btn.classList.toggle('on', btn.dataset.lang === L);
-  });
-
+  const nav = document.getElementById('dSiteNav');
+  if (nav.dataset.lang !== L) {
+    nav.dataset.lang = L;
+    nav.innerHTML = LF_NAV.header({ L, root: '../', page: 'docs', searchLabel: L === 'zh' ? '搜索文档' : 'Search docs' });
+    LF_NAV.bind(nav.querySelector('.nav'));
+    LF_NAV.stars();
+    nav.querySelector('.nav-search').addEventListener('click', focusSearch);
+    nav.querySelectorAll('.lang button').forEach(btn => btn.addEventListener('click', () => {
+      if (btn.dataset.l === L) return;
+      L = btn.dataset.l;
+      localStorage.setItem('lf-lang', L);
+      const u = new URL(location.href);
+      u.searchParams.set('lang', L);
+      history.replaceState(null, '', u);
+      render(false);
+      nav.querySelector('[aria-pressed="true"]').focus({preventScroll:true});
+    }));
+  }
+  document.querySelector('#dMenuBtn span').textContent = L === 'zh' ? '文档目录' : 'Chapters';
   document.getElementById('dNavTitle').textContent = d.ui.navTitle;
   document.getElementById('dNavSub').textContent = d.ui.navSub;
   const sInput = document.getElementById('dSearchInput');
   sInput.placeholder = d.ui.searchPlaceholder;
+  const searchDialog = document.getElementById('dSearchDialog');
+  const searchLabel = L === 'zh' ? '搜索文档' : 'Search docs';
+  searchDialog.setAttribute('aria-label', searchLabel);
+  searchDialog.querySelector('input').setAttribute('aria-label', searchLabel);
+  searchDialog.querySelector('input').placeholder = d.ui.searchPlaceholder;
+  searchDialog.querySelector('button').setAttribute('aria-label', L === 'zh' ? '关闭' : 'Close');
 
   document.getElementById('dSideTree').innerHTML = buildSidebar(activeId);
   document.getElementById('dKicker').textContent = meta.kicker || meta.secTitle;
+  document.getElementById('dPageNumber').innerHTML = '<b>'+String(idx+1).padStart(2,'0')+'</b> / '+flat.length;
   document.getElementById('dTitle').textContent = page.title;
   document.getElementById('dLead').textContent = page.lead;
   document.getElementById('dBody').innerHTML = bodyHtml;
@@ -386,23 +461,46 @@ function render(scrollTop = true) {
 
   document.getElementById('dTocTitle').textContent = d.ui.onThisPage;
   document.getElementById('dTocList').innerHTML = headings
-    .map(h => `<a href="#${h.id}" class="${h.level === 3 ? 'sub-h3' : ''}" data-anchor="${h.id}">${esc(h.text)}</a>`)
+    .map(h => `<a href="#${h.id}" class="${h.level === 3 ? 'sub-h3' : ''}" data-anchor="${h.id}"><span class="outline-mark" aria-hidden="true">${h.section}</span><span>${esc(h.text)}</span></a>`)
     .join('');
 
-  document.getElementById('dTocList').querySelectorAll('a').forEach(a => {
+  const mobileToc = document.querySelector('.d-inline-toc');
+  mobileToc.open = false;
+  mobileToc.hidden = !headings.length;
+  mobileToc.querySelector('summary').innerHTML = esc(d.ui.onThisPage)+'<span class="d-inline-location"></span>';
+  mobileToc.querySelector('nav').innerHTML = document.getElementById('dTocList').innerHTML;
+  outline = headings.map(({id}) => ({
+    heading: document.getElementById(id),
+    links: [...document.querySelectorAll('[data-anchor="'+id+'"]')]
+  }));
+  document.querySelectorAll('[data-anchor]').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
+      mobileToc.open = false;
       const target = document.getElementById(a.dataset.anchor);
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (target) target.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'instant' : 'smooth', block: 'start' });
     });
   });
 
-  document.body.classList.remove('d-nav-open');
+  setDirectory(false);
+  chapterMotion?.cancel();
+  if (matchMedia('(prefers-reduced-motion:no-preference)').matches) {
+    chapterMotion = app.querySelector('.d-article').animate(
+      [{ opacity: .62, transform: 'translateY(5px)' }, { opacity: 1, transform: 'none' }],
+      {duration: 220, easing: 'ease-out'}
+    );
+  }
   if (scrollTop) {
     window.scrollTo({ top: 0, behavior: 'instant' });
   }
   const activeNav = document.querySelector(`#dSideTree a[data-doc="${activeId}"]`);
-  if (activeNav) activeNav.scrollIntoView({ block: 'nearest' });
+  if (activeNav) {
+    const side = document.getElementById('dSide');
+    const item = activeNav.getBoundingClientRect(), bounds = side.getBoundingClientRect();
+    if (item.top < bounds.top) side.scrollTop += item.top - bounds.top;
+    else if (item.bottom > bounds.bottom) side.scrollTop += item.bottom - bounds.bottom;
+  }
+  updateOutline();
 }
 
 window.addEventListener('hashchange', () => render(true));

@@ -8,13 +8,17 @@
 <meta name="referrer" content="no-referrer"><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate" type="application/rss+xml" title="LoopForge 博客" href="https://loopforge.cn/blog/feed.xml">
 <link rel="preload" href="../../site/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../site/site.css?v=38">
+<link rel="stylesheet" href="../../site/site.css?v=39">
 <link rel="stylesheet" href="../blog.css?v=6">
-</head><body class="bp-page" data-root="../../" data-slug="zero-to-one-first-sop">
+<link rel="stylesheet" href="../journal.css?v=13">
+<link rel="stylesheet" href="../../site/chrome.css?v=8">
+<link rel="stylesheet" href="../reader.css?v=5">
+</head><body class="bp-page reader-edition" data-root="../../" data-slug="zero-to-one-first-sop">
+<a class="skip-link" href="#main">跳到内容 / Skip to content</a>
 <div id="nav"></div>
-<main class="bp">
+<main class="bp" id="main">
  <header class="bp-head">
-  <a class="bp-back rv" data-d="0" data-href="blog/" href="../"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span data-t="back">返回博客</span></a>
+  <div class="reader-imprint"><a class="bp-back" data-href="blog/" href="../"><em lang="en">Journal<span>.</span></em><span class="imprint-link" data-t="back">返回博客</span></a></div>
   <div class="bc-meta rv" data-d="60"><span class="bc-tag" data-tag="tutorial" data-tag-label="tutorial">上手教程</span><time datetime="2026-11-19">2026 年 11 月 19 日</time><span class="bc-dot"></span><span data-min="13">13 分钟阅读</span></div>
   <h1 class="rv" data-d="120">从 0 到 1：部署平台，跑通第一条团队 SOP</h1>
   <p class="bp-sum rv" data-d="200">从安装、账号和凭证，到创建项目、配置四个角色、编排失败打回路径，再用一条真实需求完成首次运行与人工验收。</p>
@@ -28,13 +32,13 @@
   <div class="section-kicker">准备工作</div>
   <h2>先明确这次要跑通什么</h2>
   <p class="lead">本教程会搭建一个由需求分析师、后端研发工程师、代码评审员和测试工程师组成的简单团队，并把四个角色串进同一条 SOP。</p>
-  <div class="route" aria-label="教程流程">
-    <span>部署并登录</span>
-    <span>创建项目</span>
-    <span>配置角色</span>
-    <span>编排 SOP</span>
-    <span>运行并验收</span>
-  </div>
+  <nav class="route" aria-label="教程流程">
+    <a href="#deploy">部署并登录</a>
+    <a href="#project">创建项目</a>
+    <a href="#roles">配置角色</a>
+    <a href="#sop">编排 SOP</a>
+    <a href="#run">运行并验收</a>
+  </nav>
   <p>建议准备一台已安装 Docker 与 Git 的 Linux 服务器或开发机，以及一个可供演示的 GitHub 仓库。仓库最好包含可直接执行的测试命令；本文示例使用 <code>npm test</code>。</p>
   <div class="callout tip"><strong>第一次体验建议从小需求开始。</strong>范围越明确，越容易看清需求分析、开发、评审、测试和人工验收之间是如何交接的。</div>
 </section>
@@ -52,7 +56,7 @@ cd LoopForge
   <p>启动脚本会自动完成环境检查、镜像拉取、数据库启动和初始化。当终端出现 <strong>✓ LoopForge is running</strong> 时，说明平台已经启动成功。</p>
 
   <figure>
-    <div class="shot"><img src="img/fig-01.webp" loading="lazy" alt="终端执行 LoopForge 部署命令并显示启动成功和访问地址"></div>
+    <div class="shot"><img width="1527" height="787" src="img/fig-01.webp" loading="lazy" alt="终端执行 LoopForge 部署命令并显示启动成功和访问地址"></div>
     <figcaption><strong>图 1｜部署完成</strong>：终端会同时给出本机地址、局域网地址和云主机访问提示。</figcaption>
   </figure>
 
@@ -70,7 +74,7 @@ cd LoopForge
   <p>第一次打开 LoopForge 时，从登录页进入注册流程，创建首个账号。第一个创建的账号会自动成为平台管理员，拥有成员账号、平台管理员和通用模板等管理权限。</p>
 
   <figure>
-    <div class="shot"><img src="img/fig-02.webp" loading="lazy" alt="LoopForge 登录和注册入口"></div>
+    <div class="shot"><img width="1978" height="1380" src="img/fig-02.webp" loading="lazy" alt="LoopForge 登录和注册入口"></div>
     <figcaption><strong>图 2｜登录与注册入口</strong>：首次使用时先注册首个账号，后续使用该账号登录。</figcaption>
   </figure>
 
@@ -82,7 +86,7 @@ cd LoopForge
   <p>后续创建的账号默认是普通成员。确实需要平台管理权限时，可以在创建账号时勾选「同时设为平台管理员」，或者之后在「平台管理 → 平台管理员」中添加。</p>
 
   <figure>
-    <div class="shot"><img src="img/fig-03.webp" loading="lazy" alt="平台管理员在成员账号页面创建多个团队账号"></div>
+    <div class="shot"><img width="2000" height="908" src="img/fig-03.webp" loading="lazy" alt="平台管理员在成员账号页面创建多个团队账号"></div>
     <figcaption><strong>图 3｜管理员创建团队账号</strong>：产品、研发、测试和负责人分别使用自己的账号登录。</figcaption>
   </figure>
 </section>
@@ -105,7 +109,7 @@ cd LoopForge
   <p>确认信息后，点击「保存凭证」。每位成员都可以在自己的账号下配置凭证，彼此互不影响。运行 SOP 时，已经指定需求负责人的任务使用负责人的凭证；没有指定时，使用项目 Owner 的凭证。</p>
 
   <figure>
-    <div class="shot"><img src="img/fig-04.webp" loading="lazy" alt="个人配置页面添加执行器和模型凭证"></div>
+    <div class="shot"><img width="1770" height="906" src="img/fig-04.webp" loading="lazy" alt="个人配置页面添加执行器和模型凭证"></div>
     <figcaption><strong>图 4｜配置个人凭证</strong>：选择执行器后，再填写页面实际显示的认证信息。</figcaption>
   </figure>
 
@@ -148,7 +152,7 @@ cd LoopForge
   <p>填写项目名称后，点击「创建并继续」。系统会自动生成项目标识和项目 Key，创建后无需手动维护。</p>
 
   <figure>
-    <div class="shot"><img src="img/fig-05.webp" loading="lazy" alt="新建项目向导中填写项目名称、说明和默认 SOP"></div>
+    <div class="shot"><img width="2000" height="1039" src="img/fig-05.webp" loading="lazy" alt="新建项目向导中填写项目名称、说明和默认 SOP"></div>
     <figcaption><strong>图 5｜项目基本信息</strong>：项目说明应简洁交代业务背景和本次演示目标。</figcaption>
   </figure>
 
@@ -167,7 +171,7 @@ cd LoopForge
   <p>点击「＋ 添加仓库」完成绑定。项目绑定的第一个仓库会自动成为默认仓库，后续创建需求时会默认选择它。</p>
 
   <figure>
-    <div class="shot"><img src="img/fig-06.webp" loading="lazy" alt="新建项目向导绑定 GitHub 代码仓库"></div>
+    <div class="shot"><img width="1130" height="727" src="img/fig-06.webp" loading="lazy" alt="新建项目向导绑定 GitHub 代码仓库"></div>
     <figcaption><strong>图 6｜绑定代码仓库</strong>：授权后选择仓库，并确认主分支。</figcaption>
   </figure>
 
@@ -179,7 +183,7 @@ cd LoopForge
   </ul>
 
   <figure>
-    <div class="shot"><img src="img/fig-07.webp" loading="lazy" alt="新建项目向导设置 Owner 并添加项目成员"></div>
+    <div class="shot"><img width="2000" height="1296" src="img/fig-07.webp" loading="lazy" alt="新建项目向导设置 Owner 并添加项目成员"></div>
     <figcaption><strong>图 7｜添加项目成员</strong>：把真实团队账号加入项目，后续角色不需要在这里分配。</figcaption>
   </figure>
 
@@ -206,7 +210,7 @@ cd LoopForge
   <p>新建角色时，先选择一个起点，再填写显示名称、职责、CLI 和模型。不同角色可以使用不同的执行器和模型；第一次体验也可以全部使用相同配置，先把流程跑通。</p>
 
   <figure>
-    <div class="shot"><img src="img/fig-08.webp" loading="lazy" alt="新建后端研发工程师角色并配置职责、CLI 和模型"></div>
+    <div class="shot"><img width="865" height="676" src="img/fig-08.webp" loading="lazy" alt="新建后端研发工程师角色并配置职责、CLI 和模型"></div>
     <figcaption><strong>图 8｜角色基本信息</strong>：图中以后端研发工程师为例，其他角色按同样方式创建。</figcaption>
   </figure>
 
@@ -214,7 +218,7 @@ cd LoopForge
   <p>角色 Prompt 要明确它需要读取什么、按什么标准工作、不能做什么，以及最后必须留下什么产物。平台会自动提供需求输入、仓库信息和上游产物，也可以使用页面上方按钮插入 <code>{{input}}</code>、<code>{{repository}}</code>、<code>{{artifacts}}</code> 和 <code>{{feedback}}</code> 等变量。</p>
 
   <figure>
-    <div class="shot"><img src="img/fig-09.webp" loading="lazy" alt="编辑后端研发工程师角色任务 Prompt"></div>
+    <div class="shot"><img width="1422" height="838" src="img/fig-09.webp" loading="lazy" alt="编辑后端研发工程师角色任务 Prompt"></div>
     <figcaption><strong>图 9｜配置角色任务</strong>：让角色先读需求、上游产物和打回反馈，再执行当前工作。</figcaption>
   </figure>
 
@@ -261,7 +265,7 @@ cd LoopForge
   <p>检查范围选择「Run 工作区」。角色口头说“已经完成”不算通过，只有真正生成约定的产物并通过检查，流程才能进入下一步。</p>
 
   <figure>
-    <div class="shot"><img src="img/fig-10.webp" loading="lazy" alt="角色产物与门禁页面配置必交文件、检查命令和失败处理"></div>
+    <div class="shot"><img width="1408" height="881" src="img/fig-10.webp" loading="lazy" alt="角色产物与门禁页面配置必交文件、检查命令和失败处理"></div>
     <figcaption><strong>图 10｜产物与门禁</strong>：除了检查文件存在，还可以设置失败后在本节点修复、打回上游或转人工确认。</figcaption>
   </figure>
   <p>第一次配置时，「技能与工具」可以保持默认。等流程跑通后，再按团队需要给角色绑定规则、Skills 或 MCP。</p>
@@ -285,7 +289,7 @@ cd LoopForge
   </div>
 
   <figure>
-    <div class="shot"><img src="img/fig-11.webp" loading="lazy" alt="创建后端需求交付 SOP 并填写流程信息"></div>
+    <div class="shot"><img width="966" height="660" src="img/fig-11.webp" loading="lazy" alt="创建后端需求交付 SOP 并填写流程信息"></div>
     <figcaption><strong>图 11｜创建 SOP</strong>：先写清这条流程要解决什么问题，再进入设计器添加节点。</figcaption>
   </figure>
 
@@ -308,7 +312,7 @@ npm test</code></pre></div>
   <p>分别选中「代码评审员」「测试工程师」和「运行测试」，把失败后的处理方式设置为打回「后端研发工程师」。建议首次体验最多返工 <code>3</code> 轮，并选择只修失败项。也可以为「负责人验收」设置同一打回目标。</p>
 
   <figure>
-    <div class="shot"><img src="img/fig-12.webp" loading="lazy" alt="SOP 画布展示需求分析、开发、评审、测试、脚本、人工门禁和失败打回路径"></div>
+    <div class="shot"><img width="1730" height="645" src="img/fig-12.webp" loading="lazy" alt="SOP 画布展示需求分析、开发、评审、测试、脚本、人工门禁和失败打回路径"></div>
     <figcaption><strong>图 12｜SOP 与失败打回路径</strong>：实线是成功路径，红色虚线把未通过的结果连同反馈退回研发。</figcaption>
   </figure>
 
@@ -324,21 +328,21 @@ npm test</code></pre></div>
 普通成员只能查询和导出自己项目内的数据。</code></pre></div>
 
   <figure>
-    <div class="shot"><img src="img/fig-13.webp" loading="lazy" alt="在需求列表中新建需求并填写审计日志筛选和导出要求"></div>
+    <div class="shot"><img width="2000" height="605" src="img/fig-13.webp" loading="lazy" alt="在需求列表中新建需求并填写审计日志筛选和导出要求"></div>
     <figcaption><strong>图 13｜描述需求</strong>：选择要分析的仓库和模型后，点击「开始澄清」。</figcaption>
   </figure>
 
   <p>需求分析会读取所选仓库的代码，把自然语言需求整理为改动范围、非目标和可验证的验收标准。</p>
 
   <figure>
-    <div class="shot"><img src="img/fig-14.webp" loading="lazy" alt="LoopForge 需求澄清结果展示改动范围、非目标和验收标准"></div>
+    <div class="shot"><img width="1642" height="1700" src="img/fig-14.webp" loading="lazy" alt="LoopForge 需求澄清结果展示改动范围、非目标和验收标准"></div>
     <figcaption><strong>图 14｜检查澄清结果</strong>：重点确认权限边界、接口范围、测试要求和明确排除项。</figcaption>
   </figure>
 
   <p>进入确认页后，检查需求标题、需求结论、代码仓库和 SOP 流程。选择刚刚发布的「后端需求交付 SOP」，再点击「创建并启动 SOP」。</p>
 
   <figure>
-    <div class="shot"><img src="img/fig-15.webp" loading="lazy" alt="确认需求标题、结论、代码仓库并选择后端需求交付 SOP"></div>
+    <div class="shot"><img width="1650" height="1654" src="img/fig-15.webp" loading="lazy" alt="确认需求标题、结论、代码仓库并选择后端需求交付 SOP"></div>
     <figcaption><strong>图 15｜确认并启动</strong>：仓库与 SOP 选对后，再正式创建需求并开始运行。</figcaption>
   </figure>
 </section>
@@ -357,7 +361,7 @@ npm test</code></pre></div>
   </ol>
 
   <figure>
-    <div class="shot"><img src="img/fig-16.webp" loading="lazy" alt="LoopForge 运行详情展示节点状态、实时轨迹、日志、工作区和产物"></div>
+    <div class="shot"><img width="2000" height="861" src="img/fig-16.webp" loading="lazy" alt="LoopForge 运行详情展示节点状态、实时轨迹、日志、工作区和产物"></div>
     <figcaption><strong>图 16｜观察运行过程</strong>：在同一页面查看节点进度、实时轨迹、Worker 日志、工作区和产物；必要时可以暂停或取消。</figcaption>
   </figure>
 
@@ -370,7 +374,7 @@ npm test</code></pre></div>
   </ul>
 
   <figure>
-    <div class="shot"><img src="img/fig-17.webp" loading="lazy" alt="负责人进行人工验收并点击任意节点查看输出和交付物"></div>
+    <div class="shot"><img width="2000" height="1132" src="img/fig-17.webp" loading="lazy" alt="负责人进行人工验收并点击任意节点查看输出和交付物"></div>
     <figcaption><strong>图 17｜人工验收</strong>：点击任意节点都能回看输出和产物；最后由负责人决定通过、重跑或退回。</figcaption>
   </figure>
 
@@ -397,5 +401,5 @@ npm test</code></pre></div>
  </section>
 </main>
 <div id="foot"></div>
-<script src="../../site/nav.js?v=2"></script><script src="../blog.js?v=5"></script>
+<script src="../../site/nav.js?v=8"></script><script src="../reader-gallery.js"></script><script src="../blog.js?v=16"></script>
 </body></html>

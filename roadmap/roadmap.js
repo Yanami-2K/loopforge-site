@@ -33,7 +33,7 @@ const ORDER = ['planned', 'progress', 'done'];
 const GLYPH = {
   planned: '<svg class="gl gl-planned" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.2"/></svg>',
   progress: '<svg class="gl gl-progress" viewBox="0 0 20 20" aria-hidden="true"><circle class="t" cx="10" cy="10" r="7.2"/><circle class="a" cx="10" cy="10" r="7.2" pathLength="100"/><circle class="c" cx="10" cy="10" r="2.6"/></svg>',
-  done: '<svg class="gl gl-done" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.4"/><path pathLength="100" d="m6.4 10.3 2.4 2.4 4.8-5"/></svg>',
+  done: '<svg class="gl gl-done" viewBox="0 0 20 20" aria-hidden="true"><path d="M3 3h7l7 7-7 7-7-7z"/><circle cx="7" cy="7" r="1.25"/></svg>',
 };
 
 /* split a heading into masked lines, highlighting the em phrase */
@@ -46,14 +46,22 @@ function cardHTML(id, s) {
   const refs = it.refs || [];
   const num = refs.filter(r => r.label.includes('#'));
   const badge = num.length ? `<span class="rm-ref">${esc(num[0].label.replace('PR ', ''))}${num.length > 1 ? `<i>+${num.length - 1}</i>` : ''}</span>` : '';
-  const pill = s === 'progress' ? `<span class="rm-pill doing"><i></i>${u.status.progress[0]}</span>` : '';
   const people = it.people ? `<span class="rm-people">${it.people.map(p => `<b title="${esc(p)}">${esc(p[0].toUpperCase())}</b>`).join('')}</span>` : '';
   return `<button type="button" class="rm-card" data-id="${id}" data-s="${s}">
     <span class="rm-ct"><span class="rm-tag">${ic(AREA_IC[it.a])}${a[L]}</span>${badge}</span>
     <h3>${esc(t.title)}</h3>
     <p>${esc(t.desc)}</p>
-    <span class="rm-cf">${pill}${people}<span class="sp"></span><span class="rm-go">${ic('arrow')}</span></span>
+    ${people ? `<span class="rm-cf">${people}</span>` : ''}
   </button>`;
+}
+
+function versionGlyphs(version) {
+  if (calm()) return esc(version);
+  return Array.from(version, (char, index) => {
+    const digit = /^[0-9]$/.test(char);
+    const prior = digit ? ` data-prior="${(Number(char) + 9) % 10}"` : '';
+    return `<span class="rm-glyph" style="--order:${index}"><span${prior}>${esc(char)}</span></span>`;
+  }).join('');
 }
 
 function build() {
@@ -66,7 +74,7 @@ function build() {
   document.getElementById('app').innerHTML = `
   <header class="nav"><i class="nprog"></i><div class="nbar"><a class="brand" href="${withLang('../')}">${LOGO(1)}<span>LoopForge</span></a><span class="sp"></span>
    ${LF_NAV.links({ L, root: '../', page: 'roadmap' })}
-   <div class="lang"><button data-l="zh" class="${L === 'zh' ? 'on' : ''}" aria-label="${Z('中文', 'Chinese')}">${Z('中', 'ZH')}</button><button data-l="en" class="${L === 'en' ? 'on' : ''}">EN</button></div>
+   ${LF_NAV.language(L)}
    <a class="ghs" href="${GH}" target="_blank" rel="noopener" aria-label="GitHub"><span class="gsw"><span class="g1">${GHM}</span><span class="g2">${STAR}</span><i class="sk s1">${SPK}</i><i class="sk s2">${SPK}</i></span><span class="gtx">GitHub</span><span class="gct" hidden></span></a><a class="btn-k sm" href="${withLang('../demo/')}">${u.try}${arrow}</a>${LF_NAV.menu(L)}</div></header>
   <main>
    <section class="rm-hero">
@@ -74,7 +82,7 @@ function build() {
      <div><span class="kick rv" data-d="0">${ic('map')}${u.kick}</span>${head(u.h, u.em, 'h1')}</div>
      <aside class="rm-ver rv" data-d="300">
       <div class="rm-vs">
-       <button type="button" class="rm-vb" aria-haspopup="listbox" aria-expanded="false" aria-label="${u.pick}: ${esc(R.v)}"><span class="rm-vk">${past ? `${u.past}<i class="rm-hb">${u.hist}</i>` : u.version}${ic('down', 'rm-vc')}</span><b class="rm-vn">${esc(R.v)}</b></button>
+       <button type="button" class="rm-vb" aria-haspopup="listbox" aria-expanded="false" aria-label="${u.pick}: ${esc(R.v)}"><span class="rm-vk">${past ? `${u.past}<i class="rm-hb">${u.hist}</i>` : u.version}${ic('down', 'rm-vc')}</span><b class="rm-vn" style="--release-chars:${R.v.length}" aria-hidden="true">${versionGlyphs(R.v)}</b></button>
        <ul class="rm-vl" role="listbox" aria-label="${u.pick}" hidden>${D.releases.map((r, i) => `<li role="option" tabindex="-1" data-v="${esc(r.v)}" aria-selected="${r === R}"><b>${esc(r.v)}</b><span>${r.date}</span>${i === 0 ? `<i>${u.latest}</i>` : r.pre ? `<i>${u.pre}</i>` : ''}</li>`).join('')}</ul>
       </div>
       <span class="rm-vm"><i class="led"></i>${u.released(R.date, R.pre)}</span>
@@ -88,7 +96,7 @@ function build() {
    <section class="rm-main">
     ${past ? `<p class="rm-hist" role="note">${ic('clock')}<span>${u.histNote(R.v, R.updated)}</span><a href="${latestHref()}" data-v="${esc(D.releases[0].v)}">${u.toLatest(D.releases[0].v)}${arrow}</a></p>` : ''}
     <div class="rm-board">
-     ${ORDER.map(s => `<section class="rm-col" data-s="${s}">
+     ${ORDER.map(s => `<section class="rm-col" data-s="${s}" id="release-${s}">
        <header class="rm-ch">${GLYPH[s]}<h2>${u.status[s][0]}</h2><b class="rm-n">0</b><small>${subtitle(s)}</small></header>
        <div class="rm-list">${R[s].map(id => cardHTML(id, s)).join('')}</div>
       </section>`).join('')}
@@ -221,11 +229,6 @@ function bind() {
     else if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); if (i >= 0) pickVer(all[i].dataset.v); }
     else if (e.key === 'Tab') closeVer();
   });
-  app.querySelector('.rm-board').addEventListener('pointermove', e => {
-    const c = e.target.closest('.rm-card'); if (!c) return;
-    const r = c.getBoundingClientRect();
-    c.style.setProperty('--mx', e.clientX - r.left + 'px'); c.style.setProperty('--my', e.clientY - r.top + 'px');
-  }, { passive: true });
   const dlg = document.getElementById('rmDlg');
   dlg.addEventListener('click', e => { if (e.target.classList.contains('rm-scrim') || e.target.closest('.rm-x')) closeDlg(); });
 }
@@ -255,14 +258,16 @@ function boot(relang) {
   io = new IntersectionObserver(es => es.forEach(e => {
     if (!e.isIntersecting) return;
     io.unobserve(e.target);
-    if (e.target.classList.contains('rm-col')) {
+    if (e.target.classList.contains('rm-vn')) {
+      e.target.classList.add('writing');
+    } else if (e.target.classList.contains('rm-col')) {
       const col = e.target, idx = ORDER.indexOf(col.dataset.s);
       col.classList.add('on');
       enter([...col.querySelectorAll('.rm-card')], relang ? 0 : 120 + idx * 110);
       updateCounts();
     } else reveal(e.target);
   }), { rootMargin: '0px 0px -12% 0px' });
-  document.querySelectorAll('.rm-col, .rm-cta').forEach(el => io.observe(el));
+  document.querySelectorAll('.rm-col, .rm-cta, .rm-vn').forEach(el => io.observe(el));
   if (calm()) { document.querySelectorAll('.rm-col').forEach(c => c.classList.add('on')); updateCounts(); }
   onScroll(); stars();
   if (relang) scrollTo(0, keep);

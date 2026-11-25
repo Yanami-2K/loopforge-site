@@ -8,14 +8,20 @@
 <meta name="referrer" content="no-referrer"><link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="alternate" type="application/rss+xml" title="LoopForge 博客" href="https://loopforge.cn/blog/feed.xml">
 <link rel="preload" href="../../site/fonts/inter-tight-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../../site/site.css?v=38">
+<link rel="stylesheet" href="../../site/site.css?v=39">
 <link rel="stylesheet" href="../blog.css?v=6">
 <link rel="stylesheet" href="original.css?v=1">
-</head><body class="bp-page" data-root="../../" data-slug="from-personal-agent-to-team-loop">
+<link rel="stylesheet" href="../journal.css?v=13">
+<link rel="stylesheet" href="../../site/chrome.css?v=8">
+<link rel="stylesheet" href="../reader.css?v=5">
+</head><body class="bp-page reader-edition" data-root="../../" data-slug="from-personal-agent-to-team-loop">
+<a class="skip-link" href="#main">跳到内容 / Skip to content</a>
 <div id="nav"></div>
-<main class="bp">
+<main class="bp" id="main">
  <header class="bp-head">
-  <a class="bp-back rv" data-d="0" data-href="blog/" href="../"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span data-t="back">返回博客</span></a>
+  <div class="reader-imprint">
+  <a class="bp-back rv" data-d="0" data-href="blog/" href="../"><svg class="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><em lang="en">Journal<span>.</span></em><span class="imprint-link" data-t="back">返回博客</span></a>
+  </div>
   <div class="bc-meta rv" data-d="60"><span class="bc-tag" data-tag="practice" data-tag-label="practice">团队实践</span><time datetime="2026-11-20">2026 年 11 月 20 日</time><span class="bc-dot"></span><span data-min="9">9 分钟阅读</span></div>
   <h1 class="rv" data-d="120">从个人 Agent 到团队 Loop：LoopForge 如何让团队工作流在云端持续运行</h1>
   <p class="bp-sum rv" data-d="200">把个人经验沉淀为团队角色和可复用 SOP，让共享上下文、过程留痕、持续改进与云端运行形成完整交付闭环。</p>
@@ -48,11 +54,11 @@
 </ul>
 <p>以后端研发工程师为例，可以按如下方式配置：</p>
 <figure class="figrow">
-  <img src="img/fig-02.png" alt="角色身份配置" loading="lazy"><img src="img/fig-03.png" alt="角色任务配置" loading="lazy">
+  <img width="1844" height="1448" src="img/fig-02.png" alt="角色身份配置" loading="lazy"><img width="1844" height="1448" src="img/fig-03.png" alt="角色任务配置" loading="lazy">
   <figcaption>角色的身份与任务</figcaption>
 </figure>
 <figure class="figrow">
-  <img src="img/fig-04.png" alt="角色产物与门禁配置" loading="lazy"><img src="img/fig-05.png" alt="角色技能与工具配置" loading="lazy">
+  <img width="1844" height="1448" src="img/fig-04.png" alt="角色产物与门禁配置" loading="lazy"><img width="1844" height="1448" src="img/fig-05.png" alt="角色技能与工具配置" loading="lazy">
   <figcaption>角色的产物、门禁与工具</figcaption>
 </figure>
 <p>配好的角色可以随时调整，每改一次都会留一个版本，改坏了也能随时恢复。</p>
@@ -67,7 +73,7 @@
 </ul>
 <p>这样一来，谁都能找 Main Bot 聊，谁都能叫角色来帮忙。大家共用同一份上下文：前面谁说过什么、哪个角色交了什么、工作区里改了哪些代码，后来的人一进会话就能看到，接着往下聊就行。</p>
 <figure>
-  <img src="img/fig-06.png" alt="Main Bot 调度角色协作" loading="lazy">
+  <img width="2880" height="2880" src="img/fig-06.png" alt="Main Bot 调度角色协作" loading="lazy">
   <figcaption>Main Bot 调度角色协作</figcaption>
 </figure>
 
@@ -88,7 +94,7 @@
 </ul>
 <p>流程跑起来，难免有哪一步没过。<strong>LoopForge 支持让流程转成一个 Loop</strong>：每个节点都可以设好失败后打回到哪里，没通过就带着意见自动退回去，修完再重新走一遍。为了不陷入死循环，返工还设了轮次上限，几轮还没修好，流程就停下来等人处理。</p>
 <figure>
-  <img src="img/fig-07.png" alt="后端需求 SOP 与失败打回路径" loading="lazy">
+  <img width="3200" height="1800" src="img/fig-07.png" alt="后端需求 SOP 与失败打回路径" loading="lazy">
   <figcaption>后端需求 SOP 与打回路径</figcaption>
 </figure>
 <p>SOP 也可以随团队的需要调整，每次修改都会保留历史版本，可以对比，也可以一键恢复。</p>
@@ -98,7 +104,7 @@
 <p>来看一次真实运行。一条“审计日志按操作人筛选并导出”需求在完成开发后，被代码评审员拦了下来：导出接口缺少权限校验。评审意见随即被带回给后端研发工程师，修复、复审、测试依次完成，最终停在「负责人验收」。</p>
 <p>负责人不必翻日志寻找进度。打开运行详情，整条链路已经铺开：绿色代表通过，红色标记失败，琥珀色表示等待确认。此时前序节点全部通过，只剩最终验收。点击任意节点，还能继续查看代码改动、工具调用、失败原因和返工记录。</p>
 <figure>
-  <img src="img/fig-08.png" alt="运行详情停在负责人验收节点" loading="lazy">
+  <img width="2880" height="1912" src="img/fig-08.png" alt="运行详情停在负责人验收节点" loading="lazy">
   <figcaption>流程停在「负责人验收」</figcaption>
 </figure>
 <p>所有需要人工处理的事项都会进入「待我确认」。负责人可以查看验收报告并作出决定；从原始需求、SOP 版本、参与角色，到打回原因、验收人和最终 PR，整次交付都有记录可查。</p>
@@ -108,7 +114,7 @@
 <h2 id="s5"><span class="n">PART 05</span>持续迭代：每跑一次，流程就好一点</h2>
 <p>运行结束后，可以在详情页发起「智能评测」。AI 会回看这次运行的执行轨迹，从流程是否健康、耗时与等待、工具调用、Token 效率、失败恢复和交付完整性等维度分析这次运行。它不仅会告诉你哪里慢、返工了几轮，还会分析问题出在哪个环节。</p>
 <figure>
-  <img src="img/fig-09.png" alt="智能评测定位返工原因" loading="lazy">
+  <img width="2656" height="2630" src="img/fig-09.png" alt="智能评测定位返工原因" loading="lazy">
   <figcaption>智能评测定位返工原因</figcaption>
 </figure>
 <p>智能评测进一步发现，这次问题之所以到了代码评审才暴露，是因为需求模板和评审清单里都缺少权限检查。据此，它给出两条改进建议：</p>
@@ -119,7 +125,7 @@
 <p>当然，<strong>AI 只负责提出建议，不会自动生效</strong>。负责人可以自行判断，选择合适的建议写入角色；如果涉及节点顺序或打回路径，再到设计器中调整。</p>
 <p>下一次再遇到查询或导出类需求，权限不再依赖某个人临时想起来，而会成为需求和评审阶段的<strong>默认检查项</strong>。</p>
 <figure>
-  <img src="img/fig-10.png" alt="统计页面展示流程改进效果" loading="lazy">
+  <img width="2880" height="2360" src="img/fig-10.png" alt="统计页面展示流程改进效果" loading="lazy">
   <figcaption>用数据验证改进效果</figcaption>
 </figure>
 <p>流程是不是真的变好了，也不需要凭感觉判断。在「统计」页，可以查看一次通过率、返工率、节点耗时、人工干预次数和 Token 成本，同一 SOP 的不同版本还能对比成功率、耗时和成本。有效的改进保留下来，效果不佳的规则继续调整或回退。</p>
@@ -137,15 +143,15 @@
 <p>LoopForge 可以定时扫描需求池，将待处理的需求交给对应 SOP。已经执行或关闭的需求会自动跳过，单次派发数量也可以设置上限，避免占用过多资源。</p>
 <p>定时任务还可以执行提示词，例如汇总近期的运行情况，将失败、卡住和等待验收的任务整理成简报，推送到团队群里。</p>
 <figure class="figrow">
-  <img src="img/fig-11.png" alt="定时任务配置" loading="lazy"><img src="img/fig-12.png" alt="多条任务并行运行记录" loading="lazy">
+  <img width="2880" height="2800" src="img/fig-11.png" alt="定时任务配置" loading="lazy"><img width="2880" height="1800" src="img/fig-12.png" alt="多条任务并行运行记录" loading="lazy">
   <figcaption>定时任务配置与并行运行记录</figcaption>
 </figure>
 <p>配好以后，一个晚上大概是这样度过的：</p>
-<ul>
-<li><strong>23:00</strong>：系统发现 8 条待处理需求，分别创建沙箱并启动 SOP；</li>
-<li><strong>夜间</strong>：任务自行完成分析、开发、评审和测试，未通过的自动打回返工；</li>
-<li><strong>次日 9:00</strong>：运行简报推送到群里，6 条等待验收，2 条需要人工处理；</li>
-<li><strong>上午</strong>：负责人进入「待我确认」，集中验收结果并处理异常任务。</li>
+<ul class="night-log">
+<li><strong>23:00：</strong>系统发现 8 条待处理需求，分别创建沙箱并启动 SOP；</li>
+<li><strong>夜间：</strong>任务自行完成分析、开发、评审和测试，未通过的自动打回返工；</li>
+<li><strong>次日 9:00：</strong>运行简报推送到群里，6 条等待验收，2 条需要人工处理；</li>
+<li><strong>上午：</strong>负责人进入「待我确认」，集中验收结果并处理异常任务。</li>
 </ul>
 <div class="quote">晚上由 Loop 跑流程，早上由人验结果。</div>
 
@@ -170,5 +176,5 @@
  </section>
 </main>
 <div id="foot"></div>
-<script src="../../site/nav.js?v=2"></script><script src="../blog.js?v=5"></script>
+<script src="../../site/nav.js?v=8"></script><script src="../reader-gallery.js"></script><script src="../blog.js?v=16"></script>
 </body></html>

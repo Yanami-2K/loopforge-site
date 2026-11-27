@@ -303,7 +303,7 @@ function build(){const t=T[L];document.documentElement.lang=L==='zh'?'zh-CN':'en
  <section class="story wrap" id="story"><div class="sec-h u" data-u="head"><span class="kick">${ic('spark')}${Z('核心机制','How it works')}</span>${head(t.story)}</div>
   ${storyScenes(t)}</section>
  <section class="video wrap" id="video"><div class="sec-h u" data-u="head"><span class="kick">${ic('play')}${Z('实机演示','Walkthrough')}</span>${head(t.video)}</div>
-  <div class="vframe u" data-u="film"><video preload="none" playsinline poster="${Z('demo/media/loopforge-promo.jpg','demo/media/loopforge-promo-en.jpg')}" data-src="demo/media/loopforge-promo${Z('','-en')}.mp4?v=12"></video>
+  <div class="vframe u" data-u="film"><video preload="none" playsinline poster="${Z('https://media.loopforge.cn/demo/media/loopforge-promo.jpg?v=12','https://media.loopforge.cn/demo/media/loopforge-promo-en.jpg?v=12')}" data-src="https://media.loopforge.cn/demo/media/loopforge-promo${Z('','-en')}.mp4?v=12"></video>
   <button class="play" type="button" aria-label="${t.video.play}"><b class="film-key" aria-hidden="true">${PLAY}<time datetime="PT1M20S">01:20</time></b><small class="film-error" role="status"></small></button></div>
   <div class="vfoot"><a class="btn-t" href="${TRY()}">${t.video.cta}${arrow}</a></div></section>
  <section class="deploy wrap u" id="deploy" data-u="install"><lf-lunar-surface aria-hidden="true"></lf-lunar-surface>${install(t)}</section>

@@ -3,7 +3,7 @@
 const qs=new URLSearchParams(location.search);
 let L=qs.get('lang')||localStorage.getItem('lf-lang')||((navigator.language||'').startsWith('zh')?'zh':'en');if(L!=='zh'&&L!=='en')L='zh';
 const Z=(a,b)=>L==='zh'?a:b;
-const SRC=Z('media/loopforge-promo.mp4?v=12','media/loopforge-promo-en.mp4?v=12'),POSTER=Z('media/loopforge-promo.jpg?v=12','media/loopforge-promo-en.jpg?v=12'),GH='https://github.com/Tencent/LoopForge';
+const SRC=Z('https://media.loopforge.cn/demo/media/loopforge-promo.mp4?v=12','https://media.loopforge.cn/demo/media/loopforge-promo-en.mp4?v=12'),POSTER=Z('https://media.loopforge.cn/demo/media/loopforge-promo.jpg?v=12','https://media.loopforge.cn/demo/media/loopforge-promo-en.jpg?v=12'),GH='https://github.com/Tencent/LoopForge';
 let lgN=0;
 const LOGO=()=>{const g='lfg'+(++lgN);return `<svg viewBox="12 12 88 88" fill="none" aria-hidden="true"><defs><linearGradient id="${g}" x1="19" y1="20" x2="93" y2="93" gradientUnits="userSpaceOnUse"><stop stop-color="#008DCC"/><stop offset=".48" stop-color="#526CE8"/><stop offset="1" stop-color="#8A4ED9"/></linearGradient></defs><path class="lgp" pathLength="100" d="M53 72C53 59 63 52.5 73 52.5S93 59 93 72 83 91.5 73 91.5 53 85 53 72V40C53 27 44.5 20.5 36 20.5S19 27 19 40" stroke="url(#${g})" stroke-width="7.6" stroke-linecap="round" stroke-linejoin="round"/></svg>`};
 const I={
